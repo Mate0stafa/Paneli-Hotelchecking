@@ -1,0 +1,242 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property Facilities | Admin Panel Allbookers </title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+
+    <style>
+        .fix-top-content {
+            padding-top: 100px;
+        }
+        /* Style checkbox */
+        .containerCh {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 1.2rem !important;
+            cursor: pointer;
+            font-size: 0.875rem;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Create a custom checkbox */
+        .checkmark {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 2px solid #fb8540;
+            transition-duration: 250ms;
+            border-radius: 2px;
+        }
+
+        /* When the checkbox is checked, change the border color to orange */
+        .containerCh input:checked ~ .checkmark {
+            border-color: #fb8540; /* Change the border color to orange */
+            background-color: #fb8540; /* Change the background color to orange */
+            border-color: #fb8540;
+            outline: 0;
+            -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
+            box-shadow: 0 0 0 .25rem #fb854024;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .containerCh input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .containerCh .checkmark:after {
+            left: 5px;
+            top: -4px;
+            width: 7px;
+            height: 18px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            transition-duration: 250ms;
+            font-size: .9375rem;
+            font-family: themify;
+        }
+
+        @media only screen and (max-width: 600px) {
+            h4.font-weight-bold.hgh {
+                display: none;
+            }
+        }
+
+
+    </style>
+
+</head>
+<body>
+
+
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="">
+                            <input type="hidden" id="propertyId" th:value="${property.getId()}">
+
+                            <h4 style=" font-size: 23px;color: #555;font-weight: 700;position: relative;padding-top: 20px;"
+                                class="card-title">[[#{client.EditFacility}]]</h4>
+                            <p class="card-description">
+                                [[#{client.Editpropertyfacilities}]]
+                            </p>
+                            <form class="forms-sample col-10"
+                                  th:action="@{'/propertyFacilities?id='+${property.getId()}}" th:object="${property}"
+                                  method="post">
+
+                                <div class="form-group">
+                                    <div class="row ">
+                                        <label class="col-xs-4 col-sm-4 containerCh"
+                                               th:each="book, itemStat : ${hotelFacilites}">
+                                            <input type="checkbox" class="form-check-input languages-checkbox"
+                                                   th:field="${property.hotel_facility}" th:value="${book.id}"
+                                                   th:text="#{'client.' +${book.name.replace(' ', '').replace(':','')}}" style="display: none;"/>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2 mt-4">[[#{client.Submit}]]</button>
+                                <a th:href="@{'/propertyDashboard?id=' + ${property.getId()}}">
+                                    <button type="button" class="btn btn-light mt-4">[[#{client.Cancel}]]</button>
+                                </a> </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+
+<script>
+    $("#exampleFormControlSelect3").change(function () {
+        $.post("changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function () {
+            location.reload();
+        });
+    });
+</script>
+
+<!-- End custom js for this page-->
+<script>
+
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/propertyFacilities?id=' + propertyId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>New Description | Panel Allbookers </title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+
+<body>
+<div class="container-scroller">
+
+  <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+    <!-- partial -->
+    <div class="main-panel">
+<!--      <div th:replace="/ROLE_USER/Layouts/secondNavbar"></div>-->
+      <div class="content-wrapper fix-top-content">
+        <h4 style=" font-size: 25px;color: #1a1a1a;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.NewDescription}]]</h4>
+        <p class="card-description">
+          [[#{client.Enteryourtextbelow}]]
+        </p>
+
+        <h3></h3>
+        <form th:action="@{'/newDescription?id='+${property.getId()}}" th:object="${description}" method="post">
+        <div class="form-group">
+
+          <textarea class="form-control" id="exampleFormControlTextarea1" th:field="*{description}"  rows="3"></textarea>
+        </div>
+          <button type="submit" class="btn btn-primary btn-md">[[#{client.Submit}]]</button>
+            <a th:href="@{'/textOfProperty?id='+${property.id}}"><button type="button" class="btn btn-light">[[#{client.Cancel}]]</button></a>
+        </form>
+      </div>
+        <div class="footerwidth" th:replace="/ROLE_USER/Layouts/footerL"></div>
+    </div>
+  </div>
+  <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+
+
+<style>
+    .fix-top-content{
+        padding-top: 100px;
+    }
+
+  textarea#exampleFormControlTextarea1 {
+    height: 194px;
+    width: 72%;
+  }
+
+  .philips {
+    background-color: #e7fde9;
+    padding: 10px;
+    border-color: #008009!important;
+    color: black;
+  }
+
+  .butons-of-css {
+    margin: 9px 0px 10px 13px;
+    height: 36px;
+    width: 30%;
+    padding: 0px;
+  }
+  span.room-right {
+    margin-right: 19px;
+
+  }
+
+  span.room-right1 {
+
+    font-weight: 900;
+  }
+
+
+
+  .description-crs {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  hr.room-hr {
+    margin-top: 3px;
+    margin-bottom: 2px;
+  }
+
+  a.roomtitle {
+    color: white!important;
+    margin-left: 14px;
+  }
+
+  .d-flex.namesection-crs {
+    font-size: 19px;
+    font-weight: 800;
+    background-color: #0b3d75;
+    color: black!important;
+  }
+
+  .card.karta-crs {
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: -1px 9px 15px -4px rgba(0,0,0,0.75);
+    -webkit-box-shadow: -1px 9px 15px -4px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 0px 22px -13px rgb(0 0 0 / 60%);
+  }
+  .card.karta-crs {
+    margin-bottom: 26px;
+  }
+
+  img.imazhi-indx {
+    border-radius: 10px 10px 0px 0px;
+  }
+
+  .description-crs {
+    margin-top: 5px;
+    color: #00000000;
+  }
+  .description-crs {
+    font-weight: 400;
+    position: relative;
+    color: #000000;
+    line-height: 24px;
+    margin-left: 16px;
+  }
+
+  img.imazhi-indx {
+    width: 100%;
+  }
+</style>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+<!-- endinject -->
+
+</body>
+
+</html>
+

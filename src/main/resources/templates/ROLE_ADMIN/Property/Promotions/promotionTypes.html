@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Promotion Types | Admin Panel Allbookers</title>
+
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <!-- plugins:css -->
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div>
+                        <a href="/addPromotionsAdmin">
+                            <button type="button" class="btn btn-primary"><i class="ti-plus btn-icon-pretend"></i> [[#{client.AddPromotion}]]</button>
+                        </a>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="col-12 grid-margin">
+                        <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;"> [[#{client.promotionType}]] </h4>
+                        <p>[[#{client.Viewandmanageallpromotionshere}]] .</p>
+
+                        <div class="table-responsive table-striped mt-3">
+                            <table id="promotionTable"   class="table table-hover">
+                                <thead>
+                                <tr style="background: #214162; padding: 10px; color: #ffffff; font-size: 14px;">
+                                    <th>[[#{client.PromotionName}]]</th>
+                                    <th>[[#{client.Photo}]]</th>
+                                    <th style="width: 180px;">[[#{client.RecommendedDiscount}]]</th>
+                                    <th>[[#{client.Category}]]</th>
+                                    <th style="width: 25%;">[[#{client.Description}]]</th>
+                                    <th>[[#{client.Suggestedbookingperiod}]]</th>
+                                    <th style="width: 100px; text-align: center;">[[#{client.Active}]]</th>
+                                    <th style="width: 110px; text-align: center;">[[#{client.Actions}]]</th>
+                                </tr>
+                                </thead>
+                                <tbody      >
+                                 <tr th:each="p : ${promotionList}">
+                                    <td th:text="${p.getPromotionName()}"></td>
+                                    <td>
+                                        <img th:src="@{'/uploads/promotiontype/' + ${p.getFile_name()}}" alt="image" width="100" height="100">
+                                    </td>
+                                     <td th:text="${p.getRecommendedPercentage()} + ' % ' + #{discount.or.more}"></td>
+
+                                     <td th:text="${p.getCategory()}"></td>
+                                    <td th:text="${p.getDescription()}" class="description-cell"></td>
+                                    <td th:text="${p.getStartDate().toString().substring(0,10) + ' to ' + p.getEndDate().toString().substring(0,10)}"></td>
+                                     <td th:text="${p.active} ? #{client.Yes} : #{client.No}" style="text-align: center;"></td>
+                                    <td>
+                                        <a th:href="@{'/editPromotionAdmin?id=' + ${p.getId()}}">
+                                            <button class="btn btn-primary btn-sm btn-icon-text" type="button">[[#{client.Edit}]]<i class="ti-file btn-icon-append allb-nn"></i></button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+
+<style>
+    .description-cell {
+        word-wrap: break-word;
+        white-space: pre-wrap!important;
+    }
+    .fix-top-content{
+        padding-top: 100px;
+    }
+    .page-body-wrapper {
+        min-height: calc(110vh - 60px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .table {
+        margin-bottom: 0;
+    }
+</style>
+<script src="../../js/sweetAlert.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/promotionsAdmin' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+
+
+
+    function goToAddPromotionType(){
+        window.location = "addPromotionsAdmin";
+    }
+
+    $(document).ready(function () {
+        $('#promotionTable').DataTable({
+            "paging":   true,
+            "ordering": true,
+            "info": false,
+            "searching":true,
+            "order":[0,'asc']
+        });
+    });
+    $(document).ready(function () {
+        $('#endedPromotions').DataTable({
+            "paging":   true,
+            "ordering": true,
+            "info": false,
+            "searching":true,
+            "order":[0,'asc']
+        });
+    });
+</script>
+
+<script>
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        });
+    });
+</script>
+
+
+</body>
+</html>

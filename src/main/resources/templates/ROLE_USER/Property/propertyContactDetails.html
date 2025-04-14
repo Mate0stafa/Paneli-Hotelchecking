@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property Contact | Panel Allbookers</title>
+    <link rel="stylesheet" href="vendors/feather/feather.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="images/favicon.png"/>
+    <style>
+        .fix-top-content{
+            padding-top: 100px;
+        }
+        .page-body-wrapper {
+            min-height: calc(110vh - 60px);
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-scroller">
+    <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="col-md-10 col-sm-12 ">
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 22px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;">[[#{client.PropertyContact}]]</h4>
+                        <p class="card-description">[[#{client.EditPropertyContact}]]</p>
+                        <div class="card-body" style="background-image: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(242,244,245,0.85) 100%);">
+                            <form class="forms-sample col-lg-9" th:action="@{'/propertyContactDetails?id='+${property.getId()}}" th:object="${property}" method="post" id="propertyForm">
+                                <div style="padding: 10px 20px; border-radius: 10px; margin: 20px 0;">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label" style="margin: 0; font-size: 0.875rem; line-height: 1.5; letter-spacing: 0.15px; color: rgba(58, 53, 65, 0.68); font-weight: 600;">[[#{client.firtName}]]</label>
+                                        <div class="col-sm-9">
+                                            <input  onkeypress="return event.key !== 'Enter';"   type="text" class="form-control" th:placeholder="#{client.firstname}" th:value="${property.getFirstName()!=null ? property.getFirstName() : (property.getAgreement() != null ? property.getAgreement().getFirst_name() : '')}" th:field="*{firstName}" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label" style="margin: 0; font-size: 0.875rem; line-height: 1.5; letter-spacing: 0.15px; color: rgba(58, 53, 65, 0.68); font-weight: 600;">[[#{client.lastName}]]</label>
+                                        <div class="col-sm-9">
+                                            <input  onkeypress="return event.key !== 'Enter';"  type="text" class="form-control"  th:placeholder="#{client.lastName}"  th:value="${property.getLastName()!=null ? property.getLastName() : (property.getAgreement() != null ? property.getAgreement().getLast_name() : '') }" th:field="*{lastName}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="padding: 10px 20px; border-radius: 10px; margin: 20px 0;">
+                                    <h4>[[#{client.ContactDetails}]]</h4>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label" style="margin: 0; font-size: 0.875rem; line-height: 1.5; letter-spacing: 0.15px; color: rgba(58, 53, 65, 0.68); font-weight: 600;">[[#{client.Email}]]</label>
+                                        <div class="col-sm-9">
+                                            <input  onkeypress="return event.key !== 'Enter';"  type="email" class="form-control"  th:placeholder="#{client.Email}" th:value="${property.getAddress().getEmail()}" th:field="*{address.email}" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label" style="margin: 0; font-size: 0.875rem; line-height: 1.5; letter-spacing: 0.15px; color: rgba(58, 53, 65, 0.68); font-weight: 600;">[[#{client.Telephone}]]</label>
+                                        <div class="col-sm-9">
+                                            <input  onkeypress="return event.key !== 'Enter';"  type="tel" class="form-control"  th:placeholder="#{client.yrNr}" minlength="10" pattern="\d{10,}" th:value="${property.getAddress().getTelephone()}" th:field="*{address.telephone}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary mt-4" onclick="confirmSubmit(event)">[[#{client.Submit}]]</button>
+                                <button th:if="${!(hasGroupAccountUser ?: false)}" type="button" class="btn btn-light mt-4" onclick="confirmCancel(event)">[[#{client.Cancel}]]</button>
+                                <button th:if="${hasGroupAccountUser ?: false}" type="button" class="btn btn-light mt-4" onclick="confirmCancel1(event)">[[#{client.Cancel}]]</button>
+                            </form>
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_USER/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script><script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script th:inline="javascript">
+    var userLanguage = /*[[${#locale.language}]]*/ 'en';
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmSubmit(event) {
+        event.preventDefault();
+
+        let swalTitle, swalText, cancelText, confirmText;
+
+        if (userLanguage === "en") {
+            swalTitle = "Are you sure?";
+            swalText = "Do you want to submit the form?";
+            cancelText = "Cancel";
+            confirmText = "Submit";
+        } else if (userLanguage === "sq") {
+            swalTitle = "A jeni i sigurt?";
+            swalText = "Dëshironi të dërgoni formularin?";
+            cancelText = "Anulo";
+            confirmText = "Dërgo";
+        } else {
+            swalTitle = "Are you sure?";
+            swalText = "Do you want to submit the form?";
+            cancelText = "Cancel";
+            confirmText = "Submit";
+        }
+
+        Swal.fire({
+            title: swalTitle,
+            text: swalText,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: confirmText,
+            cancelButtonText: cancelText,
+            customClass: {
+                cancelButton: "btn btn-light",
+                confirmButton: "btn btn-primary"
+            },
+            dangerMode: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('propertyForm').submit();
+            } else {
+                Swal.fire({
+                    text: userLanguage === "sq" ? "Dërgimi u anulua!" : "Submission cancelled!",
+                    icon: "info"
+                });
+            }
+        });
+    }
+
+    function confirmCancel(event) {
+        event.preventDefault();
+
+        let swalTitle, swalText, cancelText, confirmText;
+
+        if (userLanguage === "en") {
+            swalTitle = "Are you sure?";
+            swalText = "Do you want to cancel? Unsaved changes will be lost.";
+            cancelText = "Keep Editing";
+            confirmText = "Cancel";
+        } else if (userLanguage === "sq") {
+            swalTitle = "A jeni i sigurt?";
+            swalText = "Dëshironi të anuloni? Ndryshimet e pashpëtuara do të humbasin.";
+            cancelText = "Vazhdo Editimin";
+            confirmText = "Anulo";
+        } else {
+            swalTitle = "Are you sure?";
+            swalText = "Do you want to cancel? Unsaved changes will be lost.";
+            cancelText = "Keep Editing";
+            confirmText = "Cancel";
+        }
+
+        Swal.fire({
+            title: swalTitle,
+            text: swalText,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: confirmText,
+            cancelButtonText: cancelText,
+            customClass: {
+                cancelButton: "btn btn-light",
+                confirmButton: "btn btn-primary"
+            },
+            dangerMode: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/';
+            } else {
+                Swal.fire({
+                    text: userLanguage === "sq" ? "Anulimi u anulua!" : "Cancellation cancelled!",
+                    icon: "info"
+                });
+            }
+        });
+    }
+
+    function confirmCancel1(event) {
+        event.preventDefault();
+        var propertyId= document.getElementById("propertyId").value;
+        let swalTitle, swalText, cancelText, confirmText;
+
+        if (userLanguage === "en") {
+            swalTitle = "Are you sure?";
+            swalText = "Do you want to cancel? Unsaved changes will be lost.";
+            cancelText = "Keep Editing";
+            confirmText = "Cancel";
+        } else if (userLanguage === "sq") {
+            swalTitle = "A jeni i sigurt?";
+            swalText = "Dëshironi të anuloni? Ndryshimet e pashpëtuara do të humbasin.";
+            cancelText = "Vazhdo Editimin";
+            confirmText = "Anulo";
+        } else {
+            swalTitle = "Are you sure?";
+            swalText = "Do you want to cancel? Unsaved changes will be lost.";
+            cancelText = "Keep Editing";
+            confirmText = "Cancel";
+        }
+
+        Swal.fire({
+            title: swalTitle,
+            text: swalText,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: confirmText,
+            cancelButtonText: cancelText,
+            customClass: {
+                cancelButton: "btn btn-light",
+                confirmButton: "btn btn-primary"
+            },
+            dangerMode: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/propertydashboard?propertyId='+propertyId;
+            } else {
+                Swal.fire({
+                    text: userLanguage === "sq" ? "Anulimi u anulua!" : "Cancellation cancelled!",
+                    icon: "info"
+                });
+            }
+        });
+    }
+
+</script>
+
+
+<input type="hidden" id="propertyId" th:value="${property.getId()}">
+<script>
+    function changeLanguageController(param) {
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/propertyContactDetails?id=' + propertyId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<!-- End custom js for this page-->
+</body>
+
+</html>
+

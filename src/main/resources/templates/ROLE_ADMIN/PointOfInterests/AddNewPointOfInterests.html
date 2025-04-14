@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add New Point Of Interests | Admin Panel Allbookers</title>
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+</head>
+<body>
+
+
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-md-8 col-sm-12 grid-margin">
+                        <div class="card">
+                            <h4  class="card-title"
+                                 style="font-size: 23px;color: rgba(26,26,26,0.91);font-weight: 700;position: relative;padding-top: 20px;">
+                                [[#{client.AddnewPointOfInterest}]]</h4>
+                            <p class="card-description">[[#{client.Pleasefillthenamefield}]] </p>
+                            <div class="card-body">
+                                <form class="form-sample" id="pointInterestForm" th:action="@{/addNewPointOfInterest}" method="post">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" th:text="#{client.Name}">[[#{client.Name}]] </label>
+                                                <div class="col-sm-9">
+                                                    <input id="pointOfInterest" name="pointOfInterest" type="text" class="form-control" onkeypress="return event.key !== 'Enter';"  required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-icon-text">
+                                        <i class="ti-plus btn-icon-prepend"></i>
+                                        <span th:text="#{client.Add}">[[#{client.Add}]] </span>
+                                    </button>
+                                    <a href="/PointsOfInterests" class="btn btn-inverse-secondary">[[#{client.Cancel}]]</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+
+<style>
+    .fix-top-content {
+        padding-top: 100px;
+    }
+    .page-body-wrapper {
+        min-height: calc(110vh - 60px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+
+        select#version {
+            display: none;
+        }
+    }
+</style>
+
+
+
+<script th:inline="javascript">
+    var userLanguage = /*[[${#locale.language}]]*/ 'en';
+</script>
+
+
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        $("#pointInterestForm").submit(function(event) {
+            event.preventDefault();
+            createNew();
+        });
+
+        function createNew() {
+            const pointOfInterest = $("#pointOfInterest").val();
+            const url = /*[[@{/addNewPointOfInterest}]]*/ '/addNewPointOfInterest';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { name: pointOfInterest },
+                success: function(response) {
+                    let swalTitle, swalText;
+
+                    if (userLanguage === "en") {
+                        swalTitle = 'Success!';
+                        swalText = 'Point of Interest saved successfully.';
+                    } else if (userLanguage === "sq") {
+                        swalTitle = 'Sukses!';
+                        swalText = 'Pika e interesit u ruajt me sukses.';
+                    } else {
+                        swalTitle = 'Success!';
+                        swalText = 'Point of Interest saved successfully.';
+                    }
+                    Swal.fire({
+                        title: swalTitle,
+                        text: swalText,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = response;
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    let errorMessage = 'An unexpected error occurred.';
+                    if (xhr.status === 400) {
+                        errorMessage = xhr.responseText;
+                    } else if (xhr.status === 403) {
+                        errorMessage = 'Access denied. You do not have permission to perform this action.';
+                    }
+                    let errorTitle, errorText;
+                    if (userLanguage === "en") {
+                        errorTitle = 'Error!';
+                        errorText = errorMessage;
+                    } else if (userLanguage === "sq") {
+                        errorTitle = 'Gabim!';
+                        errorText = errorMessage;
+                    } else {
+                        errorTitle = 'Error!';
+                        errorText = errorMessage;
+                    }
+
+                    Swal.fire({
+                        title: errorTitle,
+                        text: errorText,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
+    });
+    /*]]>*/
+</script>
+
+
+<script>
+    document.getElementById("pointOfInterest").addEventListener("keyup", function () {
+        this.value = this.value.replace(/[^A-Za-z\s()\/\\\-]+/g, '');
+    });
+
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/addNewPointOfInterest' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script src="../../js/sweetAlert.js"></script>
+
+
+<script>
+
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+</body>
+
+</html>
+

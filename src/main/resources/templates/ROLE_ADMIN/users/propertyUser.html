@@ -1,0 +1,275 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Manage User Accounts | Admin Panel Allbookers</title>
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+  <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+        rel="stylesheet">
+  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <style>
+    .fix-top-content{
+      padding-top: 100px;
+    }
+    .page-body-wrapper {
+      min-height: calc(110vh - 60px);
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: row;
+      flex-direction: row;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    a.ewre {
+      margin-left: 840px;
+    }
+    .nav-divider {
+      border-right: 1px solid silver;
+    }
+    li.nav-item.mr-3.nav-divider {
+      margin-left: 12px;
+    }
+    label.label-ch {
+      margin-left: 30px;
+    }
+    label.form-check-label {
+      margin-left: 18px;
+      margin-right: 13px;
+    }
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light.second-nav-propdetails {
+      z-index: 99999;
+      background: #0b3d75!important;
+      color: white!important;
+    }
+    span.navbar-brand {
+      color: #f5f7ff!important;
+      font-size: 19px;
+      font-weight: 400;
+      font-family: sans-serif;
+    }
+    .col-md-5.grid-margin.stretch-card {
+      height: fit-content;
+    }
+    .nav-divider {
+      border-right: 1px solid silver;
+    }
+    li.nav-item.mr-3.nav-divider {
+      margin-left: 12px;
+    }
+    .nav-link{
+      color: white!important;
+    }
+    a.nav-link:hover {
+      color: white!important;
+      border-radius: 4px;
+    }
+    a.nav-link.activeclass {
+      color: #00aeef!important;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div class="container-scroller">
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+    <div class="main-panel">
+      <div class="content-wrapper fix-top-content">
+        <div class="col-md-12 ">
+          <div class="card">
+            <h4 class="card-title" style="font-size: 22px;color: rgba(26,26,26,0.91);line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;"> [[#{client.Manageuseraccounts}]] </h4>
+            <p class="card-description pb-2">[[${users.stream().count()}]] [[#{client.useraccountshaveaccesstoyourpropertysExtranet}]]</p>
+            <a th:href="@{'/admin/addnewuser?propertyId='+${property.getId()}}" >
+              <button type="button" class="btn btn-primary btn-md">[[#{client.Createanewuser}]]</button>
+            </a>
+            <div class="card-body mt-5">
+              <h4 class="card-title">[[#{client.Allusersforthisproperty}]]</h4>
+              <div class="table-responsive">
+                <table id="table_idd" class="table table-hover">
+                  <thead>
+                  <tr style="background: #214162;padding: 10px; color: #ffffff;font-size: 14px;">
+                    <th>[[#{client.Id}]]</th>
+                    <th>[[#{client.User}]]</th>
+                    <th>[[#{client.Email}]]</th>
+                    <th>[[#{client.Accessrights}]]</th>
+                    <th>Status</th>
+                    <th>[[#{client.ACTIONS}]]</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="user: ${users}" th:id="${'user-row-'+ (user.getId() != null ? user.getId() : 'unknown')}">
+                  <td th:text="${user.getId()}"></td>
+                      <td th:text="${user.getUsername()}"></td>
+                      <td th:text="${user.getEmail()}"></td>
+                      <td><span th:each="ff: ${user.getGrand_role()}" th:text="${ff.getRole_name()}+', '"></span> </td>
+                      <td th:text="${user.is_admin==true?'Admin':'User'}"></td>
+                      <td>
+                        <span style="padding: 10px 20px; opacity: 0.6; cursor: not-allowed;" th:if="${#lists.size(users) == 1 || user.is_admin==true}" title="This user cannot be deleted." class="btn btn-outline-danger btn-sm disabled">[[#{client.Delete}]]</span>
+                        <button class="btn btn-outline-danger btn-sm"
+                                th:if="${#lists.size(users) > 1 && user.is_admin == false}"
+                                style="padding: 8px 20px 7px 20px;"
+                                id="deleteUserBtn" th:data-user-id="${user.getId()}">
+                          [[#{client.Delete}]]
+                        </button>
+                        <script>
+                          document.querySelectorAll('.btn-outline-danger').forEach(button => {
+                            button.addEventListener('click', function() {
+                              const userId = this.getAttribute('data-user-id');
+
+                              Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes, delete it!',
+                                cancelButtonText: 'Cancel'
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  fetch(`/delete_user/${userId}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                      'Content-Type': 'application/json',
+                                    },
+                                  })
+                                          .then(response => response.json())
+                                          .then(data => {
+                                            if (data.message === "User deleted successfully") {
+                                              Swal.fire(
+                                                      'Deleted!',
+                                                      'Your user has been deleted.',
+                                                      'success'
+                                              ).then(() => {
+                                                location.reload();
+                                              });
+                                            } else {
+                                              Swal.fire(
+                                                      'Error!',
+                                                      'User not found.',
+                                                      'error'
+                                              );
+                                            }
+                                          })
+                                          .catch(error => {
+                                            Swal.fire(
+                                                    'Error!',
+                                                    'There was an error with the request.',
+                                                    'error'
+                                            );
+                                          });
+                                }
+                              });
+                            });
+                          });
+                        </script>
+                        <a style="padding: 8px 20px 10px 20px;" th:href="@{'editUser?id='+${user.getId()}}" class="btn btn-primary btn-sm btn-icon-text">[[#{client.Accessrights}]]<i class="ti-file btn-icon-append allb-nn"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:replace="/ROLE_ADMIN/Layouts/footerL" class="p-0"></div>
+    </div>
+  </div>
+</div>
+
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<script src="../../js/sweetAlert.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+
+<input type="hidden" id="propertyId" th:value="${property.getId()}" >
+
+<script>
+  function changeLanguageController(param) {
+
+    var propertyId= document.getElementById("propertyId").value;
+
+    var a = 'sq';
+    if (param == null) {
+      param = a;
+    }
+
+    var search = {"lang": a};
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: {
+        lang: param
+      },
+      success: function (result) {
+        window.location = '/addnewuser?propertyId=' + propertyId   ;
+      },
+      error: function (e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+</script>
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+    $(document).ready(()=>{
+      $("#table_idd").DataTable({
+        "ordering":true,
+        "paging":true,
+        "searching":true,
+        "order":[0,"asc"]
+      });
+
+    })
+</script>
+
+</body>
+</html>

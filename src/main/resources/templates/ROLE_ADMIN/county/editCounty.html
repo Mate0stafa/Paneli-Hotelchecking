@@ -1,0 +1,178 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit County | Admin Panel Allbookers</title>
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+
+    <style>
+        .fix-top-content{
+            padding-top: 100px;
+        }
+        .page-body-wrapper {
+            min-height: calc(110vh - 60px);
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .cancel99{
+            border-radius: 15px;
+            border: 1px solid darkgray;
+            padding: 10px 20px;
+            background-color: gainsboro;
+            font-weight: 600;
+            color: #585757;
+            text-decoration: none;
+        }
+        .cancel99:hover{
+            background-color: darkgray;
+            text-decoration: none;
+        }
+
+        .half-width {
+            max-width: 50%;
+        }
+
+        .half-width option {
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 768px) {
+            .half-width {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title" style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.EditCounty}]]</h4>
+                                <form class="form-sample" th:action="@{'/editCounty?id='+${county.getId()}}" th:object="${county}" method="post">
+                                    <p class="card-description">
+                                        [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Country}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="country" th:field="*{country.id}">
+                                                        <option th:each="count:${countries}" th:text="${count.getCountry_name()}" th:value="${count.id}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.CountyName}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" th:field="*{name}" class="form-control" onkeypress="return event.key !== 'Enter';"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">[[#{client.Save}]] </button>
+                                        <a class="btn btn-light " th:href="@{'/countyList'}" >[[#{client.Cancel}]]</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+
+<input type="hidden" id="cityId" th:value="${county.getId()}">
+
+
+<script>
+    function changeLanguageController(param) {
+
+        var  cityId = document.getElementById("cityId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/editCounty?id=' + cityId ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+<script>
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+</body>
+</html>

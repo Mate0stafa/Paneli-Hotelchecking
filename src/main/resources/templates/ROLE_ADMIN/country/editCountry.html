@@ -1,0 +1,185 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit Country | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <style>
+        .fix-top-content{
+            padding-top: 100px;
+        }
+
+
+        .page-body-wrapper {
+            min-height: calc(110vh - 60px);
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-scroller">
+
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title" style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.EditCountry}]]</h4>
+                                <form class="form-sample" th:action="@{'/editCountry?id='+${country.getId()}}" method="post" enctype="multipart/form-data">
+                                    <p class="card-description">
+                                        [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-sm-12 d-flex flex-row column-gap-2">
+                                                    <label for="newCountryName" class="col-sm-3 col-form-label">[[#{client.Countryname}]]</label>
+                                                    <input type="text" th:value="${country.getCountry_name() != null ? country.getCountry_name():''}" class="form-control" maxlength="100" id="newCountryName" name="newCountryName">
+                                                </div>
+                                                <div class="col-sm-12 d-flex flex-row column-gap-2 my-3">
+                                                    <label for="newVatPercentage" class="col-sm-3 col-form-label">[[#{client.Countryvattax}]]</label>
+                                                    <input type="number" th:value="${country.getVatPercentage()}" class="form-control" step="0.1" id="newVatPercentage" name="newVatPercentage" max="100">
+                                                </div>
+                                                <input type="hidden" th:value="${country.getId()}" name="id">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.UploadPhoto}]]</label>
+                                                <div class="col-md-9">
+                                                    <div class="form-group">
+                                                        <label for="file" class="btn btn-outline-primary btn-icon-text btn-sm">
+                                                            <i class="ti-upload"></i> [[#{client.Upload}]]
+                                                        </label>
+                                                        <input type="file" id="file" name="file" class="d-none" onchange="displayPhoto(this)"/>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <div id="photo-container" class="me-3" style="display: none;">
+                                                            <img id="uploaded-photo" src="#" alt="Uploaded Photo" class="img-thumbnail" style="max-width: 200px; max-height: 200px;"/>
+                                                            <button type="button" onclick="removePhoto()" class="btn btn-outline-danger btn-sm mt-2">
+                                                                <i class="ti-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                        <img id="old-photo" class="img-thumbnail me-3" th:src="${imagePath}" th:alt="${country.getFile_name()}" style="max-width: 200px; max-height: 200px;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-md-6">
+                                            <button type="submit" class="btn btn-primary">[[#{client.Save}]]</button>
+                                            <a th:href="@{'/countryList'}">
+                                                <button type="button" class="btn btn-light">[[#{client.Cancel}]]</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+
+    </div>
+    <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+<!-- endinject -->
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+    function displayPhoto(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('uploaded-photo').src = e.target.result;
+                document.getElementById('photo-container').style.display = 'block';
+                document.getElementById('old-photo').style.display = 'none';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removePhoto() {
+        document.getElementById('file').value = '';
+        document.getElementById('photo-container').style.display = 'none';
+        document.getElementById('old-photo').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
+

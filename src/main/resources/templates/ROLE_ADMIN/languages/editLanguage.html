@@ -1,0 +1,167 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Edit Language List | Admin Panel Allbookers</title>
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+
+<body>
+<div class="container-scroller">
+
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper fix-top-content">
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.EditLanguage}]]</h4>
+                <form class="form-sample" id ="editLanguage" th:action="@{'/editLanguage?id='+${language.getId()}}" th:object="${language}" method="post">
+                  <p class="card-description">
+                    [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                  </p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.LanguageName}]]</label>
+                        <div class="col-sm-9">
+                          <input type="text" th:field="*{name}" class="form-control" onkeypress="return event.key !== 'Enter';"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.LanguageCode}]]</label>
+                        <div class="col-sm-9">
+                          <input type="text" th:field="*{code}" class="form-control" onkeypress="return event.key !== 'Enter';"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button type="submit" class="btn btn-primary">[[#{client.Save}]] </button>
+                    <a href="/languageList" class="btn btn-inverse-secondary">[[#{client.Cancel}]]</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+    </div>
+  </div>
+</div>
+<style>
+  .fix-top-content {
+  padding-top: 100px;
+  }
+  .page-body-wrapper {
+    min-height: calc(110vh - 60px);
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    padding-left: 0;
+    padding-right: 0;
+  }
+</style>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+
+
+<input type="hidden" id="editProp" th:value="${language.getId()}">
+<script>
+  function changeLanguageController(param) {
+
+    var hotelTypeID = document.getElementById("editProp").value;
+    var a = 'sq';
+    if (param == null) {
+      param = a;
+    }
+    var search = {"lang": a};
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: {
+        lang: param
+      },
+      success: function (result) {
+        window.location = '/editLanguage?id='+ hotelTypeID ;
+      },
+      error: function (e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+
+</script>
+
+
+<script>
+  $(document).ready(function() {
+    $('#editLanguage').submit(function(e) {
+      e.preventDefault(); // Prevent default form submission
+      $.post($(this).attr('action'), $(this).serialize(), function() {
+        window.location.href = "/languageList"; // Redirect after successful form submission
+      });
+    });
+  });
+
+</script>
+
+<!-- endinject -->
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+
+</html>
+

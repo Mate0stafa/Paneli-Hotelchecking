@@ -1,0 +1,302 @@
+
+<nav class="navbar col-lg-12 col-12 p-0  d-flex flex-row fixed-top">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo mr-5" href="/"><img src="/images/logo.png" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-mini.svg" alt="logo"/></a>
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="icon-menu"></span>
+        </button>
+        <div id="copy-notification" style="position: fixed; bottom: 20px; right: 20px; background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; display: none; z-index: 1000;font-weight: bold;">
+            Property name copied to clipboard !
+        </div>
+        <div id="copy-notification1" style="position: fixed; bottom: 20px; right: 20px; background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; display: none; z-index: 1000;font-weight: bold;">
+            Legal Entity ID copied to clipboard !
+        </div>
+        <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item dropdown" th:if="${hasGroupAccountUser == true}" style="margin: 0px;background-color: #efefef; padding: 0px 10px; border-radius: 5px 0px 0px 5px;">
+                <a class="propertyList" href="#" data-toggle="dropdown" id="propertyList">
+                    <h4 class="font-weight-bold hgh text-capitalize" th:text="${property.getName()+' - '+ property.getLoginId()}"></h4>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown propertylistga" id="nav-proplist" aria-labelledby="propertyList">
+                    <div style="overflow-y: auto; max-height: 300px; overflow-x: hidden;">
+                        <div th:each="p: ${specialRole.getProperties()}" style="display: flex; padding: 5px 0px;">
+                            <a class="dropdown-item " style="display:flex; align-items: stretch;" th:href="@{'/propertydashboard?propertyId='+${p.getId()}}">
+                                <img th:src="${p.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + p.getPrimaryImage().getImagePath()}"  data-toggle="tooltip" data-placement="bottom"  class="propertyimg">
+                                <div>
+                                    <span th:text="${p.getName()}" style="font-weight: bold; max-width: 200px; width: 200px; display: block; overflow-wrap: break-word; white-space: normal;" ></span>
+                                    <span th:text="${p.getLoginId()}" style="border: 1px solid darkgray; border-radius: 3px; padding: 0px 5px;"></span>
+                                </div>
+                            </a>
+                            <button class="copy"
+                                    th:attr="data-name=${p.getName()}"
+                                    onclick="copyToClipboard(this)"
+                                    title="Copy property name.">
+                                    <i class="ti-files menu-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="groupacc">
+                        <div style="width: 100%;">
+                            <h5 class="font-weight-bold hgh text-capitalize" th:text="${currentLoggedInUser.getUsername()}" style="margin: 10px 0px !important;"></h5>
+                            <span style="border: 1px solid darkgray;border-radius: 3px;padding: 0px 5px; color: gray;">Legal Entity ID: <span th:text="${specialRole.getRoleLoginId()}"></span></span>
+                        </div>
+                        <button class="copy"
+                                th:attr="data-name=${specialRole.getRoleLoginId()}"
+                                onclick="copyToClipboard1(this)"
+                                title="Copy Legal Entity ID.">
+                            <i class="ti-files menu-icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </li>
+            <li th:if="${hasGroupAccountUser == false}" style="background-color: #efefef; padding: 0px 10px; border-radius: 5px 0px 0px 5px;">
+                <h4 class="font-weight-bold hgh text-capitalize" th:text="${property.getName() + ' - ' + property.getLoginId()}"></h4>
+            </li>
+            <li>
+                <a class="vvd" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
+                    <img th:src="${property.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + property.getPrimaryImage().getImagePath()}"  data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                    <i class="icon-home mx-0"></i>
+                </a>
+                <!--                <div th:if="${property.getHotelPhotos().size()>0}" th:each="count: ${property.getHotelPhotos()}" class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">-->
+                <!--                    <p class="mb-0 font-weight-normal float-left dropdown-header">Property</p>-->
+                <!--                    <a th:href="'https://allbookers.com/hotel/AL/'+${property.getName()}+'.sq.html'" class="dropdown-item preview-item" target="_blank">-->
+                <!--                        <div class="preview-thumbnail">-->
+                <!--                            <div class="preview-icon bg-success">-->
+                <!--                                <img th:src="${count.getImagePath()}"  th:alt="${count.getFile_name()}" class="imazhh">-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                        <div class="preview-item-content">-->
+                <!--                            <h6 class="preview-subject font-weight-normal">[[${property.getName()}]]</h6>-->
+
+                <!--                            <p class="font-weight-light small-text mb-0 text-muted">-->
+                <!--                               View your property listing on Allbookers.com-->
+                <!--                            </p>-->
+                <!--                        </div>-->
+                <!--                    </a>-->
+                <!--                </div>-->
+            </li>
+            <li class="nav-item nav-profile dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                    <img src="/images/logo-allbookers1.png" alt="profile"/>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                    <div class="card p-0 bg-light">
+                        <div class="text-center pt-4 pb-3">
+                            <div class="avatar avatar-xl">
+                                <img class="rounded-circle" src="https://cdn-icons-png.freepik.com/256/4032/4032591.png" alt="">
+                            </div>
+                            <h6 class=" emriprones" th:text="${#authentication.getName().toUpperCase()}">[[#{client.Welcometo}]]</h6>
+                        </div>
+                    </div>
+                    <a class="dropdown-item " style="display:flex;
+    align-items: stretch;
+    justify-content: center;" th:href="@{'/connectivity?id='+${property.getId()}}">
+                        <i class="ti-upload text-primary"></i>Connectivity
+                    </a>
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" th:href="@{'/privacy-policy.pdf'}">
+                        <i class="ti-lock text-primary"></i>Privacy Statement
+                    </a>
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" th:href="@{'/allbookers-terms-condition.pdf'}">
+                        <i class="ti-file text-primary"></i>Terms & Conditions
+                    </a>
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" href="https://allbookers.com/customerservice.sq.html">
+                        <i class="ti-help text-primary"></i>Help Center
+                    </a>
+                    <div class="px-3 text-center " > <a class="btn btn-light d-flex flex-center w-100 text-center " style="display:flex;
+    align-items: stretch;
+    justify-content: center;" th:href="@{'/logout'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                     &nbsp;   [[#{client.Logout}]]</a></div>
+                </div>
+            </li>
+        </ul>
+
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="icon-menu"></span>
+        </button>
+    </div>
+</nav>
+<script src="../../js/sweetAlert.js"></script>
+<!--<script>-->
+<!--    function copyToClipboard(button) {-->
+<!--        const propertyName = button.getAttribute("data-name");-->
+<!--        navigator.clipboard.writeText(propertyName)-->
+<!--            .then(() => {-->
+<!--                swal("Copied!", "Property name copied to clipboard.", "success");-->
+<!--            })-->
+<!--            .catch(err => {-->
+<!--                swal("Error!", "Failed to copy text.", "error");-->
+<!--            });-->
+<!--    }-->
+<!--</script>-->
+<script>
+    function copyToClipboard(button) {
+        const propertyName = button.getAttribute("data-name");
+        navigator.clipboard.writeText(propertyName)
+            .then(() => {
+                const notification = document.getElementById("copy-notification");
+                notification.style.display = "block";
+                setTimeout(() => {
+                    notification.style.display = "none";
+                }, 3000);
+            })
+            .catch(err => {
+                console.error("Failed to copy text: ", err);
+            });
+    }
+</script>
+
+<script>
+    function copyToClipboard1(button) {
+        const propertyName = button.getAttribute("data-name");
+        navigator.clipboard.writeText(propertyName)
+            .then(() => {
+                const notification = document.getElementById("copy-notification1");
+                notification.style.display = "block";
+                setTimeout(() => {
+                    notification.style.display = "none";
+                }, 3000);
+            })
+            .catch(err => {
+                console.error("Failed to copy text: ", err);
+            });
+    }
+</script>
+
+<style>
+    button.copy {
+        border: none;
+        background-color: transparent;
+        color: black;
+        width: 17%;
+        color: gainsboro;
+    }
+    button.copy:hover {
+        font-weight: bold;
+        color: gray;
+    }
+    .dropdown-item {
+        margin-bottom: 0;
+        padding: 5px 10px!important;
+        cursor: pointer;
+        width: 83%;
+    }
+    .groupacc {
+        border-top: 1px solid darkgray;
+        padding: 0px 10px 10px 10px;
+        background-color: #efecec61;
+        display: flex;
+    }
+    #nav-proplist{
+        position: absolute;
+        margin-top: 0;
+        right: auto!important;
+        top: 50px!important;
+        padding: 0px!important;
+        width: 300px!important;
+        margin-left: -10px!important;
+    }
+    .propertyList{
+        color:#000000c2;
+    }
+    .propertyList:hover{
+        color:black;
+    }
+    .propertylistga {
+        margin-top: 100px;
+    }
+    .avatar-xl {
+        height: 3rem;
+        width: 3rem;
+    }
+    .avatar {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .avatar img {
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .font-weight-bold.hgh{
+        font-weight: 700 !important;
+        margin-top: 20px;
+        margin-right: 10px;
+    }
+    .avatar img, .avatar .avatar-name {
+        width: 100%;
+        height: 100%;
+    }
+
+    .rounded-circle {
+        border-radius: 50% !important;
+    }
+
+    .font-weight-bold.hgh{
+        font-weight: 700 !important;
+        margin-top: 20px;
+        margin-right: 10px;
+    }
+    .font-weight-bold.hgh {
+        font-weight: 700 !important;
+        margin: 15px 5px!important;
+    }
+
+    img.jjn {
+        width: 44px;
+        border-radius: 0px 5px 5px 0px;
+        height: 48px;
+    }
+    img.propertyimg {
+        width: 45px;
+        margin-top: 5px;
+        border-radius: 22px;
+        margin-right: 15px;
+        height: 45px;
+    }
+
+    img.imazhh {
+        width: 56px!important;
+        height: 54px!important;
+        border-radius: 5px!important;
+        margin-left: -12px;
+        object-fit: cover;
+    }
+
+    img.t-2w.cc {
+        color: black!important;
+        /* background-color: #0b3d75; */
+        padding: 4px!important;
+        margin-top: -29px!important;
+        border-radius: 9px!important;
+        width: 60px!important;
+    }
+    .emriprones {
+        text-align: center;
+       color: #141824;
+        margin-bottom: .25rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+    h4.okok123 {
+        margin-top: 9px;
+        color: black;
+    }
+
+        .d-sm-flex.csd {
+                    flex-direction: row-reverse;
+                }
+        .d-sm-flex.csd {
+                   align-items: center;
+            font-weight: 700 !important;
+            margin-top: 20px;
+            margin-right: 10px;
+                }
+
+</style>

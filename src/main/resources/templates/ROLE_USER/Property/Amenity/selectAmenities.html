@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Paneli Allbookers</title>
+    <!-- plugins:css -->
+    <div th:replace="/ROLE_USER/Layouts/headerScriptLayout"></div>
+</head>
+<body>
+
+
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="h-1-1-23">[[#{client.TopAmenities}]]</div>
+                                <div class="w-1-2-3">[[#{client.Weknowtheseamenities528}]]</div>
+                                <br>
+
+
+
+
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityList}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+
+
+                            <div class="card-body">
+
+
+
+                                <div class="h-1-1-23">Room amenities</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListss}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Bathroom</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityLists}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Media & Technology</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListsss}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Food & Drink</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListssss}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Services & Extras</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityLista}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Outdoor & View</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListaa}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Accessibility</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListaaa}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Entertainment & Family Services</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListu}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Safety&security</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListuu}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <br>
+                            <div class="card-body">
+                                <div class="h-1-1-23">Cleanliness & disinfection</div>
+                                <br>
+                                <div class="st-1-2">
+                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListuuu}">
+                                        <div class="c-2-31">
+                                            <span class="amen-name-1" th:text="${a.getAmenityName()}"></span>
+                                        </div>
+                                        <div class="c-3-454">
+                                            <div class="k-123-w">
+                                                <span class="r-2-311">Rooms:</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
+                                            </div>
+                                            <div class="s-1-23">
+                                                <div class="l-2-11s form-check form-check-flat form-check-primary">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" th:id="${a.id}" onchange="checkAll(this)">
+                                                        <i class="input-helper"></i>
+                                                        [[#{client.Selectall}]]</label>
+                                                </div>
+                                                <div class="s-34-5t">
+                                                    <div class="r-12 form-check form-check-flat form-check-primary" th:each="r : ${roomList}">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input amenityCheck" type="checkbox" th:checked="${r.getAmenities().contains(a)}" th:data-roomId="${r.getId()}" th:data-amenityId="${a.getId()}" th:name="${a.getId()}">
+                                                            <i class="input-helper"></i>
+                                                            [[${r.getName()}]]</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="hl-1-1-1">
+                                <button class="btn1 btn-success" onclick="createObject()" id="submitbutton">[[#{client.Save}]]</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+
+
+<style>
+    .r-12.form-check.form-check-flat.form-check-primary {
+        margin: 2px 0px;
+    }
+    .hl-1-1-1 {
+        text-align: center;
+        margin-top: 23px;
+    }
+    .btn-tr-er {
+        width: 100%;
+        background: #0b3d75;
+        color: white;
+        font-size: 20px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .btn-tr-er:hover {
+        color: #ffffff;
+        text-decoration: none;
+    }
+    .c-2-31 {
+        width: 15%;
+    }
+
+    .btn1{
+        font-size: 1.275rem;
+        line-height: 2;
+        font-weight: 300;
+        border-radius: 10px;
+        margin-right: 100%;
+        padding: 2px 25px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+
+        select#version {
+            display: none;
+        }
+        .h-1-1-1-1-1 {
+            border-bottom: 1px solid #0000003d;
+            margin-bottom: 11px;
+            padding-bottom: 7px;
+            display: block!important;
+        }
+        .c-2-31 {
+            width: 100%;
+        }
+        span.amen-name-1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0b3d75;
+        }
+        span.r-selected-1 {
+            font-weight: 500;
+            color: #0b3d75;
+            font-size: 13px;
+        }
+    }
+
+
+    .h-1-1-1-1-1 {
+        border-bottom: 1px solid #0000003d;
+        margin-bottom: 11px;
+        padding-bottom: 7px;
+        display: flex;
+    }
+    span.amen-name-1 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #0b3d75;
+    }
+    .h-1-1-23 {
+        font-size: 22px;
+        color: #0b3d75;
+    }
+    span.r-2-311 {
+        color: #0b3d75;
+        font-weight: 600;
+    }
+    span.r-selected-1 {
+        font-weight: 500;
+        color: #0b3d75;
+    }
+    .l-2-11s {
+        width: 14%;
+    }
+    .s-1-23 {
+        display: flex;
+        margin-top: 10px;
+        margin-bottom: 11px;
+    }
+    .l-2-11s {
+        width: 40%;
+    }
+    .s-34-5t {
+        display: flex;
+        flex-direction: column;
+    }
+    span.r-12 {
+        width: 140%;
+    }
+
+</style>
+<script src="../../js/sweetAlert.js"></script>
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+    function checkAll(event){
+        var a = event.id;
+        var cheks = document.getElementsByName(a);
+
+        if (event.checked){
+            for (var i=0;i<cheks.length;i++){
+                cheks[i].checked = true;
+            }
+        }else{
+            for (var i=0;i<cheks.length;i++){
+                cheks[i].checked = false;
+            }
+        }
+    }
+
+
+    var amenityRoomDto = [];
+
+    function createObject(){
+
+
+        var checkBoxes = document.getElementsByClassName("amenityCheck");
+        for (var k=0;k<checkBoxes.length;k++){
+            if (checkBoxes[k].checked==true){
+                amenityRoomDto.push({amenityId: checkBoxes[k].dataset.amenityid, roomId: checkBoxes[k].dataset.roomid, status: 1});
+            } else {
+                amenityRoomDto.push({amenityId: checkBoxes[k].dataset.amenityid, roomId: checkBoxes[k].dataset.roomid, status: 0});
+            }
+        }
+
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            headers: {'x-my-custom-header': 'some value'},
+            url: "/addRoomAmenities",
+            data: JSON.stringify(amenityRoomDto),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function () {
+                swal("Success!", "Amenities saved successfully!", "success").then(function () {
+                    window.scroll(0,0);
+
+                });
+            },
+            error: function (response) {
+                swal("Success!", "Amenities saved successfully!", "success").then(function () {
+                    window.scroll(0,0);
+
+                });
+            }
+        });
+
+        console.log(amenityRoomDto);
+    }
+
+
+    /*]]>*/
+
+</script>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+</body>
+
+</html>
+

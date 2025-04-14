@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Points Of Interests | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+</head>
+
+</head>
+<body>
+<div class="container-scroller fix-top-content">
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+    <!-- partial:partials/_navbar.html -->
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+
+                <div class="row">
+                    <div class="col-lg-10 grid-margin stretch-card" th:each="p : ${points}">
+                        <div class="card">
+<!--                            <h4 style=" font-size: 23px;color: #1A1A1A;font-weight: 700;position: relative;text-transform: capitalize" class="card-title">[[#{client.Propertynearbyplaces!}]]</h4>-->
+                            <div class="card-body">
+                                <div class="b-b-b-1" style="display: flex; justify-content: space-between;">
+                                    <input type="hidden" id="propertyId" th:value="${property.getId()}">
+                                    <h4 class="card-title" th:if="${#messages.msgOrNull('client.' + p.getName().replaceAll(' ', '')) != null}"
+                                        th:text="${#messages.msgOrNull('client.' + p.getName().replaceAll(' ', ''))}"></h4>
+                                    <h4 class="card-title" th:if="${#messages.msgOrNull('client.' + p.getName().replaceAll(' ', '')) == null}"
+                                        th:text="${p.getName()}"></h4>
+
+
+                                    <a th:href="@{'addNewPropertyPoint?propertyId='+${property.getId()}+'&pointId='+${p.getId()}}">
+                                        <button type="button" class="btn btn-primary btn-md">[[#{client.AddNew}]]</button>
+                                    </a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table th:id="${p.getId()}" class="table table-hover table-1 table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>[[#{client.Id}]]</th>
+                                            <th>[[#{client.Name}]]</th>
+                                            <th>
+                                                [[#{client.Distance}]]
+                                            </th>
+                                            <th>
+                                                [[#{client.actions}]]
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="c : ${property.getByPointInterests(p)}" th:id="${c.getId()}">
+                                            <td th:text="${c.getId()}"></td>
+                                            <td th:text="${c.getPointName()}"></td>
+                                            <td th:text="${c.getPointDistance()+' ' + c.getDistanceType()}"></td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-danger btn-icon-text btn-sm" th:id="${c.getId()}" onclick="deletePoint(this)">
+                                                    <i class="ti-alert btn-icon-prepend"></i>
+                                                    [[#{client.Delete}]]
+                                                </button>
+                                                <a th:href="@{'/editPropertyPoint?id='+${c.getId()}}">
+                                                <button type="button" class="btn btn-outline-secondary btn-icon-text btn-sm">
+                                                    [[#{client.Edit}]]
+                                                    <i class="ti-file btn-icon-append"></i>
+                                                </button>
+                                                </a>
+
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+<style>
+    .fix-top-content{
+        padding-top: 100px;
+    }
+    .h-1-1-1-1-1 {
+        margin-bottom: 20px;
+        font-size: 25px;
+        border-bottom: 1px solid;
+        border-color: #0c3d75;
+    }
+
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+
+        .fix-top-content{
+            padding-top: 50px;
+        }
+    }
+</style>
+
+<script>
+
+
+
+    function deletePoint(event){
+
+        $.post("deletePoint",
+            {
+                pointId: event.id
+            },
+            function(data, status, request){
+                if(request.responseJSON=="OK"){
+                    swal("Success", "Point deleted successfuly!", "success");
+                    $('tr#'+event.id).remove();
+
+                }else {
+                    swal("Error", "An error occured!!!", "error");
+                }
+
+            }).fail(function() {
+            swal("Error", "An error occured!!!", "error");
+        });
+
+    }
+
+    $(document).ready(function () {
+        var a = document.getElementsByClassName("table-1");
+        for(var i=0;i<a.length;i++){
+            $('#'+a[i].id).dataTable({
+                "paging":   true,
+                "ordering": true,
+                "info":     false
+            });
+        }
+    });
+
+
+</script>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+<script src="../../js/sweetAlert.js"></script>
+
+<style>
+
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+
+    }
+
+</style>
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/propertyPointOfInterest?id=' + propertyId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+
+</html>
+

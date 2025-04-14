@@ -1,0 +1,171 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Add Language | Admin Panel Allbookers</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+  <style>
+    .fix-top-content {
+      padding-top: 100px;
+    }
+    select.form-control {
+      color: black!important;
+      outline-color: black!important;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container-scroller">
+
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper fix-top-content">
+        <div class="row">
+
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h4 style="font-size: 25px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.AddNewLanguage}]]</h4>
+                <form class="form-sample" id="addLanguage" th:action="@{/addLanguage}" method="post" th:object="${newLanguage}">
+                  <p class="card-description">
+                    [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                  </p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.NewLanguagename}]]</label>
+                        <div class="col-sm-9">
+                          <input th:field="*{name}" type="text" class="form-control" onkeypress="return event.key !== 'Enter';"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.Code}]]</label>
+                        <div class="col-sm-9">
+                          <input th:field="*{code}" type="text" class="form-control" onkeypress="return event.key !== 'Enter';"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button type="submit" class="btn btn-primary">[[#{client.Save}]]</button>
+                    <a href="/languageList" class="btn btn-inverse-secondary">[[#{client.Cancel}]]</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+<script>
+
+  function changeLanguageController(param) {
+
+    var a = 'sq';
+    if (param == null) {
+      param = a;
+    }
+    var search = {"lang": a};
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: {
+        lang: param
+      },
+      success: function (result) {
+        window.location = '/addLanguage' ;
+      },
+      error: function (e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+
+  $(document).ready(function() {
+    $('#addLanguage').submit(function(e) {
+      e.preventDefault(); // Prevent default form submission
+      $.post($(this).attr('action'), $(this).serialize(), function() {
+        window.location.href = "/languageList"; // Redirect after successful form submission
+      });
+    });
+  });
+
+</script>
+
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+<script>
+
+  $(function() {
+    var a = $("#nameInput").val();
+    $("#nameInput").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: "/autocomplete",
+          dataType: "json",
+          data: {
+            searchvalue : $("#nameInput").val(),
+          },
+          success: function(data) {
+            response(data);
+          }
+        });
+      },
+      minLength : 3,
+    })
+  });
+</script>
+</body>
+
+</html>
+

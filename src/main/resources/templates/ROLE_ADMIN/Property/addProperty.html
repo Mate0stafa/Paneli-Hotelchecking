@@ -1,0 +1,970 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add New Property | Admin Panel Allbookers </title>
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <h4 class="card-title"
+                                style="font-size: 23px;color: rgba(26,26,26,0.91);font-weight: 700;position: relative;padding-top: 20px;">
+                                [[#{client.Addnewproperty}]]</h4>
+                            <p class="card-description">
+                                [[#{client.Pleasefillallthefieldscorrectly}]]
+                            </p>
+                            <div class="card-body"
+                                 style="    background-image: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);">
+                                <form class="form-sample" th:action="@{/addNewProperty}" method="post"
+                                      th:object="${property}" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Propertyname}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" th:field="*{propertyName}" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Category}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="category"
+                                                            th:field="*{propertyCategory}">
+                                                        <option th:each="count: ${categories}"
+                                                                th:text="${count.getType()}"
+                                                                th:value="${count.getType()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Numberofrooms}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="numberOfRooms"
+                                                            th:field="*{propertyRooms}">
+                                                        <option th:each="count: ${#numbers.sequence(1, 150)}"
+                                                                th:text="${count}" th:value="${count}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.PropertyStars}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="propertyStars"
+                                                            th:field="*{propertyStars}">
+                                                        <option th:each="count: ${#numbers.sequence(1, 5)}"
+                                                                th:text="${count}" th:value="${count}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.PropertyLanguage}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="propertyLanguage"
+                                                            th:field="*{propertyLanguage}">
+                                                        <option th:each="count: ${languages}" th:text="${count.name}"
+                                                                th:value="${count.getName()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.MealPlan}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="mealPlan"
+                                                            th:field="*{propertyMealPlan}">
+                                                        <option th:each="count: ${mealPlans}" th:text="${count.name}"
+                                                                th:value="${count.getName()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Checkin}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control myyOpt" name="CheckIn"
+                                                            th:field="*{propertyCheckIn}"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Checkout}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control myyOpt" name="CheckOut"
+                                                            th:field="*{propertyCheckOut}"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            window.onload = function () {
+                                                for (var j = 0; j < 25; j++) {
+                                                    if (j < 10) {
+                                                        $(".myyOpt").append(new Option("0" + j + ":00", "0" + j + ":00"));
+                                                    } else {
+                                                        $(".myyOpt").append(new Option(j + ":00", j + ":00"));
+                                                    }
+                                                }
+                                            }
+                                        </script>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Country}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="country" id="country"
+                                                            th:field="*{propertyCountry}">
+                                                        <option th:each="count : ${countries}"
+                                                                th:text="${count.getCountry_name()}"
+                                                                th:value="${count.getCountry_name()}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Timezone}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="timezone"
+                                                            th:field="*{propertyTimeZone}">
+                                                        <option th:each="count:${timezone}"
+                                                                th:text="${count.name}"
+                                                                th:value="${count.name}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.County}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="county" id="county"
+                                                            th:field="*{propertyCounty}">
+                                                        <option th:each="count:${counties}"
+                                                                th:text="${count.name}"
+                                                                th:value="${count.name}"
+                                                                th:selected="${count.name == 'Tirana' || count.name == 'Tirane'}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Currency</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="currency"
+                                                            th:field="*{propertyCurrency}">
+                                                        <option value="EUR">EUR</option>
+                                                        <option value="USD">USD</option>
+                                                        <option value="ALL">ALL</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.City}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="city" name="propertyCity" th:field="*{propertyCity}">
+                                                        <option value="" disabled th:unless="${cities}" th:text="'Select a county first'"></option>
+                                                        <option th:each="count:${cities}" th:text="${count.getFull_name()}" th:value="${count.getFull_name()}" th:selected="${count.getFull_name()=='Tirane' || count.getFull_name()=='Tirana'}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.PropertyStreet}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="propertyAddress"
+                                                           th:field="*{propertyStreet}" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.ZipCode}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="zipCode"
+                                                           th:field="*{propertyZipCode}" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Positionlongitude}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="positionLongitude"
+                                                           name="positionLongitude"
+                                                           th:field="*{propertyLongitude}"
+                                                           required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Positionlatitude}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="positionLatitude"
+                                                           name="positionLatitude"
+                                                           th:field="*{propertyLatitude}"
+                                                           required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.WebAddress}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="webAddress"
+                                                           th:field="*{propertyWebAddress}" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Phonenumber}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="phoneNumber"
+                                                           th:field="*{propertyPhoneNumber}" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Username}]] </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="email"
+                                                           th:field="*{propertyAdminName}" id="username" required/>
+                                                    <p id="user-name"
+                                                       style="margin: 2px; font-size: 14px;"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Firstname}]] </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="firstName"
+                                                           th:field="*{firstName}" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Lastname}]] </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="lastName"
+                                                           th:field="*{lastName}" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Useremail}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="email" class="form-control" name="email"
+                                                           th:field="*{propertyUsernameEmail}" id="usernameEmail"
+                                                           required/>
+                                                    <p id="email-match-username"
+                                                       style="margin: 2px; font-size: 14px;"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.propertyEmail}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="email" class="form-control" name="email"
+                                                           th:field="*{propertyAdminEmail}" id="adminEmail" required/>
+                                                    <p id="email-match" style="margin: 2px; font-size: 14px;"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <span class="col-sm-3 col-form-label" style=" font-weight: 600;">[[#{client.Duetovat}]] </span>
+                                            <p style="margin-left: 15px;">[[#{client.areyoulegal}]]</p>
+
+                                            <div class="radio-block"
+                                                 style=" gap: 5%; display: -webkit-inline-box;margin-left: 2%;   margin-top: 2%;">
+                                                <div class="radio"><label> <input type="radio" name="entityType"
+                                                                                  id="legal"><span
+                                                        style="white-space: nowrap;">[[#{client.legal}]]  </span></label>
+                                                </div>
+                                                <div class="radio"><label><input type="radio" name="entityType"
+                                                                                 id="private"><span
+                                                        style="white-space: nowrap;"> [[#{client.privateindv}]] </span></label>
+                                                </div>
+                                            </div>
+
+                                            <div id="showDivi" style="display: none">
+                                                <div class="form-group row" style="display: block; margin-top: 5%;">
+                                                    <div style="margin-left: 30px;">
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-3 col-form-label" style="white-space: nowrap;">[[#{client.TaxID}]]</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" id="nuis" class="form-control" name="NUIS" value="" required th:field="*{NUIS}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-left: 21px; margin-top: -5%;">
+                                                        <p style="font-weight:600; margin-top: 12%; margin-left: 7px; white-space: nowrap;">[[#{client.TaxAuthorities}]]</p>
+                                                        <label for="taxExtractInput" class="btn btn-outline-primary btn-icon-text btn-sm">
+                                                            <i class="ti-upload"></i> [[#{client.Upload}]]
+                                                        </label>
+                                                        <input type="file" id="taxExtractInput" name="taxExtractInput" style="display: none" onchange="displayTaxExtract(this)" required/>
+                                                        <div class="d-flex align-items-center">
+                                                            <div id="taxExtractContainer" class="me-3" style="display: none;">
+                                                                <img id="uploaded-tax-extract" src="#" alt="Uploaded Photo" style="max-width: 200px; max-height: 200px; display: none" class="img-thumbnail"/>
+                                                                <button type="button" onclick="removePhoto()" class="btn btn-outline-danger btn-sm mt-2" style="height: 40px;">
+                                                                    <i class="ti-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" th:field="*{taxname}" id="taxname"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <script>
+                                                function displayTaxExtract(input) {
+                                                    const file = input.files[0];
+                                                    const taxExtractContainer = document.getElementById('taxExtractContainer');
+                                                    const uploadedTaxExtract = document.getElementById('uploaded-tax-extract');
+                                                    const taxnameInput = document.getElementById('taxname'); // Get the hidden input field
+
+                                                    if (file) {
+                                                        const reader = new FileReader();
+                                                        reader.onload = function (e) {
+                                                            uploadedTaxExtract.src = e.target.result; // Set the href to the file's blob URL
+                                                            uploadedTaxExtract.textContent = file.name; // Display the file name
+                                                            uploadedTaxExtract.style.display = 'block'; // Show the <a> link
+                                                            taxExtractContainer.style.display = 'flex'; // Show the container
+                                                            taxExtractContainer.style.gap = '3%';
+                                                            taxExtractContainer.style.marginTop = '2%';
+
+                                                            // Set the taxname hidden input value
+                                                            taxnameInput.value = file.name; // Store the filename in the hidden input
+                                                        };
+                                                        uploadedTaxExtract.download = file.name; // Set the download attribute
+
+                                                        reader.readAsDataURL(file);
+                                                    }
+                                                }
+
+                                                function removePhoto() {
+                                                    document.getElementById('uploaded-tax-extract').src = '#';
+                                                    document.getElementById('taxExtractContainer').style.display = 'none';
+                                                    document.getElementById('taxExtractInput').value = null;
+                                                }
+
+                                            </script>
+
+                                            <div id="showDiv" style="display: none">
+                                                <div style="margin-left: 16px;    margin-top: 5%;">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label"
+                                                               style="    white-space: nowrap;">[[#{client.Dateofbirth}]]</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="date" id="dateofbirth" class="form-control"
+                                                                   required="" th:field="*{dateofbirth}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div style="margin-left: 16px;">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label">[[#{client.HotelierID}]]</label>
+                                                        <div class="col-sm-9">
+                                                            <input th:value="${hotelierId.getIdCard()}" type="text"
+                                                                   placeholder="psh. K25..." class="form-control"
+                                                                   required="" th:field="*{idCard}" id="idCard">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group" style="margin-left: 14px;">
+                                                    <label for="photoInput"
+                                                           class="btn btn-outline-primary btn-icon-text btn-sm">
+                                                        <i class="ti-upload"></i> [[#{client.Upload}]]
+                                                    </label>
+                                                    <input type="file" id="photoInput" name="photoInput" class="d-none"
+                                                           onchange="displayPhoto(this)"/>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <div id="photo-container" class="me-3" style="display: none;">
+                                                        <img id="uploaded-photo" src="#" alt="Uploaded Photo"
+                                                             class="img-thumbnail"
+                                                             style="max-width: 200px; max-height: 200px;"/>
+                                                        <button type="button" onclick="removePhoto1()"
+                                                                class="btn btn-outline-danger btn-sm mt-2">
+                                                            <i class="ti-trash"></i>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <br>
+                                            <div>
+                                                <h4 style="color: #464646;">[[#{client.propertymap}]]</h4>
+                                                <p> [[#{client.Clickmap}]].</p>
+                                                <div id="map" style="height: 370px"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-8 mt-2">
+                                            <button type="button" class="btn btn-icon-text btn-primary" id="addProperty"
+                                                    onclick="disableSubmitButton()">
+                                                [[#{client.Addproperty}]] <i class="ti-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+<style>
+    .form-group label {
+        font-size: 0.875rem;
+        /* line-height: 1.4rem; */
+        vertical-align: top;
+        margin-bottom: .5rem;
+        /* color: #141824; */
+        font-weight: 500;
+        margin: 0px;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        letter-spacing: 0.15px;
+        color: rgb(58 53 65);
+        font-weight: 600;
+    }
+
+    .fix-top-content {
+        padding-top: 100px;
+    }
+
+    .select2.select2-container {
+        width: 100% !important;
+    }
+
+    .select2.select2-container .select2-selection {
+        border: 1px solid #ccc;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        height: 45px;
+        margin-bottom: 15px;
+        outline: none !important;
+        transition: all .15s ease-in-out;
+    }
+
+    .select2.select2-container .select2-selection .select2-selection__rendered {
+        color: #333;
+        line-height: 18px;
+        margin-left: -20px;
+    }
+
+    .select2.select2-container .select2-selection .select2-selection__arrow {
+        background: #f8f8f8;
+        border-left: 1px solid #ccc;
+        -webkit-border-radius: 0 3px 3px 0;
+        -moz-border-radius: 0 3px 3px 0;
+        border-radius: 0 3px 3px 0;
+        height: 42px;
+        width: 33px;
+    }
+
+    .select2.select2-container.select2-container--open .select2-selection.select2-selection--single {
+        background: #f8f8f8;
+    }
+
+    .select2.select2-container.select2-container--open .select2-selection.select2-selection--single .select2-selection__arrow {
+        -webkit-border-radius: 0 3px 0 0;
+        -moz-border-radius: 0 3px 0 0;
+        border-radius: 0 3px 0 0;
+    }
+
+    .select2.select2-container.select2-container--open .select2-selection.select2-selection--multiple {
+        border: 1px solid #34495e;
+    }
+
+    .select2.select2-container .select2-selection--multiple {
+        height: auto;
+        min-height: 34px;
+    }
+
+    .select2-container .select2-dropdown {
+        background: transparent;
+        border: none;
+        margin-top: -5px;
+    }
+
+    .select2-container .select2-dropdown .select2-search {
+        padding: 0;
+    }
+
+    .select2-container .select2-dropdown .select2-results {
+        padding: 0;
+    }
+
+    .select2-container .select2-dropdown .select2-results ul {
+        background: #fff;
+        border: 1px solid #34495e;
+    }
+
+    .select2-container .select2-dropdown .select2-results ul .select2-results__option--highlighted[aria-selected] {
+        background-color: #3498db;
+    }
+</style>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+
+<script th:inline="javascript">
+    document.getElementById("country").addEventListener("change",(c)=>{
+        const county = $("#county");
+        const noCountiesText =/*[[#{client.Selectacounty}]]*/'';
+        county.html("");
+        county.append(`<option disabled selected>${noCountiesText}</option>`);
+        $.ajax({
+            url:'/getCountiesByCountryName?countryName='+c.target.value,
+            method:'GET',
+            contentType:'application/json',
+            success:function (response,data) {
+                if(response.length >=1){
+                    response.forEach(function (c){
+                        county.append(`
+                        <option value="${c.id}">${c.name}</option>
+                    `)
+                    })
+                }
+            },
+            error:function (response){
+                console.log("We haven't yet got counties for that country.  ¯\\_(ツ)_/¯")
+            }
+        })
+
+    })
+</script>
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/addNewProperty' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<script>
+    let map;
+    let marker;
+
+    window.initMap = function () {
+        const lat = parseFloat(document.getElementById("positionLatitude").value) || 41.327953;
+        const lng = parseFloat(document.getElementById("positionLongitude").value) || 19.819025;
+        const uluru = { lat, lng };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: uluru,
+        });
+
+        marker = new google.maps.Marker({
+            position: uluru,
+            map: map,
+            draggable: true,
+        });
+
+        marker.addListener("dragend", (event) => {
+            updatePosition(event.latLng.lat(), event.latLng.lng());
+        });
+
+        document.getElementById("positionLatitude").addEventListener("input", updateMarkerPositionFromInputs);
+        document.getElementById("positionLongitude").addEventListener("input", updateMarkerPositionFromInputs);
+    };
+
+    function updatePosition(lat, lng) {
+        marker.setPosition({lat, lng});
+        document.getElementById("positionLatitude").value = lat;
+        document.getElementById("positionLongitude").value = lng;
+    }
+
+    function updateMarkerPositionFromInputs() {
+        const lat = parseFloat(document.getElementById("positionLatitude").value) || 41.327953;
+        const lng = parseFloat(document.getElementById("positionLongitude").value) || 19.819025;
+        marker.setPosition({lat, lng});
+        map.setCenter({lat, lng});
+    }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDM3AuYTcf5CnXQNOLF9rp7fbnaBsYgmU&callback=initMap&v=weekly" defer></script>
+
+<script>
+    function disableSubmitButton() {
+
+        const button = document.getElementById('addProperty');
+        const form = button.closest('form');
+
+        button.disabled = true;
+        button.classList.add('disabled');
+
+        form.submit();
+        return false;
+    }
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        // Initialize select2
+        $("#city").select2();
+
+
+        // Read selected option
+        $('#but_read').click(function () {
+            var username = $('#city option:selected').text();
+            var userid = $('#city').val();
+
+            $('#result').html("id : " + userid + ", name : " + username);
+
+        });
+    });
+</script>
+
+<!--Ky script sherben per te ndaluar regjistrimin me te njejtin email . -->
+<!--Nese email ekziston butoni behet disabled-->
+<script th:inline="javascript">
+
+    let emailUsername = document.getElementById("usernameEmail");
+    var EmailMatch = document.getElementById("email-match");
+    var UsernameMatch = document.getElementById("user-name");
+    var EmailMatchUsername = document.getElementById("email-match-username");
+    let submitButton = document.getElementById("addProperty");
+    var listaEmails = /*[[${emails}]]*/;
+    var listaUsernames = /*[[${usernames}]]*/;
+
+    emailUsername.addEventListener("input", compareEmailUsername);
+    username.addEventListener("input", compareUsername)
+
+    function compareUsername() {
+        if (listaUsernames.includes(username.value)) {
+            UsernameMatch.textContent = "This username is already registered!";
+            UsernameMatch.style.color = "red";
+            submitButton.disabled = true;
+        } else {
+            UsernameMatch.textContent = "This username is not registered!";
+            UsernameMatch.style.color = "green";
+            submitButton.disabled = false;
+        }
+    }
+
+    function compareEmailUsername() {
+        if (listaEmails.includes(emailUsername.value)) {
+            EmailMatchUsername.textContent = "This email is already registered!";
+            EmailMatchUsername.style.color = "red";
+            submitButton.disabled = true;
+        } else {
+            EmailMatchUsername.textContent = "This email is not registered!";
+            EmailMatchUsername.style.color = "green";
+            submitButton.disabled = false;
+        }
+    }
+</script>
+
+<script>
+    function displayPhoto(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('uploaded-photo').src = e.target.result;
+                document.getElementById('photo-container').style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removePhoto1() {
+        document.getElementById('uploaded-photo').src = '#';
+        document.getElementById('photo-container').style.display = 'none';
+        document.getElementById('photoInput').value = null;
+    }
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const legalRadio = document.getElementById('legal');
+        const privateRadio = document.getElementById('private');
+        const photoInput = document.getElementById('photoInput');
+        const showDiv = document.getElementById('showDiv');
+        const showDivi = document.getElementById('showDivi');
+        const idCard = document.getElementById("idCard");
+        const dateofbirth = document.getElementById("dateofbirth");
+        const nuis = document.getElementById("nuis");
+        const taxExtractInput = document.getElementById("taxExtractInput");
+
+        // Check localStorage to restore the selected radio button
+        const selectedOption = localStorage.getItem('selectedOption');
+        if (selectedOption === 'legal') {
+            legalRadio.checked = true;
+            showDiv.style.display = 'none';
+            showDivi.style.display = 'block';
+
+
+        } else if (selectedOption === 'private') {
+            privateRadio.checked = true;
+            showDiv.style.display = 'block';
+            showDivi.style.display = 'none';
+        }
+
+        legalRadio.addEventListener('change', function () {
+            if (this.checked) {
+                showDiv.style.display = 'none';  // Hide the first div
+                showDivi.style.display = 'block'; // Show the second div
+                localStorage.setItem('selectedOption', 'legal'); // Save the selected option
+
+                idCard.removeAttribute('required');
+                dateofbirth.removeAttribute('required');
+                photoInput.removeAttribute('required');
+
+                nuis.setAttribute('required', 'true');
+                taxExtractInput.setAttribute('required', 'true');
+            }
+        });
+        privateRadio.addEventListener('change', function () {
+            if (this.checked) {
+                showDiv.style.display = 'block';  // Show the first div
+                showDivi.style.display = 'none';  // Hide the second div
+                localStorage.setItem('selectedOption', 'private'); // Save the selected option
+
+                idCard.setAttribute('required', 'true');
+                dateofbirth.setAttribute('required', 'true');
+                photoInput.setAttribute('required', 'true');
+                nuis.removeAttribute('required');
+                taxExtractInput.removeAttribute('required');
+
+            }
+        });
+    });
+
+</script>
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        const $countrySelect = $('#country');
+        const $countySelect = $('#county');
+        const $citySelect = $('#city');
+
+        console.log('Country select found:', $countrySelect.length);
+        console.log('County select found:', $countySelect.length);
+        console.log('City select found:', $citySelect.length);
+
+        function updateCounties(countryName) {
+            $countySelect.empty().prop('disabled', true);
+            $citySelect.empty().prop('disabled', true);
+
+            if (!countryName) {
+                console.log('No country selected, aborting counties update.');
+                $countySelect.append($('<option>', { text: 'Select a country first', value: '', disabled: true, selected: true }));
+                $citySelect.append($('<option>', { text: 'Select a county first', value: '', disabled: true, selected: true }));
+                return;
+            }
+
+            $countySelect.append($('<option>', { text: 'Loading...' }));
+
+            $.ajax({
+                url: '/counties-by-country',
+                data: { countryName: countryName },
+                method: 'GET',
+                success: function (response) {
+                    console.log('Counties response:', response);
+                    $countySelect.empty();
+                    $countySelect.append($('<option>', { text: 'Select a county', value: '', disabled: true, selected: true }));
+                    response.forEach(function (county) {
+                        $countySelect.append($('<option>', {
+                            value: county.name,
+                            text: county.name
+                        }));
+                    });
+                    $countySelect.prop('disabled', false);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading counties:', error);
+                    $countySelect.empty().append($('<option>', { text: 'Error loading counties' }));
+                }
+            });
+        }
+
+        function updateCities(countyName) {
+            console.log('updateCities called with countyName:', countyName);
+            $citySelect.empty().prop('disabled', true);
+
+            if (!countyName) {
+                console.log('No county selected, aborting cities update.');
+                $citySelect.append($('<option>', { text: 'Select a county first', value: '', disabled: true, selected: true }));
+                return;
+            }
+
+            $citySelect.append($('<option>', { text: 'Loading...' }));
+
+            $.ajax({
+                url: '/cities-by-county',
+                data: { countyName: countyName },
+                method: 'GET',
+                success: function (response) {
+                    console.log('Cities response:', response);
+                    $citySelect.empty();
+                    $citySelect.append($('<option>', { text: 'Select a city', value: '', disabled: true, selected: true }));
+                    response.forEach(function (city) {
+                        $citySelect.append($('<option>', {
+                            value: city.full_name,
+                            text: city.full_name
+                        }));
+                    });
+                    $citySelect.prop('disabled', false);
+                    $citySelect.trigger('change');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading cities:', status, error);
+                    $citySelect.empty().append($('<option>', { text: 'Error loading cities' }));
+                }
+            });
+        }
+
+        $countrySelect.on('change', function () {
+            const selectedCountry = $(this).val();
+            console.log('Country changed to:', selectedCountry);
+            updateCounties(selectedCountry);
+        });
+
+        $countySelect.on('change', function () {
+            const selectedCounty = $(this).val();
+            console.log('County change event fired. Selected county:', selectedCounty);
+            updateCities(selectedCounty);
+        });
+
+        // Initial setup (only if country is pre-selected)
+        if ($countrySelect.val()) {
+            updateCounties($countrySelect.val());
+        }
+    });
+</script>
+
+</body>
+
+</html>
+

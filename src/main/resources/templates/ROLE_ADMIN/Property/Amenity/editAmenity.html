@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit Amenity | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+
+    <style>
+        .fix-top-content {
+            padding-top: 100px;
+        }
+
+        .page-body-wrapper {
+            min-height: calc(110vh - 60px);
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title" style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.EditAmenity}]]</h4>
+                                <form id="editAmenityForm" th:action="@{'/editRoomAmenity?id='+${amenityList.getId()}}" th:object="${amenityList}" method="post" enctype="multipart/form-data">
+                                    <p class="card-description">
+                                        [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                                    </p>
+
+                                    <div class="row">
+                                        <!-- First Column -->
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.AmenityName}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" th:field="*{amenityName}" class="form-control form-control-lg"  onkeypress="return event.key !== 'Enter';"  placeholder="Amenity Name" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.AmenityDescription}]]</label>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" th:field="*{amenityDescription}" onkeypress="return event.key !== 'Enter';"  rows="4"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.AmenityType}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control form-control-lg" th:field="*{amenityType}">
+                                                        <option value="Top Amenities">[[#{client.TopAmenities}]]</option>
+                                                        <option value="Room amenities">[[#{client.Roomamenities}]]</option>
+                                                        <option value="Bathroom">[[#{client.Bathroom}]]</option>
+                                                        <option value="Media & Technology">[[#{client.Media&Technology}]]</option>
+                                                        <option value="Food & Drink">[[#{client.Food&Drink}]]</option>
+                                                        <option value="Services & Extras">[[#{client.Services&Extras}]]</option>
+                                                        <option value="Outdoor & View">[[#{client.Outdoor&View}]]</option>
+                                                        <option value="Accessibility">[[#{client.Accessibility}]]</option>
+                                                        <option value="Entertainment & Family Services">[[#{client.Entertainment&FamilyServices}]]</option>
+                                                        <option value="Safety & security">[[#{client.Safety&security}]]</option>
+                                                        <option value="Cleanliness & disinfection">[[#{client.Cleanliness&disinfection}]]</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Second Column -->
+                                        <div class="col-md-6">
+
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.UploadPhoto}]]</label>
+                                                <div class="col-sm-10">
+                                                    <div class="form-group">
+                                                        <label for="file" class="btn btn-outline-primary btn-icon-text btn-sm">
+                                                            <i class="ti-upload"></i> [[#{client.Upload}]]
+                                                        </label>
+                                                        <input type="file" id="file" name="file" class="d-none" onchange="displayPhoto(this)"/>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <div id="photo-container" class="me-3" style="display: none;">
+                                                            <img id="uploaded-photo" src="#" alt="Uploaded Photo" class="img-thumbnail" style="max-width: 200px; max-height: 200px;"/>
+                                                            <button type="button" onclick="removePhoto()" class="btn btn-outline-danger btn-sm mt-2">
+                                                                <i class="ti-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                        <img id="old-photo" class="img-thumbnail me-3" th:src="${imagePath}" th:alt="${amenityList.getFileName()}" style="max-width: 200px; max-height: 200px;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-md-6">
+                                            <button type="submit" id="savebutton" class="btn btn-primary">[[#{client.Savechanges}]]</button>
+                                            <a th:href="@{'/roomAmenities'}" class="btn btn-light">[[#{client.Cancel}]]</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<input type="hidden" id="propertyId" th:value="${amenityList.getId()}">
+
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/editRoomAmenity?id=' + propertyId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+    function displayPhoto(input) {
+        var file = input.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('uploaded-photo').src = e.target.result;
+                document.getElementById('photo-container').style.display = 'block';
+                document.getElementById('old-photo').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function removePhoto() {
+        document.getElementById('file').value = '';
+        document.getElementById('photo-container').style.display = 'none';
+        document.getElementById('uploaded-photo').src = '';
+        document.getElementById('old-photo').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

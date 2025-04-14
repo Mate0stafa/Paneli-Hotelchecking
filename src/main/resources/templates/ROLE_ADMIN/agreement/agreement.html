@@ -1,0 +1,274 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Change Agreement | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+
+    <style>
+        .fix-top-content{
+            padding-top: 100px;
+        }
+        .accept {
+            color: white;
+            font-weight: 700!important;
+            background-color: #10559f;
+            border: 2px solid #0b3d75;
+            padding: 5px 15px;
+            border-radius: 5px;
+            letter-spacing: 1px;
+        }
+
+        .accept:hover{
+            color: #fff;
+            font-weight: 700!important;
+            background-color: #0b3d75;
+            border: 2px solid #072a52;
+            padding: 5px 15px;
+            border-radius: 5px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <a class="panel-booker-buton" th:href="@{/newAgreement}" >
+                    <button type="submit" class="btn btn-primary"><i class="ti-plus btn-icon-pretend"></i> [[#{client.Sendrequestforchange}]]</button>
+                    </a>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="col-lg-12 col-sm-12 grid-margin stretch-card">
+                        <div class="card"><br>
+                            <h4 class="card-title" style="font-size: 20px;color: #1A1A1A;line-height:normal;font-weight: 700;position: relative;">[[#{client.ChangeAgreement}]]  </h4>
+                            <p class="card-description" >[[#{client.Allagreementthat}]].</p>
+
+                            <div class="card-body" >
+                               <div class="table-responsive table-striped mt-3">
+                                <table id="table_idd" class="table table-hover">
+                                    <thead>
+                                    <tr style="background: #214162;padding: 10px;color: #ffffff;font-size: 14px;">
+                                        <th>[[#{client.propId}]] </th>
+                                        <th>[[#{client.propName}]] </th>
+                                        <th>[[#{client.firtAndLastName}]] </th>
+                                        <th>[[#{client.phoneNumber}]] </th>
+                                        <th>[[#{client.Nuis}]]</th>
+                                        <th>[[#{client.zipCode}]]</th>
+                                        <th>[[#{client.Email}]] </th>
+                                        <th>[[#{client.Actions}]]</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="count: ${setNewAgreementList}">
+                                        <td th:text="${count.getProperty().getId()}"></td>
+                                        <td th:text="${count.getLegalBusinessName()}"></td>
+                                        <td th:text="${count.getFirstName() + ' ' + count.getLastName()}"></td>
+                                        <td th:text="${count.getPhoneNumber()}"></td>
+                                        <td th:text="${count.getNuis()}"></td>
+                                        <td th:text="${count.getZipCode()}"></td>
+                                        <td th:text="${count.getEmailAddress()}"></td>
+
+
+                                        <td th:unless="${count.getStatus() != null}" style="display: flex;">
+                                            <button class="btn btn-primary btn-sm btn-icon-text" type="button" th:id="${count.property.getId()}" onclick="acceptagrement(this)">[[#{client.Accept}]] </button>
+                                            <button style="margin-left: 10px;" class="btn btn-outline-danger btn-sm" type="button" th:id="${count.id}" onclick="refuseSetNewAgreement(this)">[[#{client.Refuse}]] </button>
+                                        </td>
+                                        <td th:if="${count.getStatus() != null}">
+                                            <span th:text="${count.getStatus() ? ${'agreement.accepted'} : ${'agreement.refused'}}"></span>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+        </div>
+    </div>
+</div>
+<style>
+    .page-body-wrapper {
+        min-height: calc(110vh - 60px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+    }
+</style>
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script type="text/javascript" th:inline="none" class="init">
+
+    function goToEditCityPage(id){
+        window.location = "editCity?id="+id;
+    }
+
+    $(document).ready(function () {
+        $('#table_idd').DataTable({
+            "paging":   true,
+            "ordering": true,
+            "info":     false,
+            "searching": true,
+            "order":[0,"asc"]
+        });
+    });
+</script>
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/changeAgreement' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+<!-- endinject -->
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<script th:inline="javascript">
+    function refuseSetNewAgreement(event) {
+        var id = event.getAttribute('id');
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.post("/refuseSetNewAgreement", { id: id }, function() {
+                }).done(function() {
+                    var row = event.closest('tr');
+                    row.remove();
+                }).fail(function() {
+                });
+
+                swal("Agreement refused successfully!", {
+                    icon: "success",
+                }).then(function() {
+                    location.reload();
+                });
+            } else {
+                swal("Cancelled!");
+            }
+        });
+    }
+
+    function acceptagrement(event){
+        swal({
+            title: "Are you sure?",
+            text: "This agreement will be saved. ",
+            icon: "success",
+            buttons: true,
+        }).then((willaccept) => {
+            if (willaccept) {
+
+                $.post( "/acceptAgreement", {id: event.id}, function (){
+                    location.reload();
+                });
+                swal("Agreement submited sucessfully!", {
+                    icon: "success",
+                }).then(function (){
+
+
+                });
+            } else {
+                swal("Cancelled!");
+            }
+        });
+    }
+
+</script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+</body>
+</html>

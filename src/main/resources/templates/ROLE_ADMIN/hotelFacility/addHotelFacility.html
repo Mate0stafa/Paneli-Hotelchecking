@@ -1,0 +1,242 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Add Hotel Facilities | Admin Panel Allbookers</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+
+<body>
+<div class="container-scroller">
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper fix-top-content">
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.AddNewHotelFacility}]]</h4>
+                <form class="form-sample" th:action="@{'/addPropertyAmenity'}" method="post" th:object="${newHotelFacility}" enctype="multipart/form-data"  onsubmit="return validateForm()">
+                  <p class="card-description">
+                    [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                  </p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.newFacilityName}]]</label>
+                        <div class="col-sm-9">
+                          <input th:field="*{name}" type="text" class="form-control" onkeypress="return event.key !== 'Enter';" th:placeholder="#{client.EnterFacilityName}" required/>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.Description}]] </label>
+                        <div class="col-sm-9">
+                          <textarea th:field="*{description}" type="text" class="form-control" onkeypress="return event.key !== 'Enter';" rows="4" th:placeholder="#{client.EnterFacilityDesc}"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.UploadPhoto}]]</label>
+                        <div class="col-sm-9">
+                          <input type="file" id="file" name="file" style="display: none" onchange="displayPhoto(this)"    />
+                          <div id="photo-container" style="display: none">
+                            <img id="uploaded-photo" src="#"  class="img-thumbnail me-3" alt="Uploaded Photo" style="max-width: 200px; max-height: 200px; padding: 5px;"/>
+                            <button type="button" onclick="removePhoto()" class="btn btn-outline-primary btn-sm">
+                              <i class="ti-trash"></i>
+                            </button>
+                          </div>
+                          <button type="button" onclick="document.getElementById('file').click();" class="btn btn-outline-primary btn-icon-text btn-sm">
+                            <i class="ti-upload btn-icon-prepend"></i>
+                            [[#{client.Upload}]]
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-8">
+                    <button type="submit" class="btn btn-primary"  >[[#{client.Save}]]</button>
+                    <a th:href="@{'/propertyAmenities'}">
+                      <button type="button" class="btn btn-light">[[#{client.Cancel}]]</button>
+                    </a>
+                  </div>
+
+                  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+                  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+                  <script th:inline="javascript">
+                    function validateForm() {
+                      var fileInput = document.getElementById('file');
+                      if (!fileInput.value) {
+                        Toastify({
+
+                          text: 'Don\'t forget to upload the photo.',
+                          duration: 3000,
+                          close: false,
+                          gravity: "top",
+                          position: "right",
+                          style: {
+                             background:" linear-gradient(to right bottom, #FF5555, #FF625C, #FF6E64, #FF796C, #FF8374, #FF8F76, #FF9B79, #FFA77E, #FFB981, #FFCB87\n" +
+                                     ", #FFDC91, #FFEE9F)"  ,
+                      },
+                        }).showToast();
+                        return false; // Prevent form submission
+                      }
+                      return true; // Allow form submission
+                    }
+
+                  </script>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+    </div>
+    <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
+</div>
+
+<style>
+  select.form-control {
+    color: black!important;
+    outline-color: black!important;
+  }
+
+
+</style>
+
+
+<style>
+  @media only screen and (max-width: 600px) {
+    h4.font-weight-bold.hgh {
+      display: none;
+    }
+
+    select#version {
+      display: none;
+    }
+  }
+
+  .fix-top-content {
+    padding-top: 100px;
+  }
+
+</style>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+<script>
+  function changeLanguageController(param) {
+
+    var a = 'sq';
+    if (param == null) {
+      param = a;
+    }
+    var search = {"lang": a};
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: {
+        lang: param
+      },
+      success: function (result) {
+        window.location = '/addPropertyAmenities' ;
+      },
+      error: function (e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+</script>
+
+<!-- endinject -->
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<script>
+  <!--  Script to upload/remove photo-->
+  function displayPhoto(input){
+    var file = input.files[0];
+    if(file){
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        document.getElementById('uploaded-photo').src = e.target.result;
+        document.getElementById('photo-container').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function removePhoto(){
+    document.getElementById('file').value = '';
+    document.getElementById('photo-container').style.display = 'none';
+  }
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+
+</html>
+

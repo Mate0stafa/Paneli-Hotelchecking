@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Set New Agreement | Panel Allbookers </title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="vendors/feather/feather.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="images/favicon.png"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <style>
+        .custom-select select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+        }
+
+        .custom-select input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+        }
+
+        .empty-input {
+            border: 1px solid red !important;
+        }
+
+        .cool-input {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%; /* Make inputs wider */
+            margin-bottom: 15px; /* Add space between inputs */
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .cool-input:hover,
+        .cool-input:focus {
+            border-color: #065492;
+        }
+
+        .cool-btn {
+            background-color: #065492;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .cool-btn:hover {
+            background-color: #043568;
+        }
+
+        .mainDiv {
+            display: flex;
+            min-height: 100%;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .cardStyle {
+            border-color: white;
+            background: #fff;
+            border-radius: 4px;
+            margin: 30px 0;
+            width: 700px;
+            max-width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            padding: 19px 58px 40px;
+            z-index: 1;
+            border-top: 5px solid rgba(241, 100, 54, 0.51) !important;
+            -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: 5px 20px 24px -4px rgba(39, 45, 61, 0.08), 0px 8px 8px -4px rgba(39, 45, 61, 0.03);
+            --bg-opacity: 1;
+            background-color: #fff;
+            background-color: rgba(255, 255, 255, var(--border-opacity));
+            border-width: 1px;
+            --border-opacity: 1;
+            border-color: rgba(226, 232, 240, var(--border-opacity));
+            background-image: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);
+        }
+
+        #signupLogo {
+            max-height: 100px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .formTitle {
+            font-weight: 600;
+            margin-top: 20px;
+            color: #2F2D3B;
+            text-align: center;
+        }
+
+        .inputLabel {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 6px;
+            margin-top: 24px;
+        }
+
+        .inputDiv {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+
+        input {
+            height: 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: none;
+            border: solid 1px #ccc;
+            padding: 0 11px;
+        }
+
+        input:disabled {
+            cursor: not-allowed;
+            border: solid 1px #eee;
+        }
+
+        .buttonWrapper {
+            margin-top: 40px;
+        }
+
+        .submitButton {
+            width: 70%;
+            height: 40px;
+            margin: auto;
+            display: block;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+            cursor: pointer;
+            border-radius: 7px;
+            background: #F16436FF;
+            color: white;
+            border: none;
+            padding: 7px;
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .titlewrite {
+            margin: 0px;
+            font-family: Inter, sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 0.875rem;
+            line-height: 1.5;
+            letter-spacing: 0.15px;
+            color: rgba(58, 53, 65, 0.68);
+            font-weight: 600;
+        }
+
+        .submitButton:disabled,
+        button[disabled] {
+            border: 1px solid #cccccc;
+            background-color: #cccccc;
+            color: #666666;
+        }
+        .svg-inline--fa {
+            height: 15px !important;
+            overflow: visible;
+            vertical-align: -.125em;
+        }
+        #loader {
+            position: absolute;
+            z-index: 1;
+            margin: -2px 0 0 10px;
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #666666;
+            width: 14px;
+            height: 14px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        img#signupLogo {
+            width: 74%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mainDiv">
+    <div class="cardStyle">
+        <form method="post" name="signupForm" id="signupForm">
+            <input type="hidden" name="propertyName" th:value="${propertyName}"/>
+            <input type="hidden" name="token" th:value="${token}"/>
+            <h2 class="formTitle">
+                Set New Agreement
+            </h2>
+            <style>
+
+            </style>
+
+            <div style="width: 85%; padding: 0px 20px; border-bottom-left-radius: 10px;">
+                <div style="margin: 10px">
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px; ">Property Name
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 titlewrite">
+                            <input type="text" class="form-control cool-input" name="legalBusinessName"
+                                   placeholder="Property Name" required>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px; ">Email
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 ">
+                            <input type="email" class="form-control cool-input" name="emailAddress" placeholder="Email"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px;">Phone Number
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                            <input type="tel" class="form-control cool-input" name="phoneNumber"
+                                   placeholder="Phone Number" required>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px;">First Name
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                            <input type="text" class="form-control cool-input" name="firstName" placeholder="First Name"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px;">Last Name
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                            <input type="text" class="form-control cool-input" name="lastName" placeholder="Last Name"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px; ">NUIS/VAT
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                            <input type="text" class="form-control cool-input" name="nuis" placeholder="NUIS/VAT"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px; ">Address
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                            <input type="text" class="form-control cool-input" name="address" placeholder="Address"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px; ">Street Name
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                            <input type="text" class="form-control cool-input" name="street" placeholder="Street Name"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px; ">City
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 custom-select">
+                            <select class="form-control cool-input" name="city" required style="width: 105%">
+                                <option th:each="city :${cities}" th:value="${city.id}" th:text="${city.full_name}"
+                                        selected></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row agreement-row">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 titlewrite"
+                             style="max-width: 150px;">Zip Code
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                            <input type="text" class="form-control cool-input" name="zipCode" placeholder="Zip Code"
+                                   required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttonWrapper">
+                <button type="submit" id="submitButton" class="submitButton pure-button pure-button-primary">
+                    <span>Send Agreement  <svg class="svg-inline--fa fa-paper-plane ms-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paper-plane" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M511.6 36.86l-64 415.1c-1.5 9.734-7.375 18.22-15.97 23.05c-4.844 2.719-10.27 4.097-15.68 4.097c-4.188 0-8.319-.8154-12.29-2.472l-122.6-51.1l-50.86 76.29C226.3 508.5 219.8 512 212.8 512C201.3 512 192 502.7 192 491.2v-96.18c0-7.115 2.372-14.03 6.742-19.64L416 96l-293.7 264.3L19.69 317.5C8.438 312.8 .8125 302.2 .0625 289.1s5.469-23.72 16.06-29.77l448-255.1c10.69-6.109 23.88-5.547 34 1.406S513.5 24.72 511.6 36.86z"></path></svg></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- plugins:js -->
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+<script>
+
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+<!--Shfaqim nje messazh qe datat jane derguar dhe na hapet linku perkates-->
+<script>
+    $(function () {
+        $('#signupForm').submit(function (e) {
+            e.preventDefault();
+
+            // Serialize form data
+            var formData = $(this).serialize();
+
+            // Submit form via AJAX
+            $.ajax({
+                url: '/confirmNewAgreement',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    // Display success message
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Agreement sent successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        // Redirect user after they click OK
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.href = 'https://panel.allbookers.com/';
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    // Handle error
+                }
+            });
+        });
+    });
+
+    // Nese nuk vendosim te dhena, border i cdo fushe input behet red.
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('signupForm');
+        const inputs = form.querySelectorAll('input');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                if (input.value.trim() === '') {
+                    input.classList.add('empty-input');
+                } else {
+                    input.classList.remove('empty-input');
+                }
+            });
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+</body>
+</html>

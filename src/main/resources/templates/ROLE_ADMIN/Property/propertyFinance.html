@@ -1,0 +1,182 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Allbookers Panel</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Year', '', ''],
+        ['Aug',  1000,      400],
+        ['Sep',  1170,      460],
+        ['Oct',  660,       1120],
+        ['Nov',  1030,      540]
+      ]);
+
+      var options = {
+        title: 'Revenue',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+
+<body>
+
+
+<div class="container-scroller">
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+    <!-- partial -->
+
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div id="curve_chart" style="width: 900px; height: 500px"></div>
+
+      </div>
+
+      <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+
+    </div>
+
+  </div>
+</div>
+
+
+<style>
+
+  .d-flex.on10 {
+    justify-content: right;
+  }
+
+  li.nav-item.mr-3.nav-divider {
+    margin-left: 12px;
+  }
+
+  label.label-ch {
+    margin-left: 30px;
+  }
+
+  .mr-3, .mx-3 {
+    margin-right: 1rem!important;
+  }
+  .nav-divider {
+    border-right: 1px solid silver;
+  }
+
+  label.form-check-label {
+    margin-left: 18px;
+    margin-right: 13px;
+  }
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light.second-nav-propdetails {
+    z-index: 99999;
+    background: #0b3d75!important;
+    color: white!important;
+  }
+  span.navbar-brand {
+    color: #f5f7ff!important;
+    font-size: 19px;
+    font-weight: 400;
+    font-family: sans-serif;
+  }
+  .nav-link{
+    color: white!important;
+  }
+  a.nav-link:hover {
+    color: white!important;
+    border-radius: 4px;
+  }
+  a.nav-link.activeclass {
+    color: #00aeef!important;
+    font-weight: 600;
+  }
+</style>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+
+<script>
+  $( "#exampleFormControlSelect3" ).change(function() {
+    $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+      location.reload();
+    });
+  });
+</script>
+
+<!-- End custom js for this page-->
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Reviews | Group Account Allbookers </title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="vendors/feather/feather.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="images/favicon.png"/>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+            defer=""></script>
+    <style>
+
+        .dataTables_filter input {
+            border: 1px solid #ddd;
+            padding: 10px 10px 10px 20px; /* Adjust padding for icon space */
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: #333;
+        }
+
+        .dataTables_filter svg {
+            position: absolute;
+            left: 20px;
+            width: 16px;
+            height: 16px;
+            fill: #aaa; /* Adjust color as needed */
+        }
+
+        /* Change input focus outline */
+        .dataTables_filter input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        canvas {
+            border-radius: 20px;
+            --bg-opacity: 1;
+            border-width: 1px;
+            --border-opacity: 1;
+            border-color: #e2e8f0;
+            border-color: rgba(226, 232, 240, var(--border-opacity));
+        }
+        .row {
+            display: flex;
+            flex-wrap: nowrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        .content-wrapper {
+            padding: 3.175rem 1.375rem 1rem 1.375rem;
+            width: 100%;
+        }
+        .grid-margin {
+            margin-bottom: 0.5rem;
+        }
+
+        .toptitle {
+            display: flex;
+            align-items: center;
+            margin-left: 7px;
+            color: #1A1A1A;
+            line-height: 20px;
+            position: relative;
+            padding-top: 60px;
+            width: 100%;
+        }
+
+        #arrivals th, #arrivals td {
+            max-width: 200px;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        #range_date {
+            border: 1px solid #0b3d75;
+            border-radius: 4px;
+            width: 195px;
+            padding-top: .375rem;
+            padding-bottom: .375rem;
+            padding-left: 1rem;
+            font-size: 0.8rem;
+            /* border-radius: .375rem; */
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0);
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            /* line-height: 1.49; */
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 767px) {
+            .form-group {
+                display: flex;
+                align-items: center;
+                /* justify-content: center; */
+                align-content: stretch;
+                flex-wrap: wrap;
+                flex-direction: row;
+            }
+        }
+
+        .form-group .btn {
+            margin-left: 10px;
+        }
+
+        .form-group.d-flex.flex-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .form-group.d-flex.flex-column .form-check {
+            display: flex;
+        }
+
+        .form-group.d-flex.flex-column .form-check .form-check-input {
+            margin-right: 0.5rem;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="container-scroller">
+    <div th:replace="/GROUP_ACCOUNT/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div th:replace="/GROUP_ACCOUNT/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="row">
+                            <div class="toptitle">
+                                <h2> Reviews </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="operations" style="padding: 20px;">
+                <div>
+                    <form class="forms-sample" th:action="@{'/reviews'}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div>
+                                        <label for="range_date" style="font-weight: bold">[[#{client.from}]] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            [[#{client.until}]]</label>
+                                        <div class="form-group">
+                                            <input type="text" class="dropdown12" name="datedOnes"
+                                                   id="range_date"
+                                                   onkeypress="return event.key !== 'Enter';"  th:value="${datedOnes != null and datedOnes != '' ? datedOnes : ''}"/>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary form-group" style="padding: 8px 15px; margin-top: 8px;"
+                                            onclick="onDateFilter()">[[#{client.Show}]]
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <div class="row a-1 card-body">
+                        <div class="table-responsive table-striped">
+                            <table id="arrivals" class="table">
+                                <thead>
+                                    <tr style="background: #214162;padding: 10px;color: #ffffff;font-size: 14px;">
+                                        <th>Date</th>
+                                        <th>Property ID</th>
+                                        <th>Property Name</th>
+                                        <th>Review Score</th>
+                                        <th>Good Comment</th>
+                                        <th>Bad Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-row-1" th:each="r: ${reviewsTabs}">
+                                        <td th:text="${#dates.format(r.getData(), 'yyyy-MM-dd HH:mm')}"></td>
+                                        <td th:text="${r.getProperty().getId()}"></td>
+                                        <td th:text="${r.getProperty().getName()}"></td>
+                                        <td th:text="${r.getMesatare()*2}" style="text-align: center; font-weight: bold;"></td>
+                                        <td th:text="${r.getGood_review()}"></td>
+                                        <td th:text="${r.getBad_review()}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/GROUP_ACCOUNT/Layouts/footer.html"></div>
+        </div>
+    </div>
+</div>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/commonJs.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js" defer></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/reviews'  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#arrivals').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false,
+            "searching":true
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        $('input[name="datedOnes"]').daterangepicker({
+            opens: 'center'
+        }, (start, end) => {
+            console.log(start.toDate(), end.toDate());
+        });
+    });
+
+</script>
+<!--Data 1 muaj para -> sot-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(function () {
+        var startDate = moment(/*[[${dateFrom}]]*/, "MM/DD/YYYY");
+        var endDate = moment(/*[[${dateTo}]]*/, "MM/DD/YYYY");
+
+        $('input[name="datedOnes"]').daterangepicker({
+            opens: 'center',
+            startDate: startDate,
+            endDate: endDate,
+            maxDate: moment()  // Bllokon datat pas datës së sotme
+        }, (start, end) => {
+            console.log(start.toDate(), end.toDate());
+        });
+    });
+    /*]]>*/
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+
+</body>
+</html>
+

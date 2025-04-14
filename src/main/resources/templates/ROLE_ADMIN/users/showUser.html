@@ -1,0 +1,189 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Show User | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+
+
+                    <!--                    <a class="panel-booker-buton">-->
+                    <!--                        <button type="button" class="btn btn-primary btn-sm btn-icon-text"-->
+                    <!--                                th:attr="onclick='goToEditUser('+${user.getId()}+');'">[[#{client.Edit}]]<i-->
+                    <!--                                class="ti-file btn-icon-append allb-nn"></i></button>-->
+                    <!--                    </a>-->
+                    <div class="col-lg-12 col-sm-12 grid-margin stretch-card">
+                        <div class="card">
+                            <h4 class="card-title"
+                                style="font-size: 23px;color: rgba(26,26,26,0.91);font-weight: 700;position: relative;padding-top: 20px;">
+                                Show User</h4>
+                            <p class="card-description" th:if="${user.getRole().get(0).getAuthority()=='ROLE_USER'}">
+                                View and manage the list of all users on this page
+                            </p>
+                            <p class="card-description" th:if="${user.getRole().get(0).getAuthority()!='ROLE_USER'}" style="color: darkgreen;">
+                                This user has the admin role.
+                            </p>
+                            <div class="card-body" style="background-image: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);">
+                                <div style="display: flex;"><span style="width: 150px;">[[#{client.Id}]] : </span><h5 class="card-title1"> [[${user.getId()}]]</h5></div>
+                                <div style="display: flex;"><span style="width: 150px;">[[#{client.FullName}]] : </span><h5 class="card-title1"> [[${user.getFull_name()}]]</h5></div>
+                                <div style="display: flex;"><span style="width: 150px;">[[#{client.Email}]]: </span><h5 class="card-title1"> [[${user.getEmail()}]]</h5></div>
+                                <div style="display: flex;"><span style="width: 150px;">[[#{client.PasswordExpired}]]: </span><h5 class="card-title1">[[${user.getPassword_expired()}]]</h5></div>
+                                <div style="display: flex;"><span style="width: 150px;">[[#{client.AccountLocked}]]: </span><h5 class="card-title1">[[${user.getAccount_locked()}]]</h5></div>
+                                <div style="display: flex;"><span style="width: 150px;">[[#{client.AccountExpired}]]: </span><h5 class="card-title1">[[${user.getAccount_expired()}]]</h5></div>
+                                <div style="display: flex;"><span style="width: 150px;">[[#{client.Enabled}]]: </span><h5 class="card-title1"> [[${user.getEnabled()}]]</h5></div>
+                                <div th:if="${user.getRole().get(0).getAuthority()=='ROLE_USER'}" style="display: flex;"><span style="width: 150px;">Property : </span><h5 class="card-title1" th:text="${specialRole.getProperties().get(0).getName()}"> </h5></div>
+                                <br>
+                                <div>
+                                    <p th:if="${user.getRole().get(0).getAuthority()=='ROLE_ADMIN'}">Change the admin password .</p>
+                                    <a th:if="${user.getRole().get(0).getAuthority()=='ROLE_USER'}" class="btn btn-primary" th:href="@{'/editUser?id='+${user.getId()}}">Manage</a>
+                                    <a th:if="${user.getRole().get(0).getAuthority()=='ROLE_ADMIN'}" class="btn btn-primary" th:href="@{'/passwordEdit'}">Manage</a>
+                                    <a class="btn btn-light" th:href="${'/users'}" >Cancel</a>
+                                </div>
+                                <br>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<style>
+    .card-title1 {
+        margin: 0px;
+        font-size: 0.975rem;
+        line-height: 1.5;
+        letter-spacing: 0.15px;
+        color: rgba(58, 53, 65, 0.68);
+        font-weight: 600;
+    }
+    .page-body-wrapper {
+        min-height: calc(110vh - 60px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    img {
+        vertical-align: middle;
+        border-style: none;
+    }
+
+    .fix-top-content {
+        padding-top: 100px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+
+        select#version {
+            display: none;
+        }
+    }
+</style>
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+
+<script type="text/javascript" th:inline="none" class="init">
+
+
+    function goToEditUser(id) {
+        window.location = "editUser?id=" + id;
+    }
+
+
+    $(document).ready(function () {
+        $('#table_id').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false
+        });
+    });
+</script>
+
+<script>
+    $("#exampleFormControlSelect3").change(function () {
+        $.post("changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function () {
+            location.reload();
+        });
+    });
+</script>
+
+<!-- endinject -->
+<script>
+
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+</body>
+</html>

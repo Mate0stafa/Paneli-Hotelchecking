@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Error Page | Panel Allbookers</title>
+        <!-- plugins:css -->
+        <link rel="stylesheet" href="../../../../css/vertical-layout-light/style.css">
+        <link rel="shortcut icon" href="../../../../images/favicon.png" />
+    </head>
+<body>
+<style>
+    .error-page {
+        display: flex;/**/
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .error-page h1 {
+        font-size: 15vh;
+        font-weight: bold;
+        position: relative;
+        margin: -8vh 0 0;
+        padding: 0; }
+    .error-page h1:after {
+        content: attr(data-h1);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        color: transparent;
+        background: -webkit-repeating-linear-gradient(-45deg, #71b7e6, #69a6ce, #b98acc, #ee8176, #b98acc, #69a6ce, #9b59b6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 400%;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.25);
+        animation: animateTextBackground 10s ease-in-out infinite; }
+    .error-page h1 + p {
+        color: #d6d6d6;
+        font-size: 5vh;
+        font-weight: bold;
+        line-height: 10vh;
+        max-width: 600px;
+        position: relative; }
+    .error-page h1 + p:after {
+        content: attr(data-p);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        color: transparent;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        background-clip: text; }
+    #particles-js {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0; }
+    .cta {
+        position: relative;
+        margin: auto;
+        padding: 12px 18px;
+        transition: all 0.2s ease;
+        border: none;
+        background: none;
+        color:#1A1A1A;
+    }
+
+    .cta:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        border-radius: 50px;
+        background: rgba(75, 73, 172, 0.2);
+
+        width: 45px;
+        height: 45px;
+        transition: all 0.3s ease;
+        color:#1A1A1A;
+    }
+
+    .cta span {
+        position: relative;
+        font-family: 'Marcellus', serif;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: white;
+    }
+
+    .cta svg {
+        position: relative;
+        top: 0;
+        margin-left: 10px;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke: black;
+        stroke-width: 2;
+        transform: translateX(-5px);
+        transition: all 0.3s ease;
+    }
+
+    .cta:hover:before {
+        width: 100%;
+        background: -webkit-repeating-linear-gradient(-45deg, rgba(75, 73, 172, 0.2));
+
+    }
+
+    .cta:hover svg {
+        transform: translateX(0);
+    }
+
+    .cta:active {
+        transform: scale(0.95);
+    }
+    @keyframes animateTextBackground {
+        0% {
+            background-position: 0 0; }
+        25% {
+            background-position: 100% 0; }
+        50% {
+            background-position: 100% 100%; }
+        75% {
+            background-position: 0 100%; }
+        100% {
+            background-position: 0 0; } }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0; }
+        100% {
+            opacity: 1; } }
+    @media (max-width: 767px) {
+        .error-page h1 {
+            font-size: 32vw; }
+        .error-page h1 + p {
+            font-size: 8vw;
+            line-height: 10vw;
+            max-width: 70vw; } }
+</style>
+<section style="background: url(/images/auth/1234-01.png);
+        background-size: cover;">
+    <div class="error-page content-wrapper ">
+        <div>
+            <h1 data-h1="404">404</h1>
+            <p data-p="PAGE NOT FOUND">PAGE NOT FOUND</p>
+            <div class="col-12 text-center mt-xl-2">
+                <a class="mx-auto" href="/">
+                    <button class="cta">
+                        <span style="color: #0B0F32">Back to home </span>
+                        <svg viewBox="0 0 13 10" height="10px" width="15px">
+                            <path d="M1,5 L11,5"></path>
+                            <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+</section>
+<script src="../../../../vendors/js/vendor.bundle.base.js"></script>
+</body>
+</html>

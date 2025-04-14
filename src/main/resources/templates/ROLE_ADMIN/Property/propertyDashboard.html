@@ -1,0 +1,866 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property Dashboard | Allbookers Panel</title>
+    <!-- plugins:css -->
+
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+<!--    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">-->
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css"  >
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css" >
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+    <style>
+
+         .alert-primary.custom-alert-icon {
+             border-radius:15px;
+             border-width: 1px;
+             border-inline-start-width: 9px;
+             border-style: solid;
+             border-inline-start-color: #214162;
+             --tw-bg-opacity: 1;
+             font-size: .813rem;
+             --tw-text-opacity: 1;
+             color: black;
+             background: unset;
+         }
+         .alert-primary {
+             color: #272659;
+             background-color: #dbdbee;
+             border-color: #cdcce8;
+         }
+        .title1{
+            margin: 0;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            opacity: 1;
+            text-transform: uppercase;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(103, 116, 142);
+            font-weight: 600;
+
+        }
+        .title2{
+            font-size: 1.25rem;
+            line-height: 1.375;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            opacity: 1;
+            text-transform: none;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(52, 71, 103);
+            font-weight: 700;
+        }
+        .num-1-12 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0b3d75;
+        }
+
+        .t-q-1 {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .k-1-2-3 {
+            display: flex;
+        }
+
+        .ladt-1 {
+            color: #0b3d75;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        button.btn.-q12p_butoni {
+            background: #0b3d75;
+            font-size: 14px;
+            color: white;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 6px;
+        }
+
+        .lshdh-1 {
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .w-room-1 {
+            color: black;
+            font-size: 20px;
+            border-bottom: 1px solid;
+            margin-bottom: 9px;
+            margin-top: 7px;
+        }
+
+        img.imaxhi-1-2 {
+            width: 100%;
+            height: 192px;
+            object-fit: unset;
+            border-radius: 9px;
+        }
+
+        .card.-room-card-1 {
+            background: #a99b70;
+            padding: 11px;
+            border-radius: 13px;
+            margin-bottom: 15px;
+        }
+
+
+        canvas {
+            border: 1px dotted #0b3d75;
+        }
+
+        .chart-container {
+            position: relative;
+            margin: auto;
+            width: 100%;
+            height: 300px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            h4.font-weight-bold.hgh {
+                display: none;
+            }
+        }
+
+
+        .col-9.b-1-01 {
+            color: green;
+            font-size: 13px;
+        }
+
+        .card.c-332-1 {
+            background: #fbc02d;
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            width: fit-content;
+            padding: 11px;
+            margin-left: 27px;
+        }
+
+        .col-9.b-1-01.dh {
+            color: #ac1a1a;
+        }
+
+        .\33 04-1-s {
+            text-align: center;
+        }
+
+        .cs-32-1 {
+            text-align: center;
+        }
+
+        .bad-review112 {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1A1A1A;
+            padding-right: 0px !important;
+        }
+
+        .bad-review {
+            font-weight: 600;
+            font-size: 14px;
+            color: #911a1a;
+        }
+
+        .row.r_1_1 {
+            margin-top: 6px;
+        }
+
+        .col-9.b-1-01 {
+            padding-left: 0px;
+        }
+
+        .bad-review {
+            width: -webkit-fill-available;
+        }
+
+        .good-r {
+            width: 70% !important;
+        }
+
+        .c-12-1 {
+            color:#fb8540 !important;
+            font-size: 16px;
+            font-weight: 600;
+            width: 50%;
+            text-transform: capitalize;
+        }
+        .c-1 {
+            width: 15%;
+        }
+        .h-2-3-1 {
+            width: 20%;
+        }
+
+        .t-2-3-1 {
+            width: 65%;
+        }
+
+        .c-2-3-wqw {
+            display: flex;
+        }
+
+        img.ikona-1-1- {
+            width: 50px;
+        }
+
+        .rating-box {
+            text-align: center;
+            display: grid;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            width: 8rem;
+            height: 8rem;
+            opacity: 1;
+            background: linear-gradient(120deg, #e75829, #dc35454f);
+            color: rgb(255, 255, 255);
+            border-radius: 0.75rem;
+            box-shadow: rgba(20, 20, 20, 0.12) 0rem 0.25rem 0.375rem -0.0625rem, rgba(20, 20, 20, 0.07) 0rem 0.125rem 0.25rem -0.0625rem;
+        }
+
+        .rating-label {
+            margin: 0;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            opacity: 1;
+            text-transform: uppercase;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(103, 116, 142);
+            font-weight: 600;
+        }
+
+        .rating-bar {
+            width: 300px;
+            padding: 8px;
+            border-radius: 5px
+        }
+
+        .bar-container {
+            width: 100%;
+            background-color: #f1f1f1;
+            text-align: center;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 5px
+        }
+
+        .bar {
+            width: 100%;
+            height: 13px;
+            background: linear-gradient(120deg, #e75829, #dc35454f);
+            color: rgb(255, 255, 255);
+            border-radius: 20px
+        }
+        .bar-5 {
+            height: 13px;
+            background: linear-gradient(120deg, #e75829, #dc35454f);
+            border-radius: 20px
+        }
+
+        .bar-4 {
+            height: 13px;
+            background: linear-gradient(120deg, #e75829, #dc35454f);
+            border-radius: 20px
+        }
+
+        .bar-3 {
+            height: 13px;
+            background: linear-gradient(120deg, #e75829, #dc35454f);
+            border-radius: 20px
+        }
+
+        .bar-2 {
+            height: 13px;
+            background: linear-gradient(120deg, #e75829, #dc35454f);
+            border-radius: 20px
+        }
+
+        .bar-1 {
+            height: 13px;
+            background: linear-gradient(120deg, #e75829, #dc35454f);
+            border-radius: 20px
+        }
+
+        td {
+            padding-bottom: 10px
+        }
+
+        .star-active {
+            color: #FBC02D;
+            margin-top: 10px;
+            margin-bottom: 10px
+        }
+
+        .star-active:hover {
+            color: #F9A825;
+            cursor: pointer
+        }
+
+        .star-inactive {
+            color: #CFD8DC;
+            margin-top: 10px;
+            margin-bottom: 10px
+        }
+
+        .blue-text {
+            color: #0091EA
+        }
+
+        .content {
+            font-size: 18px
+        }
+
+        .profile-pic {
+            width: 90px;
+            height: 90px;
+            border-radius: 100%;
+            margin-right: 30px
+        }
+
+        .pic {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px
+        }
+
+        .vote {
+            cursor: pointer
+        }
+
+        .departures-buttons, .arrivals-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        i{
+            font-size: 0.875rem !important;
+        }
+        .centered-button {
+            display: inline;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .centered-button .btn-icon-prepend {
+            margin-right: 5px;
+        }
+        .table-responsive table-striped{
+            margin-top: 10px;
+        }
+
+        .card-body.d-flex.ch-card {
+            height: 81px;
+            justify-content: space-between;
+        }
+
+        a:hover {
+            color: white;
+            text-decoration: none !important;
+        }
+
+        a {
+            color: white;
+        }
+
+        a.bookers-colorr:hover {
+            color: black;
+        }
+
+        .fs-30 {
+            font-size: 16px;
+        }
+
+        label.label-ch {
+            margin-left: 30px;
+        }
+
+        .nav-divider {
+            border-right: 1px solid silver;
+        }
+
+        li.nav-item.mr-3.nav-divider {
+            margin-left: 12px;
+        }
+
+        label.form-check-label {
+            margin-left: 18px;
+            margin-right: 13px;
+        }
+
+        nav.navbar.navbar-expand-lg.navbar-light.bg-light.second-nav-propdetails {
+            z-index: 99999;
+            background: #0b3d75 !important;
+            color: white !important;
+        }
+
+        span.navbar-brand {
+            color: #f5f7ff !important;
+            font-size: 19px;
+            font-weight: 400;
+            font-family: sans-serif;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        a.nav-link:hover {
+            color: white !important;
+            border-radius: 4px;
+        }
+
+        a.nav-link.activeclass {
+            color: #00aeef !important;
+            font-weight: 600;
+        }
+
+
+        img.t-2w.cc1 {
+            width: 64px;
+            border-radius: 4px;
+            margin-left: 18px;
+            margin-top: -12px;
+        }
+        img.t-2w {
+            width: 38px;
+        }
+        .\33 -1-t.d-flex {
+            flex-direction: column;
+        }
+        .\33 -1-t.d-flex {
+            flex-direction: column;
+            margin-left: 21px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                <h3 class="font-weight-bold mt-4"
+                                    style="font-size: 25px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 50px;">
+                                    [[#{client.PropDash}]]
+                                    <label   th:if="${property.getHotel_status().getStatus() == 'active'}"   th:class="${'badge badge-success'}"
+                                                                 th:text="${'Open/Bookable'}" ></label>
+                                    <label th:class="${'badge badge-danger'}"
+                                           th:if="${property.getHotel_status().getStatus() == 'Suspended'}" th:text="${'Closed/Not Bookable'}" ></label>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${property.getHotelierId() == null && property.getNUIS() == null && (property.getAgreement() == null or property.getAgreement().getNuis() == null) }"
+                    style="    display: flex;   gap: 11px; " class="alert alert-primary alert-dismissible dark:!bg-bodybg fade show custom-alert-icon shadow-sm flex items-center" role="alert" id="dismiss-alert40">
+                    <div>
+                        <img style="width: 23px;   " src="/images/icons8-box-important-50.png"  >
+                    </div>
+                    <div class="divi " style=" ">
+                        <p class="card-desc pb-2" style="font-weight: 600;font-size: 15px;"> [[#{client.requiredcomplete}]] </p>
+                        <p class="card-desc pb-2" > [[#{client.complyvaious}]]  </p>
+                        <p>  [[#{client.informationneed}]] </p>
+                        <button style=" " class="btn btn-outline-primary btn-icon-text" onclick="go()">  [[#{client.goToHost}]]  </button>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="mx-1 my-1"></div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: -36px;">
+                    <div class="col-md-6 grid-margin transparent">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 stretch-card transparent">
+                                <div class="card card-dark-blue test-card">
+                                    <div class="card-body d-flex">
+                                        <div class="icon-1-2-1">
+                                            <img src="images/hotelikone.png" class="t-2w">
+                                        </div>
+                                        <div class="3-1-t d-flex">
+                                            <div class="title1">[[#{client.Properties}]]</div>
+                                            <div class="title2" th:text="${propSize}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row t-r-w-1" th:if="${not #maps.isEmpty(ratingPercentages)}">
+                    <div class="col-md-6 mb-3" >
+                        <div class="card p-2" style="box-shadow: 0px 12px 16px -4px rgba(39, 45, 61, 0.08), 0px 4px 6px -2px rgba(39, 45, 61, 0.03); --bg-opacity: 1;border-width: 1px; --border-opacity: 1;border-color: #e2e8f0;border-color: rgba(226, 232, 240, var(--border-opacity));}">
+                            <div class="row justify-content-left d-flex">
+                                <div class="col-md-4 d-flex" style="padding: 15px;">
+                                    <div class="rating-box">
+                                        <h1 class="pt-4" th:text="${mes*2}"></h1>
+<!--                                        <p class="">[[#{client.outof5}]]</p>-->
+                                    </div>
+                                    <div> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-inactive mx-1"></span> </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="rating-bar0 justify-content-center">
+                                        <table class="text-left mx-auto">
+                                            <tr th:each="entry : ${ratingPercentages}" >
+                                                <td class="rating-label">[[#{client.Rating + ${entry.key}}]]</td>
+                                                <td class="rating-bar">
+                                                    <div class="bar-container">
+                                                        <div th:class="'bar-' + ${entry.key}" th:style="'width: ' + ${entry.value} + '%'"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-right">
+                                                    <script th:inline="javascript">
+                                                        /*<![CDATA[*/
+                                                        var value = /*[[${entry.value}]]*/ 0; // Fetch the value from Thymeleaf
+                                                        var formattedValue = (Math.round(value * 10) / 10).toFixed(1); // Format value to one decimal place
+                                                        document.write(formattedValue + '%'); // Write the formatted value with the percent sign
+                                                        /*]]>*/
+                                                    </script>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card p-2 bg-holder p-x1 bg-card" style="box-shadow: 0px 12px 16px -4px rgba(39, 45, 61, 0.08), 0px 4px 6px -2px rgba(39, 45, 61, 0.03); overflow: auto; max-height: 185px; background: url(/images/corner-1.png) no-repeat center center; background-size: cover !important;">
+                            <div class="h-2-1" th:each="r : ${property.getReviewsTabList()}">
+                                <div class="c-2-3-wqw px-3 py-2 border-bottom">
+                                    <div class="c-1">
+                                        <img src="https://i.ibb.co/QbV7Fc9/review-2.png" class="ikona-1-1- img-fluid">
+                                    </div>
+                                    <div class="t-2-3-1">
+                                        <div class="row r_1_1 mb-2">
+                                            <div class="col bad-review112">
+                                                <span>[[#{client.GoodReview}]]</span><span th:text="${r.getGood_review()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row r_1_1">
+                                            <div class="col bad-review">
+                                                <span>[[#{client.BadReview}]]</span><span th:text="${r.getBad_review()}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="num-1-12 pt-4 pb-1 arrivals-buttons">
+                    <div>[[#{client.Arrivals}]]</div>
+                    <div class="buttons-propdash">
+                        <button type="button" onclick="ExportToExcelArrivals('xlsx')" class="btn btn-outline-primary btn-icon-text m-2 p-2 centered-button">
+                            <i class="ti-file btn-icon-prepend"></i>
+                            [[#{client.Exporttabletoexcel}]]
+                        </button>
+
+                        <button type="button" onclick="printArrivalsDiv()" class="btn btn-outline-dark btn-icon-text m-2 p-2 centered-button">
+                            [[#{client.Print}]]
+                            <i class="ti-printer btn-icon-append"></i>
+                        </button>
+
+                        <button type="button" onclick="ExportArrivals()" id="btnExportArrivals" value="Export"
+                                class="btn btn-light btn-icon-text m-2 p-2 centered-button">
+                          [[#{client.Download}]] PDF
+                            <i class="ti-download btn-icon-append"></i>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="num-1-12 pt-5 pb-1 departures-buttons">
+                    <div>[[#{client.Departure}]]</div>
+                    <div class="buttons-propdash">
+                        <button type="button" onclick="ExportToExcelDepartures('xlsx')" class="btn btn-outline-primary btn-icon-text m-2 p-2 centered-button">
+                            <i class="ti-file btn-icon-prepend" ></i>
+                            [[#{client.Exporttabletoexcel}]]
+                        </button>
+
+                        <button type="button" onclick="printDeparturesDiv()" class="btn btn-outline-dark btn-icon-text m-2 p-2 centered-button">
+                            [[#{client.Print}]]
+                            <i class="ti-printer btn-icon-append" ></i>
+                        </button>
+
+                        <button type="button" onclick="ExportDepartures()" id="btnExportDepartures" value="Export"
+                                class="btn btn-light btn-icon-text m-2 p-2 centered-button">
+                            Download PDF
+                            <i class="ti-download btn-icon-append"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="hostTypeModal" tabindex="-1" aria-labelledby="hostTypeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="hostTypeModalLabel">Host Type Required</h5>
+                             </div>
+                            <div class="modal-body">
+                                Please choose your host type.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="redirectBtn">Go to Host Type Page</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<script src="../../vendors/js/vendor.bundle.base.js" ></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<!--<script src="../../vendors/select2/select2.min.js"></script>-->
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<!--<script src="../../js/select2.js"></script>-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js" defer></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js" defer></script>
+
+<script type="text/javascript">
+    function ExportArrivals() {
+        html2canvas(document.getElementById('arrivals'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("ArrivalsTable.pdf");
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    function ExportDepartures() {
+        html2canvas(document.getElementById('departures'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("DeparturesTable.pdf");
+            }
+        });
+    }
+</script>
+
+<script>
+    function ExportToExcelArrivals(type, fn, dl) {
+        var elt = document.getElementById('arrivals');
+        var wb = XLSX.utils.table_to_book(elt, {sheet: "sheet1"});
+        return dl ?
+            XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'}) :
+            XLSX.writeFile(wb, fn || ('ArrivalsReservationStatements.' + (type || 'xlsx')));
+    }
+</script>
+<script>
+    function ExportToExcelDepartures(type, fn, dl) {
+        var elt = document.getElementById('departures');
+        var wb = XLSX.utils.table_to_book(elt, {sheet: "sheet1"});
+        return dl ?
+            XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'}) :
+            XLSX.writeFile(wb, fn || ('DeparturesReservationStatements.' + (type || 'xlsx')));
+    }
+</script>
+
+<script>
+    function printArrivalsDiv() {
+        var divToPrint = document.getElementById('arrivals');
+        var htmlToPrint = '' +
+            '<style type="text/css">' +
+            'table th, table td {' +
+            'border:1px solid #000;' +
+            'padding:0.5em;' +
+            '}' +
+            '</style>';
+        htmlToPrint += divToPrint.outerHTML;
+        newWin = window.open("");
+        newWin.document.write(htmlToPrint);
+        newWin.print();
+        newWin.close();
+    }
+</script>
+<script>
+    function printDeparturesDiv() {
+        var divToPrint = document.getElementById('departures');
+        var htmlToPrint = '' +
+            '<style type="text/css">' +
+            'table th, table td {' +
+            'border:1px solid #000;' +
+            'padding:0.5em;' +
+            '}' +
+            '</style>';
+        htmlToPrint += divToPrint.outerHTML;
+        newWin = window.open("");
+        newWin.document.write(htmlToPrint);
+        newWin.print();
+        newWin.close();
+    }
+</script>
+
+<script>
+    function printTransaction(id) {
+        window.open("/Print/Payment?id=" + id, "_black");
+    }
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#bookings').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false,
+            "searching":true
+        });
+    });
+
+    $(document).ready(function () {
+        $('#arrivals').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false,
+            "searching":true
+        });
+    });
+    $(document).ready(function () {
+        $('#departures').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false,
+            "searching":true
+        });
+    });
+</script>
+
+<input type="hidden" id="propertyId" th:value="${property.getId()}" >
+
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/propertyDashboard?id=' + propertyId   ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script>
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+
+<input type="hidden" id="idd" th:value="${property.getId()}" >
+<input type="hidden" id="nipt" th:value="${property.getNUIS()}" >
+<input type="hidden" id="idcard" th:value="${property.getHotelierId()  }" >
+
+<script>
+    function go() {
+        var idd = document.getElementById("idd").value;
+
+        window.location = "/hostType?id=" + idd;
+    }
+</script>
+
+</body>
+</html>

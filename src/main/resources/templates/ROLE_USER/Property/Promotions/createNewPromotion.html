@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Create New Promotion | Panel Allbookers</title>
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- plugins:css -->
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+    <style>
+        /* Inline critical CSS */
+        .container .test input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 50%;
+            left: -5px;
+            transform: translateY(-50%);
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 2px solid #fb8540;
+            transition-duration: 250ms;
+            border-width: 2px;
+            border-radius: 2px;
+        }
+
+        .container input:checked ~ .checkmark {
+            border-color: #fb8540; /* Change the border color to orange */
+            background-color: #fb8540; /* Change the background color to orange */
+            border-color: #fb8540;
+            outline: 0;
+            -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
+            box-shadow: 0 0 0 .25rem #fb854024;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .container .checkmark:after {
+            left: 5px;
+            top: -4px;
+            width: 7px;
+            height: 18px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            transition-duration: 250ms;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .how-1, .select-1-11 {
+                font-size: 14px;
+            }
+
+            .f-1-1-dd label.in-2-2-3 {
+                font-size: 14px;
+            }
+
+            .d-flex.k-1-1-1 {
+                flex-direction: column;
+            }
+
+            .d-flex.k-1-1-1 .left-1-1-1, .d-flex.k-1-1-1 .right-1-1-1 {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            .jss {
+                width: 100%;
+                height: 35px;
+            }
+
+            .containerCh {
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script>
+        function validateDates() {
+            const startDateInput = document.querySelector('input[name="startDate"]');
+            const endDateInput = document.querySelector('input[name="endDate"]');
+
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+
+            if (startDate) {
+                const minEndDate = new Date(startDate);
+                minEndDate.setDate(minEndDate.getDate() + 1);
+                endDateInput.min = minEndDate.toISOString().split('T')[0];
+
+                if (endDate && new Date(endDate) <= minEndDate) {
+                    endDateInput.value = minEndDate.toISOString().split('T')[0];
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row ">
+                    <form id="createPromotion" th:action="@{'createNewPromotion?propertyId='+${property.getId()}+'&promotionTypeId='+${promotionType.getId()}}" th:object="${promotion}" method="post">
+                        <div class="container c-1-1-1">
+                            <div class="h-1-1" th:text="#{Addnewpromotion}  + ${promotionType.getPromotionName()}"></div>
+                            <div class="card-description" th:text="#{ 'client.' + ${promotionType.getDescription().replace(' ', '')}}"></div>
+                            <div class="card-body c-1-1-1q">
+                                <div class="how-1">
+                                    [[#{client.Howmuchofadiscountdoyouwanttogive}]]
+                                </div>
+                                <div class="select-1-11" th:text="#{Selectadiscount}+${ promotionType.getRecommendedPercentage()+'% and 99%'}"></div>
+                                <div class="f-1-1-dd">
+                                    <label class="in-2-2-3" for="disscount">[[#{client.Discount}]]</label>
+                                    <input class="in-1-1" type="number" id="disscount" name="tentacles" th:min="${promotionType.getRecommendedPercentage()}" max="99" th:value="${promotion.recommendedPercentage}" th:field="*{recommendedPercentage}" required>
+                                </div>
+                                <br><hr>
+                                <div class="how-1">
+                                    [[#{client.Whencanguestsstayusingthispromotion?}]]
+                                </div>
+                                <div class="d-flex k-1-1-1">
+                                    <div class="left-1-1-1 m-2">
+                                        <label for="dateFrom" style="font-weight: 700;margin-bottom: 0px;color: #0b3d75;">[[#{client.DateFrom}]]</label>
+                                        <input style="width: 128%" th:value="${todayDate}" type="date" class="form-control hello" name="startDate" id="dateFrom"   required onchange="validateDates()">
+                                    </div>
+                                    <div class="right-1-1-1 m-2" style="margin-left:15%!important;">
+                                        <label for="dateTo" style="font-weight: 700;margin-bottom: 0px;color: #0b3d75;">[[#{client.DateTo}]]</label>
+                                        <input  style="width: 128%" th:value="${month}" type="date" class="form-control hello" name="endDate" id="dateTo"    required onchange="validateDates()">
+                                    </div>
+                                </div>
+                                <br><hr>
+                                <label style="font-weight: 700;margin-bottom: 0px;color: #0b3d75;">[[#{client.PromotionName}]]</label>
+                                <input type="text" th:value="${promotion.promotionName}" class="form-control hello  jss" name="promotionName" id="promotionName" th:field="*{promotionName}" required>
+                                <br><hr>
+                                <label style="font-weight: 700;margin-bottom: 0px;color: #0b3d75;"> [[#{client.SelectRooms}]] </label>
+                                <div class="select-1-11">[[#{client.SelecttheRooms}]] </div>
+                                <div>
+                                    <ul>
+                                        <label class="containerCh" th:each="room : ${rooms}">
+                                            <input type="checkbox" th:field="*{rooms}" th:value="${room.id}" th:text="${room.name}"   class="room-checkbox" />
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </ul>
+                                </div>
+                                <br>
+                                <button type="submit" id="butoni-create" class="btn btn-primary">[[#{client.CreatePromotion}]]</button>
+                                <a th:href="@{'/yourPromotion?propertyId=' + ${property.getId()}}" class="btn btn-light">[[#{client.Close}]]</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div th:replace="/ROLE_USER/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+
+<style>
+
+    /*Style for card */
+    .fix-top-content {
+        padding-top: 100px;
+    }
+    .jss {
+        width: 100%;
+        height: 35px;
+    }
+
+    .d-flex.k-1-1-1 {
+        margin-top: 20px;
+    }
+
+    .h-1-1 {
+        font-size: 23px;
+        color: rgba(26, 26, 26, 0.91);
+        font-weight: 700;
+        position: relative;
+        padding-top: 20px;
+        text-transform: capitalize;
+    }
+
+    .how-1 {
+        font-weight: 700;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .select-1-11 {
+        color: black;
+        font-size: 14px;
+        margin-top: 10px;
+        margin-bottom: 16px;
+    }
+
+    .f-1-1-dd {
+        display: flex;
+        flex-direction: column;
+    }
+    label.in-2-2-3 {
+
+        margin: 0px;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        letter-spacing: 0.15px;
+        color: rgb(58 53 65);
+        font-weight: 600;
+    }
+    .in-1-1 {
+        width: 100px;
+        border: 1px solid;
+        border-color: #0b3d7570;
+        border-radius: 5px;
+    }
+    a:focus, input:focus {
+        border-color: #0b3d75;
+        outline: none;
+    }
+
+    /*Style checkbox*/
+    .containerCh {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    /* Hide the browser's default checkbox */
+    .containerCh input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 50%; /* Adjust the vertical alignment */
+        left: 5px; /* Adjust the left position */
+        transform: translateY(-50%);
+        height: 18px; /* Adjust the height */
+        width: 18px; /* Adjust the width */
+        background-color: #fff; /* Set the initial background color to white */
+        border: 2px solid #fb8540; /* Set the border color to orange */
+        transition-duration: 250ms;
+        border-width: 2px;
+        border-radius: 2px;
+
+    }
+
+    /* When the checkbox is checked, change the border color to orange */
+    .containerCh input:checked ~ .checkmark {
+        border-color: #fb8540; /* Change the border color to orange */
+        background-color: #fb8540; /* Change the background color to orange */
+        border-color: #fb8540;
+        outline: 0;
+        -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
+        box-shadow: 0 0 0 .25rem #fb854024;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .containerCh input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .containerCh .checkmark:after {
+        left: 5px; /* Adjust the left position */
+        top: -4px; /* Adjust the top position */
+        width: 7px;
+        height: 18px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+        transition-duration: 250ms;
+        font-size: .9375rem;
+        font-family: themify;
+    }
+    .btn-primary:disabled{
+        cursor: not-allowed;
+    }
+</style>
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+<script>
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        });
+    });
+</script>
+<script>
+    <!--making the button disabled if no room is checked -->
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const roomCheckboxes = document.querySelectorAll('.room-checkbox');
+        const submitButton = document.getElementById('butoni-create');
+
+        const checkIfAnyChecked = () => {
+            const isAnyChecked = Array.from(roomCheckboxes).some(cb => cb.checked);
+            submitButton.disabled = !isAnyChecked;
+        };
+
+
+        checkIfAnyChecked();
+
+        roomCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', checkIfAnyChecked);
+        });
+    });
+
+
+
+</script>
+<input type="hidden" id="propertyId" th:value="${property.getId()}">
+<input type="hidden" id="promotionTypeId" th:value="${promotionType.getId()}">
+
+
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+        var promotionTypeId= document.getElementById("promotionTypeId").value;
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/createNewPromotion?propertyId=' + propertyId  + '&promotionTypeId=' + promotionTypeId ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+</body>
+</html>

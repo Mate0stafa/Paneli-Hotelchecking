@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add New Property Point Of Interest | Admin Panel Allbookers </title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-md-10 col-sm-12 grid-margin">
+                        <div class="card">
+                            <h4 style="font-size: 22px;color: rgba(26,26,26,0.89);font-weight: 700;position: relative;padding-top: 20px;" class="card-title" th:text="#{AddNew } + ' ' +${point.getName()}"></h4>
+                            <div class="card-body">
+                               <form class="form-sample" id="pointInterestForm" action="/addNewPropertyPointOfInterest" method="post">
+                                    <div class="row">
+                                        <input type="hidden" id="propertyID" th:value="${property.getId()}"/>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label test-1-1">[[#{client.Name}]]</label>
+                                                    <input id="pointName" type="text" class="form-control" onkeypress="return event.key !== 'Enter';" required/>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label test-1-1">[[#{client.Distance}]]</label>
+                                                    <input onkeypress="return event.key !== 'Enter';" id="pointDistance" type="number" step="0.001" class="form-control" required/>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label test-1-1">[[#{client.Unit}]]</label>
+                                                    <select class="form-control" type="text" name="addressCompany" id="selectDistance">
+                                                        <option value="km">Km</option>
+                                                        <option value="m">M</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <button type="submit" class="btn btn-light btn-icon-text"><i class="ti-upload btn-icon-prepend"></i> [[#{client.Add}]]</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+
+
+
+<script th:inline="javascript">
+    var userLanguage = /*[[${#locale.language}]]*/ 'en';
+
+    /*<![CDATA[*/
+
+    $("#pointInterestForm").submit(function () {
+        newPropertyPoint();
+        return false;
+    });
+
+    function newPropertyPoint(){
+
+        $.post("addNewPropertyPoint",
+            {
+                propertyId:  /*[[${property.getId()}]]*/,
+                pointId: /*[[${point.getId()}]]*/,
+                pointName: $("#pointName").val(),
+                pointDistance: $("#pointDistance").val(),
+                distanceValue: $("#selectDistance").val()
+            },
+            function(data, status, request){
+                if (userLanguage === "en") {
+                    swal("Success", "Point edited successfully!", "success").then(() => {
+                        let propertyId = $("#propertyId").val();
+                        window.location.href = "/propertyPointOfInterest?id=" + propertyId;
+                    });
+                } else if (userLanguage === "sq") {
+                    swal("Sukses", "Pika u modifikua me sukses!", "success").then(() => {
+                        let propertyId = $("#propertyId").val();
+                        window.location.href = "/propertyPointOfInterest?id=" + propertyId;
+                    });
+
+                }else {
+                    if (userLanguage === "en") {
+                        swal("Error", "An error occurred!!!", "error");
+                    } else if (userLanguage === "sq") {
+                        swal("Error", "Ndodhi një gabim!!!", "error");
+                    }                }
+
+            }).fail(function() {
+            swal("Error", "An error occured!!!", "error");
+        });
+
+    }
+    /*]]>*/
+</script>
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+<input type="hidden" id="propertyId" th:value="${property.getId()}">
+<input type="hidden" id="pointId" th:value="${point.getId()}">
+
+<script>
+    function changeLanguageController(param) {
+        var pointId= document.getElementById("pointId").value;
+
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/addNewPropertyPoint?propertyId=' + propertyId  + '&pointId=' + pointId;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+<script src="../../js/sweetAlert.js"></script>
+<style>
+    .page-body-wrapper {
+        min-height: calc(110vh - 60px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .fix-top-content{
+        padding-top: 100px;
+    }
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+    }
+</style>
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+
+
+    document.getElementById('pointDistance').addEventListener('paste', function (e) {
+        e.preventDefault();
+    });
+
+    document.getElementById('pointDistance').addEventListener('input', function (decimals) {
+        let value = decimals.target.value;
+
+        if (value < 0) {
+            decimals.target.value = '';
+            return;
+        }
+
+        if (!/^\d*\.?\d{0,3}$/.test(value)) {
+            decimals.target.value =value.slice(0, value.indexOf('.' + 4));
+        }
+    });
+    document.getElementById('pointDistance').addEventListener('keydown', function (number) {
+        let value = number.target.value;
+
+        if (number.key === '-' || number.key === 'e') {
+            number.preventDefault();
+            return;
+        }
+
+        const decimalIndex = value.indexOf('.');
+        if (decimalIndex !== -1) {
+            const decimalsCount = value.length - decimalIndex - 1;
+
+            if (decimalsCount >= 3 && value.key.match(/[0-9]/)) {
+                value.preventDefault();
+            }
+        }
+    });
+</script>
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+</body>
+</html>
+

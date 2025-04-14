@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Panel Allbookers</title>
+    <meta name="author" content="Allbookers.com">
+    <meta name="description" content="Book hotels, resorts, apartments, and villas worldwide with AllBookers.Com. Over 8424 properties available with real-time rates and availability.">
+    <meta name="keywords" content="Panel Allbookers, Properties, Bookings, Room Type, Total Commission, Number of Reservation, Promotions, Create Manage Users">
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body style="background-color: #fff !important;">
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper align-items-center auth px-0">
+            <div class="row w-100 mx-0" style="margin-top: 5%;">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-center py-5 px-4 px-sm-5">
+                        <h3 style="font-weight: 500;">Hello! Let's get started</h3>
+                        <h6 class="font-weight-light">Sign in to continue.</h6>
+                        <div id="messageAttempts" class="messageAttempts notvisible">No wrong attempts.</div>
+                        <form th:action="@{/loginToAllbookers}" method="post" class="pt-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-lg" id="exampleInputEmail1" name="email" placeholder="Username" oninput="userLoginAttemptsFunc(this.value)">
+                            </div>
+                            <div id="hideDiv">
+                                <div class="form-group">
+                                    <div class="password-container" style="display: flex">
+                                        <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" name="userpassword" placeholder="Password">
+                                        <button type="button" id="showPasswordButton" class="password-toggle-button" aria-label="Toggle password visibility" style="border: 1px solid #CED4DA;font-weight: 400;">
+                                            <i class="fas fa-eye-slash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">LOG IN</button>
+                                </div>
+                                <div class="my-2 d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                        <label class="form-check-label text-muted">
+                                            <input type="checkbox" class="form-check-input">
+                                            Keep me signed in
+                                        </label>
+                                    </div>
+                                    <a th:href="@{'/forgotPassword'}" class="auth-link text-black">Forgot password?</a>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4 font-weight-light">
+                                Don't have an account? <a th:href="@{'http://join.allbookers.com'}" class="" style="color: #fb8540">Create</a>
+                            </div>
+                            <br>
+                        </form>
+                        <script>
+                            var passwordInput = document.getElementById('exampleInputPassword1');
+                            var showPasswordButton = document.getElementById('showPasswordButton');
+
+                            showPasswordButton.addEventListener('click', function () {
+                                if (passwordInput.type === 'password') {
+                                    passwordInput.type = 'text';
+                                    showPasswordButton.innerHTML = '<i class="fas fa-eye"></i>';
+                                } else {
+                                    passwordInput.type = 'password';
+                                    showPasswordButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="logo-group">
+                <img class="logo" style="padding-top: 5px;" src="/images/logoallbookers.png" alt="Allbookers Logo" width="120px">
+                <img class="logo" style="padding-top: 5px;" src="/images/InterMedia-Logo.png" alt="Intermedia Logo" width="110px">
+                <img class="logo" style="padding-top: 5px;" src="/images/BookersDesk.png" alt="BookersDesk Logo" width="130px" height="50px">
+                <img class="logo" style="padding-top: 0px;" src="/images/hotels-checking.png" alt="Hotels Checking Logo" width="140px" height="40px">
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <style>
+        img.logo {
+            margin:1%;
+            object-fit: contain;
+        }
+
+        .logo-group{
+            display: flex;
+            justify-content: center;
+            margin-top: 5%;
+        }
+
+
+        @media screen and (max-width: 768px) {
+            img.logo {
+                width: 23% !important;
+                margin: 1%;
+                object-fit: contain;
+            }
+        }
+
+        .fa-classic, .fa-regular, .fa-solid, .far, .fas {
+            font-family: "Font Awesome 6 Free";
+            color: #fb8540;
+        }
+        .messageAttempts {
+            color: #ff4e4e;
+            font-size: 15px;
+        }
+        .notvisible {
+            visibility: hidden;
+        }
+    </style>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    var timeoutRef;
+
+    window.onload = function() {
+        const usernameInput = document.getElementById("exampleInputEmail1");
+        userLoginAttemptsFunc(usernameInput.value);
+    };
+
+    function userLoginAttemptsFunc(username) {
+
+        const messageDiv = $("#messageAttempts");
+        const hideDiv = $("#hideDiv");
+
+        // Clear any existing timeout
+        if (timeoutRef) {
+            clearTimeout(timeoutRef);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/sendToUserLoginAttempts?username=" + username,
+            success: function(response) {
+
+                messageDiv.html("No wrong attempts.");
+                messageDiv.addClass("notvisible");
+                hideDiv.show();
+
+                if (response.exists) {
+                    if (response.blockedUntil !== undefined) {
+
+                        var blockedUntil = new Date(response.blockedUntil);
+
+                        updateRemainingTime(response.attempts, blockedUntil);
+                        messageDiv.removeClass("notvisible");
+
+                        hideDiv.hide();
+                    } else {
+                        messageDiv.text("You have made " + response.attempts + " wrong attempts to login.");
+                        messageDiv.removeClass("notvisible");
+                        hideDiv.show();
+                    }
+                } else {
+                    messageDiv.html("No wrong attempts.");
+                    messageDiv.addClass("notvisible");
+                    hideDiv.show();
+                }
+            },
+            error: function() {
+                location.reload();
+            }
+        });
+
+    }
+
+    function updateRemainingTime(responsAttempts, blockedUntil) {
+
+        var now = new Date();
+        var timeDifference = blockedUntil - now;
+
+        // Reload the page if timeDifference becomes negative
+        if (timeDifference < 0) {
+            location.reload();
+        } else {
+            const messageDiv = $("#messageAttempts");
+
+            var seconds = Math.floor((timeDifference / 1000) % 60);
+            var minutes = Math.floor((timeDifference / 1000 / 60) % 60);
+            var hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+
+            // Format the remaining time
+            var formattedTime = hours.toString().padStart(2, '0') + ":" +
+                minutes.toString().padStart(2, '0') + ":" +
+                seconds.toString().padStart(2, '0');
+
+            // Update messageDiv with remaining time
+            messageDiv.html("You have made " + responsAttempts + " wrong attempts to login. Please wait: " + formattedTime);
+
+            // Set a new timeout and store the reference
+            timeoutRef = setTimeout(function() {
+                updateRemainingTime(responsAttempts, blockedUntil);
+            }, 100);
+        }
+    }
+</script>
+</body>
+</html>

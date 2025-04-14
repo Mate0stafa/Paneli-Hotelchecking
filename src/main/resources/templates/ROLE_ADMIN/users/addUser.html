@@ -1,0 +1,152 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Panel Admin | Allbookers.com</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+
+<body>
+<div class="container-scroller">
+
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">[[#{client.AddnewHotelFacility}]]</h4>
+                <form class="form-sample" th:action="@{/language/addLanguage}" method="post" th:object="${newLanguage}">
+                  <p class="card-description">
+                    [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                  </p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.NewLanguagename}]]</label>
+                        <div class="col-sm-9">
+                          <input th:field="*{name}" type="text" class="form-control"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">[[#{client.Code}]]</label>
+                        <div class="col-sm-9">
+                          <input th:field="*{code}" type="text" class="form-control"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-8">
+                    <button type="submit" class="btn btn-success">[[#{client.AddNewLanguage}]]</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+    <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
+</div>
+
+<style>
+
+  @media only screen and (max-width: 600px) {
+    h4.font-weight-bold.hgh {
+      display: none;
+    }
+
+    select#version {
+      display: none;
+    }
+  }
+
+  select.form-control {
+    color: black!important;
+    outline-color: black!important;
+  }
+</style>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+<script>
+  $( "#exampleFormControlSelect3" ).change(function() {
+    $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+      location.reload();
+    });
+  });
+</script>
+
+<!-- endinject -->
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+
+</html>
+

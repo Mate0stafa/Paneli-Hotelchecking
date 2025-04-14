@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Forgot Password | Allbookers Panel</title>
+<link rel="stylesheet" href="../../vendors/feather/feather.css">
+<link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+<link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+<!-- endinject -->
+<!-- Plugin css for this page -->
+<link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+<link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+<!-- End plugin css for this page -->
+<!-- inject:css -->
+<link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+<link rel="stylesheet" href="../../css/style.css">
+<!-- endinject -->
+<link rel="shortcut icon" href="../../images/favicon.png"/>
+<body>
+  <div class="container padding-bottom-3x mb-2 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <form class="card mt-4" >
+          <div class="card-body p-4">
+            <div class="form-group" th:if="${user1==1}">
+              <p><h3>Check your inbox</h3><br> We've just emailed instructions and a reset password link to <strong><span th:text="${email}"></span></strong> . It might take a few minutes to arrive.</p>
+            </div>
+            <div class="form-group" th:if="${user2==2}">
+              <p th:text="${message}"></p>
+            </div>
+            <div class="form-group" th:if="${user==0}">
+              <p th:text="${message1}"></p>
+            </div>
+            <div class="form-group" th:if="${usererror==10}">
+              <p class="p-4" th:text="${messageerror}"></p>
+            </div>
+          </div>
+          <div class="card-footer" style="justify-content: center;display: flex">
+            <a th:href="'/'">
+              <button class="btn btn-primary" type="button">Back to Login</button>
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<style>
+  form.card.mt-4 {
+    background: #ffffff;
+    border-top: 5px solid #fb8540;
+    box-shadow: 0px 14px 18px -4px rgba(39, 45, 61, 0.08), 0px 4px 6px -2px rgba(39, 45, 61, 0.03) !important;
+  }
+  button.backlogin {
+    padding: 10px 50px;
+    border-radius: 5px;
+    border: 1px solid cornflowerblue;
+    color: #417eeb;
+    font-weight: 600;
+    background-color: #e7effd;
+  }
+  .padding-bottom-3x {
+    padding-bottom: 72px !important
+  }
+  .card-footer {
+    background-color: #fff
+  }
+  .btn {
+    font-size: 13px
+  }
+  .card-body{
+    border-radius: 1px;
+  }
+  .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #76b7e9;
+    outline: 0;
+    box-shadow: 0 0 0 0px #28a745
+  }
+</style>
+<!-- plugins:js -->
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+</body>
+
+</html>

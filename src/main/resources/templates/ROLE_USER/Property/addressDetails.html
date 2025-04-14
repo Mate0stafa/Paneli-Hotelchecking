@@ -1,0 +1,527 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Address Details | Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+</head>
+
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+        <!-- partial -->
+
+        <div class="main-panel">
+            <!--            <div th:replace="/ROLE_USER/Layouts/secondNavbar"></div>-->
+
+            <div class="content-wrapper row fix-top-content">
+
+                <div class="col-md-12 col-sm-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title" style="font-size: 23px;color: #1a1f26;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;">[[#{client.EditAddressDetails}]]  </h4>
+                            <p class="card-description">
+                                [[#{client.Updateproperty}]]
+                            </p>
+                            <input type="hidden" th:value="${property.getId()}" id="propertyId" >
+
+                            <div class="row">
+                                <form class="forms-sample col-md-8 col-sm-12 pt-2" id="the-form" th:action="@{'/addressDetails?id='+${property.getId()}}" th:object="${property}" method="post">
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label titlelabel" style="margin: 0px;
+                                    font-size: 0.899rem;
+                                    line-height: 1.5;
+                                    letter-spacing: 0.15px;
+                                    color: rgba(58, 53, 65, 0.68);
+                                    font-weight: 600;
+                                    text-transform: capitalize;">[[#{client.Location}]]</label>
+                                        <div class="col-sm-9">
+                                            <input    onkeypress="return event.key !== 'Enter';" type="text" class="form-control" placeholder="Location" th:value="${property.address.getAddress_city()}" th:field="*{address.address_city}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label titlelabel" style="margin: 0px;
+                                    font-size: 0.899rem;
+                                    line-height: 1.5;
+                                    letter-spacing: 0.15px;
+                                    color: rgba(58, 53, 65, 0.68);
+                                    font-weight: 600;
+                                    text-transform: capitalize;">[[#{client.OnMap}]]</label>
+                                        <div class="col-sm-9">
+                                            <input onkeypress="return event.key !== 'Enter';"  type="text" class="form-control" placeholder="on map" id="onMap" th:value="${property.address.getOn_map()}" th:field="*{address.on_map}">                                        </div>
+                                    </div>
+
+                                    <div class="requestChangesDiv">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label titlelabel" style="margin: 0px;
+                                    font-size: 0.899rem;
+                                    line-height: 1.5;
+                                    letter-spacing: 0.15px;
+                                    color: rgba(58, 53, 65, 0.68);
+                                    font-weight: 600;
+                                    text-transform: capitalize;">[[#{client.Streetname}]]</label>
+                                            <div class="col-sm-9">
+                                                <input onkeypress="return event.key !== 'Enter';"  type="text" id="streetName" class="form-control" placeholder="street" th:value="${property.address.getStreet()}" th:field="*{address.street} ">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label titlelabel" style="margin: 0px;
+                                    font-size: 0.899rem;
+                                    line-height: 1.5;
+                                    letter-spacing: 0.15px;
+                                    color: rgba(58, 53, 65, 0.68);
+                                    font-weight: 600;
+                                    text-transform: capitalize;">[[#{client.City}]]</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="city" th:field="*{address.city.id}">
+                                                    <option th:each="count :${cities}" th:value="${count.id}" th:text="${count.full_name}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label titlelabel" style="margin: 0px;
+                                    font-size: 0.899rem;
+                                    line-height: 1.5;
+                                    letter-spacing: 0.15px;
+                                    color: rgba(58, 53, 65, 0.68);
+                                    font-weight: 600;
+                                    text-transform: capitalize;">[[#{client.ZipCode}]]</label>
+                                            <div class="col-sm-9">
+                                                <input onkeypress="return event.key !== 'Enter';"  type="text" id="zipCode" class="form-control" placeholder="Zip Code" th:value="${property.address.getZip_code()}" th:field="*{address.zip_code}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" style="justify-content: end;">
+                                            <button type="button" class="requestChangesBtn" data-toggle="modal" data-target="#requestChangesModal">[[#{client.RequestChange}]] </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label titlelabel" style="margin: 0px;
+                                    font-size: 0.899rem;
+                                    line-height: 1.5;
+                                    letter-spacing: 0.15px;
+                                    color: rgba(58, 53, 65, 0.68);
+                                    font-weight: 600;
+                                    text-transform: capitalize;">[[#{client.County}]]</label>
+                                        <div class="col-sm-9">
+                                            <input  onkeypress="return event.key !== 'Enter';"  type="text" readonly class="form-control" placeholder="County" th:value="${address.city.county.name}" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label titlelabel" style="margin: 0px;
+                                    font-size: 0.899rem;
+                                    line-height: 1.5;
+                                    letter-spacing: 0.15px;
+                                    color: rgba(58, 53, 65, 0.68);
+                                    font-weight: 600;
+                                    text-transform: capitalize;">[[#{client.Country}]]</label>
+                                        <div class="col-sm-9">
+                                            <input onkeypress="return event.key !== 'Enter';"  type="text" readonly class="form-control" placeholder="Country" th:value="${address.city.county.country.country_name}"  >
+                                        </div>
+                                    </div>
+                                                                        <div class="d-flex sa12">
+                                                                            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" th:data-target="'#myModal'">[[#{client.Submit}]]</button>
+                                                                            <a th:href="@{'/'}" th:if="${!(hasGroupAccountUser ?: false)}"><button type="button" class="btn btn-light" >[[#{client.Cancel}]]</button></a>
+                                                                            <a th:href="@{'/propertydashboard?propertyId='+${property.getId()}}" th:if="${hasGroupAccountUser ?: false}"><button type="button" onclick="location.reload()" class="btn btn-light" >[[#{client.Cancel}]]</button></a>
+                                                                        </div>
+                                </form>
+
+                                <!-- Modal -->
+                                <div class="modal fade" th:id="'myModal'" style="overflow: inherit" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">[[#{client.Save}]]</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                [[#{client.sure}]]
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" id="the-submit" class="btn btn-success">[[#{client.Save}]]</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{client.Close}]] </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Request Change Modal -->
+                                <div class="modal fade" id="requestChangesModal" style="overflow: inherit" tabindex="-1" role="dialog" aria-labelledby="requestChangesModalTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="requestChangesModalTitle"> [[#{client.RequestChangesAdmin}]]</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div>[[#{client.surefields}]]</div>
+                                                <br>
+                                                <div>[[#{client.Changesadministrator}]] </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success" onclick="requestChanges(this)">[[#{client.RequestChanges}]]</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{client.Close}]]</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-sm-12">
+                                    <h4 class="pt-2" style="color: #1a1a1a;text-transform: capitalize;font-weight: 500">[[#{client.Propertylocationmap}]]</h4>
+                                    <br>
+                                    <div id="map"></div>
+                                    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+                                    <script
+                                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDM3AuYTcf5CnXQNOLF9rp7fbnaBsYgmU&callback=initMap&v=weekly"
+                                            async
+                                    ></script>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div th:replace="/ROLE_USER/Layouts/footerL"></div>
+
+
+        </div>
+
+    </div>
+</div>
+<script th:inline="javascript">
+    let map;
+    let marker;
+
+    function initMap() {
+        var onMapValue = document.getElementById("onMap").value;
+        var coordinates = onMapValue.split(',');
+        var latt = parseFloat(coordinates[0].trim());
+        var long = parseFloat(coordinates[1].trim());
+
+        var uluru = { lat: latt, lng: long };
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: uluru,
+        });
+        marker = new google.maps.Marker({
+            position: uluru,
+            map: map,
+            draggable: true
+        });
+
+        google.maps.event.addListener(marker, 'dragend', function(event) {
+            var lat = event.latLng.lat();
+            var lng = event.latLng.lng();
+            document.getElementById("onMap").value = lat + ', ' + lng;
+        });
+
+        google.maps.event.addListener(map, 'click', function(event) {
+            var lat = event.latLng.lat();
+            var lng = event.latLng.lng();
+            marker.setPosition(event.latLng);
+            document.getElementById("onMap").value = lat + ', ' + lng;
+        });
+    }
+
+    function updateMap() {
+        var onMapValue = document.getElementById("onMap").value;
+        var coordinates = onMapValue.split(',');
+        var latt = parseFloat(coordinates[0].trim());
+        var long = parseFloat(coordinates[1].trim());
+
+        var uluru = { lat: latt, lng: long };
+        marker.setPosition(uluru);
+        map.setCenter(uluru);
+    }
+
+    document.getElementById("onMap").addEventListener("change", updateMap);
+    initMap();
+</script>
+
+
+
+<style>
+    .page-body-wrapper {
+        min-height: calc(110vh - 60px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .card .card-title{
+        font-size:25px;
+    }
+    .titlelabel{
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1;
+        color: #141824;
+    }
+    .fix-top-content{
+        padding-top: 100px;
+    }
+    .form-group {
+        margin-bottom: 0rem!important;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .requestChangesDiv {
+        background-color: #ffffe9;
+        border-radius: 10px;
+        border: 1px solid #ffffb9;
+        padding: 10px 0px;
+        margin: 10px 0;
+    }
+    .requestChangesBtn {
+        border: 1px solid yellow;
+        border-radius: 10px;
+        background-color: #ffffaa;
+        padding: 5px 15px;
+        margin: 5px 15px;
+    }
+    .form-control {
+        padding: 0.475rem 0.775rem;
+    }
+    .grid-margin {
+        margin-bottom: 11.5rem!important;
+    }
+    .nav-divider {
+        border-right: 1px solid silver;
+    }
+    li.nav-item.mr-3.nav-divider {
+        margin-left: 12px;
+    }
+
+    #map {
+        height: 330px;
+        border-radius: 10px;
+    }
+
+    .d-flex.sa12 {
+        justify-content: right;
+    }
+
+    .map-container{
+        overflow:hidden;
+        padding-bottom:56.25%;
+        position:relative;
+        height:0;
+    }
+    .map-container iframe{
+        left:0;
+        top:0;
+        height:80%;
+        width:100%;
+        position:absolute;
+    }
+
+
+
+    label.label-ch {
+        margin-left: 30px;
+    }
+
+
+    label.form-check-label {
+        margin-left: 18px;
+        margin-right: 13px;
+    }
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light.second-nav-propdetails {
+        z-index: 99999;
+        background: #0b3d75!important;
+        color: white!important;
+    }
+    span.navbar-brand {
+        color: #f5f7ff!important;
+        font-size: 19px;
+        font-weight: 400;
+        font-family: sans-serif;
+    }
+    .nav-link{
+        color: white!important;
+    }
+    a.nav-link:hover {
+        color: white!important;
+        border-radius: 4px;
+    }
+    a.nav-link.activeclass {
+        color: #00aeef!important;
+        font-weight: 600;
+    }
+    @media only screen and (max-width: 600px) {
+
+        .col-6, .lightGallery .image-tile {
+            flex: 0 0 100%;
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+
+        select#version {
+            display: none;
+        }
+
+        button.btn.btn-inverse-primary.btn-fw {
+            display: none;
+        }
+
+    }
+</style>
+
+
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+
+    $(function() {
+        $('#the-submit').on('click', function(e) {
+            $('#the-form').submit();
+        });
+    });
+
+    function requestChanges(element) {
+
+        element.disabled = true;
+
+        var streetName = document.getElementById("streetName").value;
+        var city = document.getElementById("city");
+        var cityId = city.value;
+        var cityName = city.options[city.selectedIndex].text;
+        var zipCode = document.getElementById("zipCode").value;
+
+        var requestChanges = {};
+
+        requestChanges.streetName = streetName;
+        requestChanges.cityId = cityId;
+        requestChanges.cityName = cityName;
+        requestChanges.zipCode = zipCode;
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            headers: { 'x-my-custom-header': 'some value' },
+            url: "/requestChanges?id=" + /*[[${property.getId()}]]*/ null,
+            data: JSON.stringify(requestChanges),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (response) {
+                if (response) {
+                    Toastify({
+                        text: "The request was sent!",
+                        duration: 1500,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+                    }).showToast();
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1500);
+                }
+            },
+            error: function (response) {
+                Toastify({
+                    text: "Error: Unable to complete the request.",
+                    duration: 1500,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)"
+                }).showToast();
+                setTimeout(function() {
+                    location.reload();
+                }, 1500);
+            }
+        });
+    }
+
+    /*]]>*/
+
+</script>
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/addressDetails?id=' + propertyId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+<!-- End custom js for this page-->
+</body>
+
+</html>

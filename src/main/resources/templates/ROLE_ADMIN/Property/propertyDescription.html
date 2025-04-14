@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property Description | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+
+</head>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container-scroller {
+        min-height: 100vh;
+    }
+
+    .page-body-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+        .page-body-wrapper {
+            flex-direction: row;
+        }
+
+
+    }
+
+    /* Ensure content doesn't overflow on small screens */
+    @media (max-width: 576px) {
+
+        h6, #description-text, .facilities-list {
+            font-size: 0.9rem;
+        }
+
+    }
+
+    .description-container,
+    .facilities-container {
+        margin-bottom: 1.5rem;
+    }
+
+    h6 {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .description-container h6,
+    .facilities-container h6 {
+        font-weight: bold;
+        background: #e9ecef;
+        padding: 0.5rem;
+        border-left: 4px solid #1a2c40;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    #description-text {
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.5;
+        overflow-wrap: break-word;
+    }
+
+    .facilities-list {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .facility-item {
+        display: inline;
+        position: relative;
+    }
+
+    .facility-item::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: orange;
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .facility-item:hover::after {
+        visibility: visible;
+        transform: scaleX(1);
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+        .page-body-wrapper {
+            flex-direction: row;
+        }
+
+    }
+
+    /* Modal responsiveness */
+    .modal-dialog {
+        max-width: 90%;
+        margin: 1.75rem auto;
+    }
+
+    @media (min-width: 576px) {
+        .modal-dialog {
+            max-width: 500px;
+        }
+    }
+    .fix-top-content{
+        padding-top: 100px;
+    }
+</style>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="description-container">
+                                <h6 th:if="${property.getDescription() != null && !property.getDescription().getDescription().isEmpty()}">
+                                    [[#{client.PropertyDescription}]] :
+                                </h6>
+                                <p id="description-text"
+                                   th:if="${property.getDescription() != null && property.getDescription().getDescription() != null}"
+                                   th:text="${property.getDescription().getDescription()}">
+                                </p>
+                            </div>
+
+
+                            <div class="facilities-container">
+                                <h6 th:if="${property.getDescription() == null || property.getDescription().getDescription().isEmpty()}">
+                                    [[#{client.Thispropertyhasfacilities}]]:
+                                </h6>
+                                <p class="facilities-list" th:if="${property.getDescription() == null || property.getDescription().getDescription().isEmpty()}">
+                        <span th:each="p, iterStat : ${property.getHotel_facility()}" class="facility-item">
+                            <span th:text="${p.getName()}"></span><th:block th:if="${!iterStat.last}">,</th:block>
+                        </span>
+                                </p>
+                            </div>
+
+                            <button type="button" class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#editModal"
+                                    th:if="${property.getDescription() == null || property.getDescription().getDescription().isEmpty()}">
+                                [[#{client.AddaDescription}]]
+                            </button>
+
+                            <button type="button" class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#editModal"
+                                    th:if="${property.getDescription() != null && !property.getDescription().getDescription().isEmpty()}">
+                                [[#{client.EditDescription}]]
+                            </button>
+                            <!-- New section for pending requests -->
+                            <div class="pending-requests-container mt-4" th:if="${!pendingRequests.isEmpty()}">
+                                <div class="alert alert-info d-flex align-items-center" role="alert" >
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    <small class="font-weight-bold mb-0">    [[#{client.PendingDescription}]] </small>
+                                </div>
+                                <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#changeRequestModal">
+                                    [[#{client.SeeRequested}]]
+                                </button>
+                            </div>
+                            <!-- New modal for change requests -->
+                            <div class="modal fade" id="changeRequestModal" tabindex="-1" role="dialog" aria-labelledby="changeRequestModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="changeRequestModalLabel"><strong> [[#{client.DescriptionChange}]]  </strong></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div th:each="request, iterStat : ${pendingRequests}" class="pending-request mb-3">
+                                                <h6><strong>Request #<span th:text="${iterStat.count}"></span></strong></h6>
+                                                <p th:text="${request.requestedDescription}"></p>
+                                                <button type="button" class="btn btn-outline-success" th:onclick="'approveChange(' + ${request.id} + ')'">[[#{client.Approve}]] </button>
+                                                <button type="button" class="btn btn-outline-danger" th:onclick="'rejectChange(' + ${request.id} + ')'">[[#{client.Reject}]] </button>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{client.Close}]] </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">[[#{client.EditDescription}]]  </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <textarea class="form-control" id="description-textarea" rows="4" th:if="${property.getDescription() != null}" th:text="${property.getDescription().getDescription()}" placeholder="Add or edit a description"></textarea>
+                                    <textarea class="form-control" id="description-textarea" th:if="${property.getDescription() == null}" placeholder="Add or edit a description"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin-top: 13px">[[#{client.Close}]]</button>
+                                    <button type="button" class="btn btn-primary" id="save-button" onclick="saveDescription()">[[#{client.Savechanges}]] </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="propertyId" th:value="${property.getId()}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    function saveDescription() {
+        console.log("cfe");
+
+        var propertyId = document.getElementById("propertyId").value;
+        var description = document.getElementById("description-textarea").value;
+
+        var dtoDescription = {
+            descriptionDto: description,
+            propertyIdDto: propertyId
+        };
+
+        console.log(dtoDescription);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/propertyDescriptionPost",
+            data: JSON.stringify(dtoDescription),
+            dataType: 'text',
+            cache: false,
+            timeout: 600000,
+            success: function (response) {
+                console.log('Response:', response);
+                Swal.fire("Success!")
+                    .then(function(){
+                        window.location.reload();
+                    });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error Status:', status);
+                console.error('Error Thrown:', error);
+                console.error('Response Text:', xhr.responseText);
+                Swal.fire("Error!")
+                    .then(function(){
+                        window.location.reload();
+                    });
+            }
+        });
+
+    }
+    function approveChange(requestId) {
+        $.ajax({
+            type: "POST",
+            url: "/approveDescriptionChange",
+            data: { requestId: requestId },
+            success: function (response) {
+                Swal.fire("Change request approved successfully!")
+                    .then(function(){
+                        window.location.reload();
+                    });
+            },
+            error: function (xhr, status, error) {
+                Swal.fire("Error approving change request!")
+                    .then(function(){
+                        window.location.reload();
+                    });
+            }
+        });
+    }
+
+    function rejectChange(requestId) {
+        $.ajax({
+            type: "POST",
+            url: "/rejectDescriptionChange",
+            data: { requestId: requestId },
+            success: function (response) {
+                Swal.fire("Change request rejected successfully!")
+                    .then(function(){
+                        window.location.reload();
+                    });
+            },
+            error: function (xhr, status, error) {
+                Swal.fire("Error rejecting change request!")
+                    .then(function(){
+                        window.location.reload();
+                    });
+            }
+        });
+    }
+
+
+</script>
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'en';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/propertyDescription?id=' + propertyId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+
+</body>
+</html>

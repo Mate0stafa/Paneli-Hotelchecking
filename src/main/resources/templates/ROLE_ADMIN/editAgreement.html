@@ -1,0 +1,751 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Contracts | Admin Panel Allbookers</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+
+  <style>
+    .card.card-img-holder .card-img-absolute {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+    .fix-top-content {
+      padding-top: 100px;
+    }
+    .icon {
+      font-size: 18px;
+      color: #4e4c4c;
+      cursor: pointer;
+      position: relative;
+      margin: 0px 10px;
+    }
+    .tooltip {
+      font-size: 12px;
+      visibility: hidden;
+      width: 250px;
+      background-color: #4a4848;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-family: system-ui;
+      margin: -10px 20px;
+    }
+    .icon:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    .modal-dialog {
+      max-width: 1200px;
+      margin: auto;
+    }
+    .red {
+      width: 45%;
+      border: 1px solid red;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .red:hover {
+      border: 2px solid red;
+    }
+    .green {
+      width: 45%;
+      border: 1px solid green;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .green:hover {
+      border: 2px solid green;
+    }
+    button.btn.btn-default {
+      background-color: #c9c2c2;
+      color: #605d5d;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+    button.btn.btn-default:hover {
+      background-color: gray;
+      color: white;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+    @media only screen and (max-width: 600px) {
+      h4.font-weight-bold.hgh {
+        display: none;
+      }
+      .fix-top-content {
+        padding-top: 30px;
+      }
+    }
+    .nav-divider {
+      border-right: 1px solid silver;
+    }
+    li.nav-item.mr-3.nav-divider {
+      margin-left: 12px;
+    }
+    .row.agreement-row {
+      margin-bottom: 20px;
+    }
+    .col-sm-12.col-md-2.col-lg-2.col-xl-2.left-part-pnl {
+      font-weight: 600;
+      color: #0b3d75;
+    }
+    label.label-ch {
+      margin-left: 30px;
+    }
+    label.form-check-label {
+      margin-left: 18px;
+      margin-right: 13px;
+    }
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light.second-nav-propdetails {
+      z-index: 99999;
+      background: #0b3d75!important;
+      color: white!important;
+    }
+    span.navbar-brand {
+      color: #f5f7ff!important;
+      font-size: 19px;
+      font-weight: 400;
+      font-family: sans-serif;
+    }
+    .nav-link {
+      color: white!important;
+    }
+    a.nav-link:hover {
+      color: white!important;
+      border-radius: 4px;
+    }
+    a.nav-link.activeclass {
+      color: #00aeef!important;
+      font-weight: 600;
+    }
+    .col-form-label {
+      font-weight: 600;
+      color: #0b3d75;
+    }
+    .cardi {
+      background: url(/images/corner-5.png) no-repeat center center;
+      background-size: cover !important;
+      width: 77%;
+      margin-left: 2%;
+    }
+  </style>
+</head>
+<body>
+<div class="container-scroller">
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+    <div class="main-panel">
+      <div class="content-wrapper fix-top-content">
+        <div class="col-md-12 col-sm-12 grid-margin stretch-card">
+          <div class="card">
+            <input type="hidden" id="propertyId" th:value="${property.getId()}">
+            <input type="hidden" id="agrId" th:value="${property.getAgreement() != null ? property.getAgreement().getId() : ''}">
+            <div class="row" style="display: flex;" th:if="${@agreementRepository.findByProperty(property)!=null}">
+              <div class="cardi">
+                <div class="col-md-6 p-2">
+                  <h4 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">[[#{client.EditAdminDetails}]]</h4>
+                  <div class="row agreement-row">
+                    <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.Firstname}]]:</div>
+                    <div class="col-sm-9">
+                      <input id="firstname" class="form-control" type="text" th:value="${property.getAgreement().getFirst_name()}">
+                    </div>
+                  </div>
+                  <div class="row agreement-row">
+                    <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.Lastname}]]:</div>
+                    <div class="col-sm-9">
+                      <input id="lastname" class="form-control" type="text" th:value="${property.getAgreement().getLast_name()}">
+                    </div>
+                  </div>
+                  <div class="row agreement-row">
+                    <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.Email}]]:</div>
+                    <div class="col-sm-9">
+                      <input id="email" class="form-control" type="text" th:value="${property.getAgreement().getEmail()}">
+                    </div>
+                  </div>
+                  <div class="row agreement-row">
+                    <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.Phonenumber}]]:</div>
+                    <div class="col-sm-9">
+                      <input id="phonenumber" class="form-control" type="text" th:value="${property.getAgreement().getPhone_number()}">
+                    </div>
+                  </div>
+                </div>
+                <hr style="width: 45%">
+                <div class="col-md-6 p-2">
+                  <h4 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">[[#{client.EditPropertyDetails}]]</h4>
+                  <div>
+                    <div class="row agreement-row">
+                      <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.Propertyname}]]</div>
+                      <div class="col-sm-9">
+                        <input id="propertyname" class="form-control" type="text" th:value="${property.getAgreement().getLegal_bussines_name()}">
+                      </div>
+                    </div>
+                    <div class="row agreement-row">
+                      <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.Address}]]:</div>
+                      <div class="col-sm-9">
+                        <input id="address" class="form-control" type="text" th:value="${property.getAgreement().getAddress()}">
+                      </div>
+                    </div>
+                    <!-- Conditional Display and Edit -->
+                    <div th:unless="${#strings.isEmpty(property.getAgreement().getNuis())}">
+                      <div class="row agreement-row">
+                        <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.NUIS/VAT}]]:</div>
+                        <div class="col-sm-9">
+                          <input id="nuis_tax" class="form-control" type="text" th:value="${property.getAgreement().getNuis()}">
+                        </div>
+                      </div>
+                      <div class="row agreement-row">
+                        <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.TaxExtract}]]:</div>
+                        <div class="col-sm-9">
+                          <div id="taxExtractDisplay_tax" th:if="${property.getTaxExtractFileName() != null}">
+                            <img th:src="@{'/uploads/taxExtracts/' + ${property.getTaxExtractFileName()}}"
+                                 alt="Tax Extract"
+                                 style="max-width: 200px; max-height: 200px;"
+                                 class="img-thumbnail"/>
+                            <a th:href="@{'/uploads/taxExtracts/' + ${property.getTaxExtractFileName()}}"
+                               download
+                               class="btn btn-outline-primary btn-sm mt-2">[[#{client.Download}]]</a>
+                            <button type="button" onclick="deleteTaxExtract()" class="btn btn-outline-danger btn-sm mt-2">
+                              <i class="ti-trash"></i> [[#{client.Delete}]]
+                            </button>
+                          </div>
+                          <div id="taxExtractRemoved_tax" style="display: none;">
+                            <p style="color: red;">[[#{client.MarkedForRemoval}]]</p>
+                          </div>
+                          <div th:if="${property.getTaxExtractFileName() == null}">
+                            <p>No file uploaded</p>
+                          </div>
+                          <label for="taxExtractInput_tax" class="btn btn-outline-primary btn-icon-text btn-sm mt-2">
+                            <i class="ti-upload"></i> [[#{client.Replace}]]
+                          </label>
+                          <input type="file" id="taxExtractInput_tax" name="taxExtractInput_tax" style="display: none" onchange="previewTaxExtract(this)"/>
+                          <div id="taxExtractPreview_tax" style="display: none;">
+                            <img id="taxExtractPreviewImg_tax" src="#" alt="New Tax Extract Preview" style="max-width: 200px; max-height: 200px;" class="img-thumbnail"/>
+                            <button type="button" onclick="clearTaxExtractPreview()" class="btn btn-outline-danger btn-sm mt-2">
+                              <i class="ti-trash"></i> [[#{client.Remove}]]
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div th:if="${#strings.isEmpty(property.getAgreement().getNuis())}">
+                      <div th:if="${property.getHotelierId() != null}">
+                        <div class="row agreement-row">
+                          <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.HotelierID}]]:</div>
+                          <div class="col-sm-9">
+                            <input id="hotelierId_hotel" class="form-control" type="text" th:value="${property.getHotelierId().getIdCard()}">
+                          </div>
+                        </div>
+                        <div class="row agreement-row">
+                          <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.IDPhoto}]]:</div>
+                          <div class="col-sm-9">
+                            <div id="hotelierIdDisplay_hotel" th:if="${property.getHotelierId().getLogo() != 'uploads/hotelierId/null'}">
+                              <img th:src="@{${property.getHotelierId().getLogo()}}"
+                                   alt="Hotelier ID Photo"
+                                   style="max-width: 200px; max-height: 200px;"
+                                   class="img-thumbnail"/>
+                              <a th:href="@{${property.getHotelierId().getLogo()}}"
+                                 download
+                                 class="btn btn-outline-primary btn-sm mt-2">[[#{client.Download}]]</a>
+                              <button type="button" onclick="deleteHotelierId()" class="btn btn-outline-danger btn-sm mt-2">
+                                <i class="ti-trash"></i> [[#{client.Delete}]]
+                              </button>
+                            </div>
+                            <div id="hotelierIdRemoved_hotel" style="display: none;">
+                              <p style="color: red;">[[#{client.MarkedForRemoval}]]</p>
+                            </div>
+                            <div th:if="${property.getHotelierId().getLogo() == 'uploads/hotelierId/null'}">
+                              <p>No file uploaded</p>
+                            </div>
+                            <label for="hotelierIdInput_hotel" class="btn btn-outline-primary btn-icon-text btn-sm mt-2">
+                              <i class="ti-upload"></i> [[#{client.Replace}]]
+                            </label>
+                            <input type="file" id="hotelierIdInput_hotel" name="hotelierIdInput_hotel" style="display: none" onchange="previewHotelierId(this)"/>
+                            <div id="hotelierIdPreview_hotel" style="display: none;">
+                              <img id="hotelierIdPreviewImg_hotel" src="#" alt="New Hotelier ID Preview" style="max-width: 200px; max-height: 200px;" class="img-thumbnail"/>
+                              <button type="button" onclick="clearHotelierIdPreview()" class="btn btn-outline-danger btn-sm mt-2">
+                                <i class="ti-trash"></i> [[#{client.Remove}]]
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div th:if="${property.getHotelierId() == null}">
+                        <div class="row agreement-row">
+                          <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.NUIS/VAT}]]:</div>
+                          <div class="col-sm-9">
+                            <input id="nuis_null" class="form-control" type="text" placeholder="-" th:value="${property.getAgreement().getNuis()}">
+                          </div>
+                        </div>
+                        <div class="row agreement-row">
+                          <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.TaxExtract}]]:</div>
+                          <div class="col-sm-9">
+                            <div id="taxExtractDisplay_null" th:if="${property.getTaxExtractFileName() != null}">
+                              <img th:src="@{'/uploads/taxExtracts/' + ${property.getTaxExtractFileName()}}"
+                                   alt="Tax Extract"
+                                   style="max-width: 200px; max-height: 200px;"
+                                   class="img-thumbnail"/>
+                              <a th:href="@{'/uploads/taxExtracts/' + ${property.getTaxExtractFileName()}}"
+                                 download
+                                 class="btn btn-outline-primary btn-sm mt-2">[[#{client.Download}]]</a>
+                              <button type="button" onclick="deleteTaxExtractNull()" class="btn btn-outline-danger btn-sm mt-2">
+                                <i class="ti-trash"></i> [[#{client.Delete}]]
+                              </button>
+                            </div>
+                            <div id="taxExtractRemoved_null" style="display: none;">
+                              <p style="color: red;">[[#{client.MarkedForRemoval}]]</p>
+                            </div>
+                            <div th:if="${property.getTaxExtractFileName() == null}">
+                              <p>-</p>
+                            </div>
+                            <label for="taxExtractInput_null" class="btn btn-outline-primary btn-icon-text btn-sm mt-2">
+                              <i class="ti-upload"></i> [[#{client.Upload}]]
+                            </label>
+                            <input type="file" id="taxExtractInput_null" name="taxExtractInput_null" style="display: none" onchange="previewTaxExtractNull(this)"/>
+                            <div id="taxExtractPreview_null" style="display: none;">
+                              <img id="taxExtractPreviewImg_null" src="#" alt="New Tax Extract Preview" style="max-width: 200px; max-height: 200px;" class="img-thumbnail"/>
+                              <button type="button" onclick="clearTaxExtractPreviewNull()" class="btn btn-outline-danger btn-sm mt-2">
+                                <i class="ti-trash"></i> [[#{client.Remove}]]
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row agreement-row">
+                      <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.City}]]:</div>
+                      <div class="col-sm-9">
+                        <input id="city" class="form-control" type="text" th:value="${property.getAgreement().getCity() != null ? property.getAgreement().getCity().getFull_name() : ''}">
+                      </div>
+                    </div>
+                    <div class="row agreement-row">
+                      <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.ZipCode}]]:</div>
+                      <div class="col-sm-9">
+                        <input id="zipcode" class="form-control" type="text" th:value="${property.getAgreement().getZip_code()}">
+                      </div>
+                    </div>
+                    <div class="row agreement-row">
+                      <div class="col-sm-3 col-form-label" style="max-width: 150px;text-transform: capitalize;">[[#{client.Streetname}]]:</div>
+                      <div class="col-sm-9">
+                        <input id="streetname" class="form-control" type="text" th:value="${property.getAgreement().getStreet()}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-primary" onclick="save()">[[#{client.Save}]]</button>
+                <button class="btn btn-primary" onclick="cancel()">[[#{client.Cancel}]]</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+    </div>
+  </div>
+</div>
+
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+
+<script>
+  function changeLanguageController(param) {
+    var propertyId= document.getElementById("propertyId").value;
+    var a = 'sq';
+    if (param == null) {
+      param = a;
+    }
+
+    var search = {"lang": a};
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: {
+        lang: param
+      },
+      success: function (result) {
+        window.location = '/agreement?id=' + propertyId  ;
+      },
+      error: function (e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+</script>
+
+<script th:inline="javascript">
+  var userLanguage = /*[[${#locale.language}]]*/ 'en';
+  var deleteTaxExtractFlag = false;
+  var deleteHotelierIdFlag = false;
+  var hasHotelierIdLogo = /*[[${property.getHotelierId() != null ? property.getHotelierId().getLogo() != null : false}]]*/ false;
+
+  // Tax Extract (NUIS present case)
+  function previewTaxExtract(input) {
+    const file = input.files[0];
+    const previewDiv = document.getElementById('taxExtractPreview_tax');
+    const previewImg = document.getElementById('taxExtractPreviewImg_tax');
+    const displayDiv = document.getElementById('taxExtractDisplay_tax');
+    const removedDiv = document.getElementById('taxExtractRemoved_tax');
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        previewDiv.style.display = 'block';
+        displayDiv.style.display = 'none';
+        removedDiv.style.display = 'none';
+        deleteTaxExtractFlag = false;
+        console.log("Tax extract preview set, deleteTaxExtractFlag: " + deleteTaxExtractFlag);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function clearTaxExtractPreview() {
+    const previewDiv = document.getElementById('taxExtractPreview_tax');
+    const previewImg = document.getElementById('taxExtractPreviewImg_tax');
+    const input = document.getElementById('taxExtractInput_tax');
+    const displayDiv = document.getElementById('taxExtractDisplay_tax');
+    const removedDiv = document.getElementById('taxExtractRemoved_tax');
+    previewImg.src = '#';
+    previewDiv.style.display = 'none';
+    input.value = null;
+    deleteTaxExtractFlag = false;
+    if (/*[[${property.getTaxExtractFileName() != null}]]*/ false) {
+      displayDiv.style.display = 'block';
+      removedDiv.style.display = 'none';
+    } else {
+      displayDiv.style.display = 'none';
+      removedDiv.style.display = 'none';
+    }
+    console.log("Tax extract preview cleared, deleteTaxExtractFlag: " + deleteTaxExtractFlag);
+  }
+
+  function deleteTaxExtract() {
+    const displayDiv = document.getElementById('taxExtractDisplay_tax');
+    const removedDiv = document.getElementById('taxExtractRemoved_tax');
+    const previewDiv = document.getElementById('taxExtractPreview_tax');
+
+    Swal.fire({
+      title: userLanguage === "en" ? "Are you sure?" : "Jeni të sigurt?",
+      text: userLanguage === "en" ? "This will remove the tax extract file." : "Kjo do të heqë skedarin e ekstraktit të taksave.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: userLanguage === "en" ? "Yes, delete it!" : "Po, fshije!",
+      cancelButtonText: userLanguage === "en" ? "No, keep it" : "Jo, mbaje",
+      dangerMode: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteTaxExtractFlag = true;
+        displayDiv.style.display = 'none';
+        removedDiv.style.display = 'block';
+        previewDiv.style.display = 'none';
+        document.getElementById('taxExtractInput_tax').value = null;
+        console.log("Tax extract delete confirmed, deleteTaxExtractFlag: " + deleteTaxExtractFlag);
+      } else {
+        deleteTaxExtractFlag = false;
+        console.log("Tax extract delete canceled, deleteTaxExtractFlag: " + deleteTaxExtractFlag);
+      }
+    });
+  }
+
+  // Tax Extract (both null case)
+  function previewTaxExtractNull(input) {
+    const file = input.files[0];
+    const previewDiv = document.getElementById('taxExtractPreview_null');
+    const previewImg = document.getElementById('taxExtractPreviewImg_null');
+    const displayDiv = document.getElementById('taxExtractDisplay_null');
+    const removedDiv = document.getElementById('taxExtractRemoved_null');
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        previewDiv.style.display = 'block';
+        displayDiv.style.display = 'none';
+        removedDiv.style.display = 'none';
+        deleteTaxExtractFlag = false;
+        console.log("Tax extract (null case) preview set, deleteTaxExtractFlag: " + deleteTaxExtractFlag);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function clearTaxExtractPreviewNull() {
+    const previewDiv = document.getElementById('taxExtractPreview_null');
+    const previewImg = document.getElementById('taxExtractPreviewImg_null');
+    const input = document.getElementById('taxExtractInput_null');
+    const displayDiv = document.getElementById('taxExtractDisplay_null');
+    const removedDiv = document.getElementById('taxExtractRemoved_null');
+    previewImg.src = '#';
+    previewDiv.style.display = 'none';
+    input.value = null;
+    deleteTaxExtractFlag = false;
+    if (/*[[${property.getTaxExtractFileName() != null}]]*/ false) {
+      displayDiv.style.display = 'block';
+      removedDiv.style.display = 'none';
+    } else {
+      displayDiv.style.display = 'none';
+      removedDiv.style.display = 'none';
+    }
+    console.log("Tax extract (null case) preview cleared, deleteTaxExtractFlag: " + deleteTaxExtractFlag);
+  }
+
+  function deleteTaxExtractNull() {
+    const displayDiv = document.getElementById('taxExtractDisplay_null');
+    const removedDiv = document.getElementById('taxExtractRemoved_null');
+    const previewDiv = document.getElementById('taxExtractPreview_null');
+
+    Swal.fire({
+      title: userLanguage === "en" ? "Are you sure?" : "Jeni të sigurt?",
+      text: userLanguage === "en" ? "This will remove the tax extract file." : "Kjo do të heqë skedarin e ekstraktit të taksave.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: userLanguage === "en" ? "Yes, delete it!" : "Po, fshije!",
+      cancelButtonText: userLanguage === "en" ? "No, keep it" : "Jo, mbaje",
+      dangerMode: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteTaxExtractFlag = true;
+        displayDiv.style.display = 'none';
+        removedDiv.style.display = 'block';
+        previewDiv.style.display = 'none';
+        document.getElementById('taxExtractInput_null').value = null;
+        console.log("Tax extract (null case) delete confirmed, deleteTaxExtractFlag: " + deleteTaxExtractFlag);
+      } else {
+        deleteTaxExtractFlag = false;
+        console.log("Tax extract (null case) delete canceled, deleteTaxExtractFlag: " + deleteTaxExtractFlag);
+      }
+    });
+  }
+
+  // HotelierId case
+  function previewHotelierId(input) {
+    const file = input.files[0];
+    const previewDiv = document.getElementById('hotelierIdPreview_hotel');
+    const previewImg = document.getElementById('hotelierIdPreviewImg_hotel');
+    const displayDiv = document.getElementById('hotelierIdDisplay_hotel');
+    const removedDiv = document.getElementById('hotelierIdRemoved_hotel');
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        previewDiv.style.display = 'block';
+        displayDiv.style.display = 'none';
+        removedDiv.style.display = 'none';
+        deleteHotelierIdFlag = false;
+        console.log("Hotelier ID preview set, deleteHotelierIdFlag: " + deleteHotelierIdFlag);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function clearHotelierIdPreview() {
+    const previewDiv = document.getElementById('hotelierIdPreview_hotel');
+    const previewImg = document.getElementById('hotelierIdPreviewImg_hotel');
+    const input = document.getElementById('hotelierIdInput_hotel');
+    const displayDiv = document.getElementById('hotelierIdDisplay_hotel');
+    const removedDiv = document.getElementById('hotelierIdRemoved_hotel');
+    previewImg.src = '#';
+    previewDiv.style.display = 'none';
+    input.value = null;
+    deleteHotelierIdFlag = false;
+    if (hasHotelierIdLogo) {
+      displayDiv.style.display = 'block';
+      removedDiv.style.display = 'none';
+    } else {
+      displayDiv.style.display = 'none';
+      removedDiv.style.display = 'none';
+    }
+    console.log("Hotelier ID preview cleared, deleteHotelierIdFlag: " + deleteHotelierIdFlag);
+  }
+
+  function deleteHotelierId() {
+    const displayDiv = document.getElementById('hotelierIdDisplay_hotel');
+    const removedDiv = document.getElementById('hotelierIdRemoved_hotel');
+    const previewDiv = document.getElementById('hotelierIdPreview_hotel');
+
+    Swal.fire({
+      title: userLanguage === "en" ? "Are you sure?" : "Jeni të sigurt?",
+      text: userLanguage === "en" ? "This will remove the hotelier ID photo." : "Kjo do të heqë foton e ID-së së hotelierit.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: userLanguage === "en" ? "Yes, delete it!" : "Po, fshije!",
+      cancelButtonText: userLanguage === "en" ? "No, keep it" : "Jo, mbaje",
+      dangerMode: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteHotelierIdFlag = true;
+        displayDiv.style.display = 'none';
+        removedDiv.style.display = 'block';
+        previewDiv.style.display = 'none';
+        document.getElementById('hotelierIdInput_hotel').value = null;
+        console.log("Hotelier ID delete confirmed, deleteHotelierIdFlag: " + deleteHotelierIdFlag);
+      } else {
+        deleteHotelierIdFlag = false;
+        console.log("Hotelier ID delete canceled, deleteHotelierIdFlag: " + deleteHotelierIdFlag);
+      }
+    });
+  }
+
+  function cancel() {
+    var propertyId = document.getElementById("propertyId").value;
+    window.location.href = "agreement?id=" + propertyId;
+  }
+
+  function save() {
+    var agreementId = document.getElementById("agrId").value;
+    var firstname = document.getElementById("firstname").value;
+    var lastname = document.getElementById("lastname").value;
+    var streetname = document.getElementById("streetname").value;
+    var zipcode = document.getElementById("zipcode").value;
+    var city = document.getElementById("city").value || '';
+    var address = document.getElementById("address").value;
+    var propertyname = document.getElementById("propertyname").value;
+    var phonenumber = document.getElementById("phonenumber").value;
+    var email = document.getElementById("email").value;
+    var nuis = document.getElementById("nuis_tax") ? document.getElementById("nuis_tax").value :
+            document.getElementById("nuis_null") ? document.getElementById("nuis_null").value : '';
+    var hotelierId = document.getElementById("hotelierId_hotel") ? document.getElementById("hotelierId_hotel").value : '';
+    var taxExtractInput = document.getElementById("taxExtractInput_tax") ? document.getElementById("taxExtractInput_tax").files[0] :
+            document.getElementById("taxExtractInput_null") ? document.getElementById("taxExtractInput_null").files[0] : null;
+    var hotelierIdInput = document.getElementById("hotelierIdInput_hotel") ? document.getElementById("hotelierIdInput_hotel").files[0] : null;
+
+    var formData = new FormData();
+    formData.append("first_name", firstname);
+    formData.append("last_name", lastname);
+    formData.append("street", streetname);
+    formData.append("zip_code", zipcode);
+    formData.append("property_name", propertyname);
+    formData.append("phone_number", phonenumber);
+    formData.append("email", email);
+    formData.append("nuis", nuis);
+    formData.append("hotelierId", hotelierId);
+    formData.append("city", city);
+    formData.append("address", address);
+    formData.append("deleteTaxExtract", deleteTaxExtractFlag);
+    formData.append("deleteHotelierId", deleteHotelierIdFlag);
+    if (taxExtractInput && !deleteTaxExtractFlag) {
+      formData.append("taxExtractInput", taxExtractInput);
+      deleteTaxExtractFlag = false;
+    }
+    if (hotelierIdInput && !deleteHotelierIdFlag) {
+      formData.append("hotelierIdInput", hotelierIdInput);
+      deleteHotelierIdFlag = false;
+    }
+
+    console.log("FormData contents:");
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/saveEditAgreement?id=" + agreementId,
+      data: formData,
+      processData: false,
+      contentType: false,
+      cache: false,
+      timeout: 600000,
+      success: function (response) {
+        console.log("Server response:", response);
+        if (userLanguage === "en") {
+          Swal.fire({
+            title: "Success",
+            text: "Agreement edited successfully!",
+            icon: "success"
+          }).then(() => {
+            window.location.reload();
+          });
+        } else if (userLanguage === "sq") {
+          Swal.fire({
+            title: "Success",
+            text: "Kontrata u modifikua me sukses!",
+            icon: "success"
+          }).then(() => {
+            window.location.reload();
+          });
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error:", xhr.responseText);
+        if (userLanguage === "en") {
+          Swal.fire({
+            title: "Error",
+            text: "An error occurred: " + (xhr.responseText || "Unknown error"),
+            icon: "error"
+          });
+        } else if (userLanguage === "sq") {
+          Swal.fire({
+            title: "Error",
+            text: "Ndodhi një gabim: " + (xhr.responseText || "Unknown error"),
+            icon: "error"
+          });
+        }
+      }
+    });
+  }
+</script>
+<script>
+  $(function() {
+    var a = $("#nameInput").val();
+    $("#nameInput").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: "/autocomplete",
+          dataType: "json",
+          data: {
+            searchvalue : $("#nameInput").val(),
+          },
+          success: function(data) {
+            response(data);
+          }
+        });
+      },
+      minLength : 3,
+    })
+  });
+</script>
+</body>
+</html>

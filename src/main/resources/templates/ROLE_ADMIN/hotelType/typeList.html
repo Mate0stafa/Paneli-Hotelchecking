@@ -1,0 +1,278 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property Type | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <a class="panel-booker-buton" th:href="@{/addPropertyType}">
+                                    <button type="submit" class="btn btn-outline-primary mb-4 rounded">
+                                        <i class="ti-plus btn-icon-prepend"></i> [[#{client.AddnewPropertyType}]]</button>
+                                </a>
+                                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.AllPropertyTypes}]]</h4>
+                                <p class="card-description">[[#{client.viewAndMAnageAllProperty}]] </p>
+                                <div class="table-responsive table-striped">
+                                <div class="table-responsive">
+                                    <table id="table_idd" class="table table-hover">
+                                        <thead>
+                                        <tr style="background: #214162; padding: 10px; color: #ffffff; font-size: 14px;">
+                                            <th>[[#{client.Id}]]</th>
+                                            <th>[[#{client.Type}]]</th>
+                                            <th>[[#{client.PropertyDesc}]]</th>
+                                            <th>[[#{client.Connectiontype}]]</th>
+                                            <th>[[#{client.Actions}]]</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="hotelTypeList">
+                                        </tbody>
+                                    </table>
+
+
+                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                                    <script>
+                                        $(document).ready(function() {
+                                            $.ajax({
+                                                url: '/propertytypeDTO',
+                                                method: 'GET',
+                                                success: function(data) {
+                                                    const tbody = $('#hotelTypeList');
+                                                    tbody.empty(); // Clear existing data
+
+                                                    // Append rows to the table body
+                                                    data.forEach(function(hotelTypeMap) {
+                                                        const trueConnectedDisplay = hotelTypeMap.propertyListSize > 0 ? '' : 'style="display:none;"';
+                                                        const falseConnectedDisplay = hotelTypeMap.propertyListSize === 0 ? '' : 'style="display:none;"';
+
+                                                        tbody.append(`
+                        <tr>
+                            <td>${hotelTypeMap.id}</td>
+                            <td><a class="ab" href="/roomCategoryList?id=${hotelTypeMap.id}">${hotelTypeMap.type}</a></td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <span class="truncate-text">${hotelTypeMap.description}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span ${trueConnectedDisplay}>[[#{client.TrueConnected}]]</span>
+                                <span ${falseConnectedDisplay}>[[#{client.FalseConnected}]]</span>
+                            </td>
+                            <td>
+                                <a ${hotelTypeMap.propertyListSize === 0 ? 'disabled' : ''} href="/delete_propertyType/${hotelTypeMap.id}" class="btn btn-outline-danger btn-sm btn-icon-text">[[#{client.Delete}]]</a>
+                                <button type="button" onclick="goToEditPropertyType(${hotelTypeMap.id});" class="btn btn-primary btn-sm btn-icon-text">[[#{client.Edit}]]<i class="ti-file btn-icon-append allb-nn"></i></button>
+                            </td>
+                        </tr>
+                    `);
+                                                    });
+
+                                                    // Initialize DataTable with pagination settings
+                                                    $('#table_idd').DataTable({
+                                                        "pageLength": 10, // Display 10 elements per page
+                                                        "lengthMenu": [10, 25, 50, 100], // Optional: Provide additional options for page length
+                                                        "ordering": true, // Enable or disable sorting
+                                                        "searching": true // Enable or disable the search feature
+                                                    });
+                                                },
+                                                error: function(xhr, status, error) {
+                                                    console.error("Error fetching data: ", error);
+                                                }
+                                            });
+                                        });
+
+                                        function goToEditPropertyType(id) {
+                                            window.location.href = '/edit_propertyType?id=' + id;
+                                        }
+                                    </script>
+
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+
+    </div>
+</div>
+
+<!--<script>-->
+
+
+<!--    function goToEditHotelType(id){-->
+<!--        window.location = "editHotelType?id="+id;-->
+<!--    }-->
+
+
+<!--</script>-->
+
+<style>
+
+    /* Pagination container */
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    /* Style for pagination buttons */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0 5px;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+        border: 1px solid #ddd;
+        color: #333;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Hover effect for pagination buttons */
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background-color: #182b3e;
+        color: #fff;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background-color: #182b3e;
+        color: #fff !important;
+        border: 1px solid #182b3e;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+        background-color: #e9ecef;
+        color: #6c757d;
+        cursor: not-allowed;
+        border: 1px solid #ddd;
+    }
+
+    .ab {
+        margin: 0px;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        opacity: 1;
+        text-transform: uppercase;
+        vertical-align: unset;
+        text-decoration: none;
+        color: rgb(103, 116, 142);
+        font-weight: 600;
+    }
+    .fix-top-content{padding-top: 100px;}
+</style>
+
+<script>
+    function goToEditPropertyType(id){
+        window.location = "editPropertyType?id="+id;
+    }
+</script>
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/propertytype' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js" defer ></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="js/commonJs.js"></script>
+<!-- End plugin js for this page -->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+</html>

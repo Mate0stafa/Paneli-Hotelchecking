@@ -1,0 +1,406 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hotel Facilities | Admin Panel Allbookers</title>
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <style>
+        .dataTables_paginate {
+            display: flex;
+            justify-content: end;
+            padding: 10px;
+        }
+
+
+        .dataTables_paginate .paginate_button {
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            color: #333;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+
+        .dataTables_paginate .paginate_button.current {
+            background-color: #15283c ;
+            color: white ;
+        }
+
+
+        .dataTables_paginate .paginate_button:hover {
+            background-color: #e2e6ea;
+            color: #333;
+        }
+
+
+        .dataTables_paginate .paginate_button.previous,
+        .dataTables_paginate .paginate_button.next {
+            font-weight: bold;
+            position: relative;
+            bottom: .4rem;
+        }
+
+
+        .dataTables_paginate .paginate_button.previous.disabled,
+        .dataTables_paginate .paginate_button.next.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+        .ab {
+            margin: 0px;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            opacity: 1;
+            text-transform: uppercase;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(103, 116, 142);
+            font-weight: 600;
+        }
+        .fix-top-content {
+            padding-top: 100px;
+        }
+        .pagination {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            color: black;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            color: black;
+        }
+        .pagination a:hover {
+            background-color: #0b3d75;
+            color: white;
+        }
+        .pagination .active a {
+            background-color: #0b3d75;
+            color: white;
+            cursor: default;
+            border: 1px solid #0b3d75;
+        }
+        /*search mobile res*/
+        @media (max-width: 767px) {
+            .form-row {
+                flex-direction: row !important;
+                justify-content: space-between !important;
+            }
+        }
+        .form-control-navS {
+            background-image: url('data:image/svg+xml,%3Csvg viewBox%3D%220 0 512 512%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2216px%22 height%3D%2216px%22%3E%3Cpath d%3D%22M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z%22 fill%3D%22%23aaa%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: 10px center;
+            padding-left: 30px;
+        }
+
+        .custom-cancel-button {
+            background-color: #e2e6ea !important;
+            color: black !important;
+            border: 1px solid transparent !important;
+            font-weight: 400 !important;
+        }
+
+        .custom-icon-margin {
+            margin-top: 30px !important;
+        }
+        .button1 {
+            padding: 0.5rem 0.85rem !important;
+        }
+    </style>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <a class="panel-booker-buton" th:href="@{'/addPropertyAmenity'}">
+                                    <button type="submit" class="btn btn-outline-primary mb-4 rounded">
+                                        <i class="ti-plus btn-icon-prepend"></i>[[#{client.AddNewHotelFacility}]]
+                                    </button>
+                                </a>
+                                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.AllHotelFacilities}]]</h4>
+                                <p class="card-description">[[#{client.viewAndManageAllHotel}]] </p>
+                                <form id="listsForm" method="GET">
+                                    <div class="form-row align-items-center d-flex justify-content-between">
+                                        <div class="col-6 col-lg-3">
+                                            <input type="text" id="search" name="search" class="form-control form-control-navS mr-3"
+                                                   th:value="${search}" th:placeholder="#{client.SearchFacilities}" onkeypress="return event.key !== 'Enter';">
+                                        </div>
+                                        <div class="col-5 col-lg-9">
+                                            <button type="submit" class="btn btn-primary">[[#{client.Search}]] </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="table-responsive table-striped mt-3">
+                                    <table id="table_idd" class="table table-hover">
+                                        <thead>
+                                            <tr style="background: #214162;padding: 10px;color: #ffffff;font-size: 14px;">
+                                                <th>[[#{client.Id}]]</th>
+                                                <th>[[#{client.Photo}]] </th>
+                                                <th>[[#{client.Name}]]</th>
+                                                <th>[[#{client.Description}]] </th>
+                                                <th style="width: 124px;">[[#{client.Actions}]]</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function goToEditHotelFacility(id){
+        window.location = "editPropertyAmenity?id="+id;
+    }
+</script>
+
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#table_idd').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false,
+            "searching": false,
+            "lengthChange": false,
+            "order": [0, "asc"],
+            "columnDefs": [
+                { "orderable": false, "targets": 4 }
+            ],
+            "deferRender": true,
+            "sAjaxDataprop": "",
+            "ajax": {
+                "url": '/search/amenitiesLists',
+                "type": "GET",
+                "data": function (data) {
+                    data.search = $("#search").val();
+                },
+                "dataSrc": function (json) {
+                    if (Array.isArray(json)) {
+                        return json;
+                    } else {
+                        console.error("Unexpected data format:", json);
+                        return [];
+                    }
+                }
+            },
+            "columns": [
+                {"data": "id"},
+                {"data": "photo"},
+                {"data": "name", "type": "string"},
+                {"data": "description", "type": "string"},
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return `
+                        <button class="btn btn-outline-danger btn-sm btn-icon-text button1 mr-3 delete-facility"
+                                style="padding: 0.5rem 0.81rem;" type="button"
+                                data-id="${data.id}">
+                            [[#{client.Delete}]]<i class="ti-alert btn-icon-prepend"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm btn-icon-text edit-facility"
+                        style="padding: 0.5rem 0.81rem;" data-id="${data.id}">
+                            [[#{client.Edit}]]
+                            <i class="ti-file btn-icon-append allb-nn"></i>
+                        </button>
+                    `;
+                    }
+                }
+            ]
+        });
+
+        // Event delegation for delete buttons
+        $('#table_idd').on('click', '.delete-facility', function() {
+            var id = $(this).data('id');
+            confirmDelete(id);
+        });
+
+        // Event delegation for edit buttons
+        $('#table_idd').on('click', '.edit-facility', function() {
+            var id = $(this).data('id');
+            goToEditHotelFacility(id);
+        });
+    });
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/propertyAmenities' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#214162',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            customClass: {
+                cancelButton: 'custom-cancel-button',
+                icon: 'custom-icon-margin'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/deletePropertyAmenity",
+                    type: "POST",
+                    data: {id: id},
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRF-TOKEN", $("meta[name='_csrf']").attr("content"));
+                    },
+                    success: function(response) {
+                        if (response.status === "success") {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonColor: '#214162',
+                                customClass: {
+                                    icon: 'custom-icon-margin'
+                                }
+                            }).then(() => {
+                                // Reload the DataTable
+                                $('#table_idd').DataTable().ajax.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonColor: '#214162',
+                                customClass: {
+                                    icon: 'custom-icon-margin'
+                                }
+                            });
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Error details:", jqXHR.responseText);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred: ' + jqXHR.responseText,
+                            icon: 'error',
+                            confirmButtonColor: '#214162',
+                            customClass: {
+                                icon: 'custom-icon-margin'
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        // Apply custom styles after the modal is rendered
+        setTimeout(function() {
+            var cancelButton = document.querySelector('.swal2-cancel');
+            if (cancelButton) {
+                cancelButton.style.backgroundColor = '#e2e6ea';
+                cancelButton.style.color = 'black';
+                cancelButton.style.border = '1px solid transparent';
+                cancelButton.style.fontWeight = '400';
+            }
+        }, 100);
+    }
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property Description | Panel Allbookers</title>
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css" />
+    <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</head>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container-scroller {
+        min-height: 100vh;
+    }
+
+    .page-body-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+        .page-body-wrapper {
+            flex-direction: row;
+        }
+
+    }
+
+    @media (max-width: 576px) {
+
+        h6, #description-text, .facilities-list {
+            font-size: 0.9rem;
+        }
+
+    }
+
+    .description-container,
+    .facilities-container {
+        margin-bottom: 1.5rem;
+    }
+
+    h6 {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .description-container h6,
+    .facilities-container h6 {
+        font-weight: bold;
+        background: #e9ecef;
+        padding: 0.5rem;
+        border-left: 4px solid #1a2c40;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    #description-text {
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.5;
+        overflow-wrap: break-word;
+    }
+
+    .facilities-list {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .facility-item {
+        display: inline;
+        position: relative;
+    }
+
+    .facility-item::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: orange;
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .facility-item:hover::after {
+        visibility: visible;
+        transform: scaleX(1);
+    }
+
+    @media (min-width: 768px) {
+        .page-body-wrapper {
+            flex-direction: row;
+        }
+    }
+
+    .modal-dialog {
+        max-width: 90%;
+        margin: 1.75rem auto;
+    }
+
+    @media (min-width: 576px) {
+        .modal-dialog {
+            max-width: 500px;
+        }
+    }
+    .fix-top-content{
+        padding-top: 100px;
+    }
+</style>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="description-container">
+                                <h6 th:if="${property.getDescription() != null && !property.getDescription().getDescription().isEmpty()}">
+                                    [[#{client.PropertyDescription}]] :
+                                </h6>
+                                <p id="description-text"
+                                   th:if="${property.getDescription() != null && property.getDescription().getDescription() != null}"
+                                   th:text="${property.getDescription().getDescription()}">
+                                </p>
+                            </div>
+                            <div class="facilities-container">
+                                <h6 th:if="${property.getDescription() == null || property.getDescription().getDescription().isEmpty()}">
+                                    [[#{client.Thispropertyhasfacilities}]] :
+                                </h6>
+                                <p class="facilities-list" th:if="${property.getDescription() == null || property.getDescription().getDescription().isEmpty()}">
+                        <span th:each="p, iterStat : ${property.getHotel_facility()}" class="facility-item">
+                            <span th:text="${p.getName()}"></span><th:block th:if="${!iterStat.last}">,</th:block>
+                        </span>
+                                </p>
+                            </div>
+
+                            <button type="button" class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#editModal"
+                                    th:if="${property.getDescription() == null || property.getDescription().getDescription().isEmpty()}">
+                                [[#{client.AddaDescription}]]
+                            </button>
+
+                            <button type="button" class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#editModal"
+                                    th:if="${property.getDescription() != null && !property.getDescription().getDescription().isEmpty()}">
+                                [[#{client.EditDescription}]]
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel"> [[#{client.EditDescription}]]   </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <textarea class="form-control" id="description-textarea" rows="4" th:if="${property.getDescription() != null}" th:text="${property.getDescription().getDescription()}" placeholder="Add or edit a description"></textarea>
+                                    <textarea class="form-control" id="description-textarea" th:if="${property.getDescription() == null}" placeholder="Add or edit a description"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> [[#{client.Close}]]   </button>
+                                    <button type="button" class="btn btn-primary" id="save-button" onclick="requestDescriptionChange()">  [[#{client.RequestChange}]]</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="propertyId" th:value="${property.getId()}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script th:inline="javascript">
+    var userLanguage = /*[[${#locale.language}]]*/ 'en';
+</script>
+
+
+<script>
+
+    function requestDescriptionChange() {
+        var propertyId = document.getElementById("propertyId").value;
+        var description = document.getElementById("description-textarea").value;
+
+        var dtoDescription = {
+            descriptionDto: description,
+            propertyIdDto: propertyId
+        };
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/requestDescriptionChange",
+            data: JSON.stringify(dtoDescription),
+            dataType: 'text',
+            cache: false,
+            timeout: 600000,
+            success: function (response) {
+                let swalTitle, swalText;
+
+                if (userLanguage === "en") {
+                    swalTitle = "Success!";
+                    swalText = "Change request submitted successfully!";
+                } else if (userLanguage === "sq") {
+                    swalTitle = "Sukses!";
+                    swalText = "Kërkesa për ndryshim u dërgua me sukses!";
+                } else {
+                    swalTitle = "Success!";
+                    swalText = "Change request submitted successfully!";
+                }
+
+                Swal.fire({
+                    title: swalTitle,
+                    text: swalText,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(function(){
+                    window.location.reload();
+                });
+            },
+            error: function (xhr, status, error) {
+                let swalTitle, swalText;
+
+                if (userLanguage === "en") {
+                    swalTitle = "Error!";
+                    swalText = "Error submitting change request!";
+                } else if (userLanguage === "sq") {
+                    swalTitle = "Gabim!";
+                    swalText = "Gabim gjatë dërgimit të kërkesës për ndryshim!";
+                } else {
+                    swalTitle = "Error!";
+                    swalText = "Error submitting change request!";
+                }
+
+                Swal.fire({
+                    title: swalTitle,
+                    text: swalText,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then(function(){
+                    window.location.reload();
+                });
+            }
+
+        });
+    }
+
+</script>
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/textOfProperty?id=' + propertyId   ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script><script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<div th:replace="/ROLE_USER/Layouts/footerL"></div>
+
+</body>
+</html>

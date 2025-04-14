@@ -1,0 +1,542 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Guest Reviews | Panel Allbookers</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Toastify CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+  <style>
+    :root {
+      --primary-color: #0b3d75;
+      --secondary-color: #fb8540;
+      --success-color: #4CAF50;
+      --danger-color: #F44336;
+      --warning-color: #FFC107;
+      --info-color: #2196F3;
+      --light-gray: #f8f9fa;
+      --dark-gray: #343a40;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      background-color: #f5f7fa;
+      font-size: 16px;
+    }
+
+    .page-title {
+      font-size: 24px;
+      color: var(--primary-color);
+      font-weight: 700;
+      padding: 0 0 20px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .review-card {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 25px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+    }
+
+    .review-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .review-header {
+      padding: 20px;
+      background-color: var(--light-gray);
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .user-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .user-info {
+      margin-left: 15px;
+    }
+
+    .user-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--primary-color);
+    }
+
+    .user-country {
+      color: #6c757d;
+      font-size: 14px;
+    }
+
+    .user-email {
+      font-size: 13px;
+      color: #6c757d;
+    }
+
+    .rating-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .rating-exceptional {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .rating-very-good {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .rating-good {
+      background-color: #ffe8cc;
+      color: #804d00;
+    }
+
+    .rating-disappointed {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .rating-bad {
+      background-color: #f5c6cb;
+      color: #721c24;
+    }
+
+    .review-content {
+      padding: 20px;
+    }
+
+    .sentiment-item {
+      margin-bottom: 15px;
+    }
+
+    .sentiment-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 8px;
+      font-size: 18px !important;
+      line-height: 1;
+    }
+
+    .sentiment-icon i {
+      font-size: 18px !important;
+    }
+
+    .positive-icon i {
+      color: #4CAF50;
+    }
+
+    .negative-icon i {
+      color: #F44336;
+    }
+
+    .sentiment-label {
+      font-size: 14px;
+      color: #6c757d;
+    }
+
+    .progress {
+      height: 3px;
+      border-radius: 4px;
+    }
+
+    .progress-bar-positive {
+      background-color: var(--success-color);
+    }
+
+    .progress-bar-negative {
+      background-color: var(--danger-color);
+    }
+
+    .rating-details {
+      border-left: 2px solid var(--secondary-color);
+      padding-left: 20px;
+    }
+
+    .rating-detail-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .rating-detail-label {
+      color: #6c757d;
+    }
+
+    .rating-detail-value {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .review-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      border-top: 1px solid #e0e0e0;
+      background-color: var(--light-gray);
+    }
+
+    .action-btn {
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .delete-btn {
+      background-color: white;
+      border: 1px solid var(--danger-color);
+      color: var(--danger-color);
+    }
+
+    .delete-btn:hover {
+      background-color: var(--danger-color);
+      color: white;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--success-color);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+
+    .toggle-label {
+      margin-left: 10px;
+      font-size: 14px;
+      color: #6c757d;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: #6c757d;
+    }
+
+    .empty-state i {
+      font-size: 50px;
+      margin-bottom: 20px;
+      color: #dee2e6;
+    }
+
+    @media (max-width: 768px) {
+      .rating-details {
+        border-left: none;
+        padding-left: 0;
+        margin-top: 20px;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 20px;
+      }
+
+      .review-actions {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
+
+      .sentiment-icon {
+        font-size: 18px !important;
+      }
+
+      .sentiment-icon i {
+        font-size: 18px !important;
+      }
+
+      .review-content,
+      .sentiment-item {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container-scroller">
+  <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper fix-top-content">
+        <div class="col-md-12 grid-margin stretch-card mt-5">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="page-title">[[#{client.Guestreviewslistof}]] [[${property.getName()}]]</h3>
+
+              <div th:if="${#lists.isEmpty(revjusat)}" class="empty-state">
+                <i class="far fa-comment-dots"></i>
+                <p class="card-description">[[#{client.NoGuesReview}]]</p>
+              </div>
+
+              <div th:each="count: ${revjusat}" class="review-card">
+                <input type="hidden" th:value="${property.getId()}" id="propertyId">
+                <input type="hidden" th:value="${count.getId()}" th:id="'reviewId-' + ${count.getId()}">
+
+                <div class="review-header">
+                  <div class="d-flex align-items-center">
+                    <img src="https://i.ibb.co/QbV7Fc9/review-2.png" class="user-avatar" alt="User avatar">
+                    <div class="user-info">
+                      <h4 class="user-name" th:text="${count.getCustomer().getFirst_name()+ ' ' +count.getCustomer().getLast_name()}"></h4>
+                      <div class="user-country" th:text="${count.getCustomer().getCountry().getCountry_name()}"></div>
+                      <div class="user-email" th:text="${count.getCustomer().getEmail()}"></div>
+                    </div>
+                  </div>
+
+                  <div class="mt-3">
+                    <span th:if="${count.getMesatare() * 2 >= 9.1}"
+                          class="rating-badge rating-exceptional"
+                          th:text="${'★ ' + count.getMesatare() * 2 + ' - Exceptional'}"></span>
+                    <span th:if="${count.getMesatare() * 2 >= 8 && count.getMesatare() * 2 < 9.1}"
+                          class="rating-badge rating-very-good"
+                          th:text="${'★ ' + count.getMesatare() * 2 + ' - Very Good'}"></span>
+                    <span th:if="${count.getMesatare() * 2 >= 6 && count.getMesatare() * 2 < 8}"
+                          class="rating-badge rating-good"
+                          th:text="${'★ ' + count.getMesatare() * 2 + ' - Good'}"></span>
+                    <span th:if="${count.getMesatare() * 2 > 4 && count.getMesatare() * 2 < 6}"
+                          class="rating-badge rating-disappointed"
+                          th:text="${'★ ' + count.getMesatare() * 2 + ' - Disappointed'}"></span>
+                    <span th:if="${count.getMesatare() * 2 <= 4}"
+                          class="rating-badge rating-bad"
+                          th:text="${'★ ' + count.getMesatare() * 2 + ' - Bad'}"></span>
+                  </div>
+                </div>
+
+                <div class="review-content">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="sentiment-item">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="sentiment-icon positive-icon">
+                            <i class="fas fa-thumbs-up"></i>
+                          </div>
+                          <div>
+                            <h5 class="mb-0" th:text="${count.getGood_review()}"></h5>
+                            <span class="sentiment-label">[[#{client.PositiveReviews}]]</span>
+                          </div>
+                        </div>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-positive" role="progressbar" style="width: 47%" aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+
+                      <div class="sentiment-item">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="sentiment-icon negative-icon">
+                            <i class="fas fa-thumbs-down"></i>
+                          </div>
+                          <div>
+                            <h5 class="mb-0" th:text="${count.getBad_review()}"></h5>
+                            <span class="sentiment-label">[[#{client.NegativeReviews}]]</span>
+                          </div>
+                        </div>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-negative" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="rating-details">
+                        <div class="rating-detail-item">
+                          <span class="rating-detail-label">[[#{client.Stafreview}]]</span>
+                          <span class="rating-detail-value" th:text="${count.getStaff_review() * 2}"></span>
+                        </div>
+                        <div class="rating-detail-item">
+                          <span class="rating-detail-label">[[#{client.Facilitiesreview}]]</span>
+                          <span class="rating-detail-value" th:text="${count.getFacilities_review() * 2}"></span>
+                        </div>
+                        <div class="rating-detail-item">
+                          <span class="rating-detail-label">[[#{client.Cleanlinessreview}]]</span>
+                          <span class="rating-detail-value" th:text="${count.getCleanless_review() * 2}"></span>
+                        </div>
+                        <div class="rating-detail-item">
+                          <span class="rating-detail-label">[[#{client.Comfortreview}]]</span>
+                          <span class="rating-detail-value" th:text="${count.getComfort_review() * 2}"></span>
+                        </div>
+                        <div class="rating-detail-item">
+                          <span class="rating-detail-label">[[#{client.Valueofmoneyreview}]]</span>
+                          <span class="rating-detail-value" th:text="${count.getValue_of_money_review() * 2}"></span>
+                        </div>
+                        <div class="rating-detail-item">
+                          <span class="rating-detail-label">[[#{client.Locationreview}]]</span>
+                          <span class="rating-detail-value" th:text="${count.getLocation_review() * 2}"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="review-actions">
+                  <div class="d-flex align-items-center">
+                    <label class="toggle-switch">
+                      <input type="checkbox"
+                             th:id="${count.getId()}"
+                             th:checked="${count.getStatus() == 1}"
+                             onchange="changeStatus(this)">
+                      <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label">[[#{client.Hideinappropriatecomments}]]</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:replace="/ROLE_USER/Layouts/footerL"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<input type="hidden" id="propertyId" th:value="${property.getId()}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+  function changeLanguageController(param) {
+    var propertyId = document.getElementById("propertyId").value;
+    var a = 'sq';
+    if (param == null) {
+      param = a;
+    }
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: { lang: param },
+      success: function(result) {
+        window.location = '/showListReviews?id=' + propertyId;
+      },
+      error: function(e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+
+  function changeStatus(toggleElement) {
+    const reviewId = toggleElement.id;
+    const isChecked = toggleElement.checked;
+
+    console.log(`Toggling review ID: ${reviewId}, New state: ${isChecked ? 'Hidden (1)' : 'Shown (0)'}`);
+
+    $.ajax({
+      type: "POST",
+      url: "/showReviewsUser",
+      data: { id: reviewId },
+      success: function(response) {
+        Toastify({
+          text: response,
+          duration: 3000,
+          backgroundColor: isChecked ? "#4CAF50" : "#2196F3",
+          close: false,
+          gravity: "top",
+          position: "right"
+        }).showToast();
+      },
+      error: function(xhr) {
+        toggleElement.checked = !isChecked;
+        Toastify({
+          text: "Error updating review status",
+          duration: 3000,
+          backgroundColor: "#F44336",
+          close: false,
+          gravity: "top",
+          position: "right"
+        }).showToast();
+        console.error("Error toggling review:", xhr.responseText);
+      }
+    });
+  }
+
+  function deleteReview(id, reviewTabId) {
+    $.post("deleteReview", { id: id, reviewTabId: reviewTabId });
+    document.getElementById(reviewTabId).remove();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Rank City | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <form th:action="@{'/rankCity?id='+${city.getId()}}" method="post" th:object="${city}">
+                                    <h4 class="card-title" th:text="${city.getFull_name()}"
+                                        style="font-size: 22px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;"></h4>
+                                    <p>Please list this city. The city will appear on the home page in the order you defined.</p>
+                                    <div style="display: flex">
+                                        <p>Set the position of the city : </p>
+                                        <select th:field="*{show_city}" style="margin-left: 10px;padding: 0px 5px;border-radius: 5px;margin-top: -5px;">
+                                            <option th:value="${city.getShow_city()}" th:text="${city.getShow_city()}" selected disabled hidden>
+                                                [[${city.getShow_city()}]]
+                                            </option>
+                                            <option value="0">0</option>
+                                            <th:block th:each="number : ${#numbers.sequence(1, 10)}">
+                                                <option th:if="${existStatus[__${number-1}__] == false and number != city.getShow_city()}"
+                                                        th:value="${number}"
+                                                        th:text="${number}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+
+                                    </div>
+                                    <br><br>
+                                    <div style="display: flex">
+                                        <button type="submit" class="btn btn-primary">List city</button>
+                                        <a th:href="@{/cityList}" class="btn btn-dark">Close</a>
+                                    </div>
+                                </form>
+                                <style>
+                                    .fix-top-content {
+                                        padding-top: 100px;
+                                    }
+                                    a.btn.btn-dark {
+                                        background: #c9c8c8;
+                                        color: black;
+                                        border: none;
+                                        margin-left:15px;
+                                    }
+                                    a.btn.btn-dark:hover {
+                                        background: darkgray;
+                                        color: black;
+                                        border: none;
+                                        font-weight: bold;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="js/commonJs.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+
+<script type="text/javascript" th:inline="none" class="init">
+
+    function goToEditCityPage(id){
+        window.location = "editCity?id="+id;
+    }
+
+    $(document).ready(function () {
+        $('#table_idd').DataTable({
+            "paging":   true,
+            "ordering": true,
+            "info":     false
+        });
+    });
+</script>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+
+<!-- endinject -->
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+</body>
+</html>

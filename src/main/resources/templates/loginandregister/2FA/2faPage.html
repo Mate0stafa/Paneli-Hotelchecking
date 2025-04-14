@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Panel Allbookers</title>
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        .otp-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .otp-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        #verifyButton {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body onload="setFocusOnFirstInput()">
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                        <div class="brand-logo">
+                            <img src="/images/logo.png" alt="logo">
+                        </div>
+                        <div class="col-lg-4 mx-auto">
+                            <div class="content">
+                                <h4>Verify Code</h4>
+                                <span class="font-weight-light"
+                                      th:text="'We have sent the verification code on your email : ' + ${email}"></span>
+                                <div class="pt-3">
+                                    <div class="otp-container">
+                                        <div class="otp-column">
+                                            <input type="text" maxlength="1" id="otp1" class="form-control form-control-lg otp-input" oninput="moveToNext(this, 'otp2', null)" onkeyup="moveToNext(this, 'otp2', null)" onkeypress="return isNumber(event)">
+                                            <button id="verifyButton" class="btn btn-success" type="button" onclick="verify()" style="display: none;">Verify</button>
+                                        </div>
+                                        <div class="otp-column">
+                                            <input type="text" maxlength="1" id="otp2" class="form-control form-control-lg otp-input" oninput="moveToNext(this, 'otp3', 'otp1')" onkeyup="moveToNext(this, 'otp3', 'otp1')" onkeypress="return isNumber(event)">
+                                        </div>
+                                        <div class="otp-column">
+                                            <input type="text" maxlength="1" id="otp3" class="form-control form-control-lg otp-input" oninput="moveToNext(this, 'otp4', 'otp2')" onkeyup="moveToNext(this, 'otp4', 'otp2')" onkeypress="return isNumber(event)">
+                                        </div>
+                                        <div class="otp-column">
+                                            <input type="text" maxlength="1" id="otp4" class="form-control form-control-lg otp-input" oninput="moveToNext(this, null, 'otp3')" onkeyup="moveToNext(this, null, 'otp3')" onkeypress="return isNumber(event)">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" th:value="${userEmail}" id="userEmail">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="mfo">
+        <p style="text-align: center; color: black">
+            AllBookers.com is part of
+            <a href="https://intermedia.al/" target="_blank"><img class="hsdr" src="/images/intermedia.png"></a>
+        </p>
+    </div>
+    <style>
+        .justify-content-between {
+            justify-content: center !important;
+        }
+        .mfo {
+            font-family: "Nunito", sans-serif;
+            font-size: 15px;
+            margin-top: -4%;
+        }
+
+        .hsdr {
+            width: 125px;
+            height: 52px;
+            object-fit: contain;
+        }
+
+        .col-lg-4.mx-auto {
+            max-width: 100%;
+        }
+
+        .otp-input {
+            width: 76px;
+            margin: 6px;
+            text-align: center;
+            font-size: 21px;
+            padding: 5px;
+        }
+        @media(max-width: 767px){
+            .otp-input {
+                width: 64px;
+                margin: 8px;
+                text-align: center;
+                font-size: 23px;
+                padding: 5px;
+            }
+        }
+    </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    let isVerifying = false;
+
+    // Vendos fokusin ne fushen e pare te inputit
+    function setFocusOnFirstInput() {
+        document.getElementById("otp1").focus();
+    }
+
+    // Leviz fokusin ne fushen tjeter kur vendoseet nje shifer
+    function moveToNext(current, nextFieldID) {
+        if (current.value.length >= current.maxLength) {
+            if (nextFieldID) {
+                document.getElementById(nextFieldID).focus();
+            } else {
+                verify();
+            }
+        }
+    }
+
+    // lejon vetem numra si input
+    function isNumber(event) {
+        var charCode = (event.which) ? event.which : event.keyCode;
+        if (charCode < 48 || charCode > 57) {
+            return false;
+        }
+        return true;
+    }
+
+    // ben paste kodin 4 shifror, e ndan ne 4 fushat
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+        var pasteData = e.clipboardData.getData('text');
+        if (pasteData.length === 4 && /^\d+$/.test(pasteData)) {
+            document.getElementById('otp1').value = pasteData[0];
+            document.getElementById('otp2').value = pasteData[1];
+            document.getElementById('otp3').value = pasteData[2];
+            document.getElementById('otp4').value = pasteData[3];
+            verify();
+        }
+    });
+
+    // Funksioni kryesor
+    function verify() {
+        if (isVerifying) return;
+
+        isVerifying = true;
+        document.getElementById('verifyButton').disabled = true;
+
+        var otp1 = document.getElementById("otp1").value;
+        var otp2 = document.getElementById("otp2").value;
+        var otp3 = document.getElementById("otp3").value;
+        var otp4 = document.getElementById("otp4").value;
+        var fullNum = otp1 + otp2 + otp3 + otp4;
+        var email = document.getElementById("userEmail").value;
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            headers: {'x-my-custom-header': 'some value'},
+            url: "/verify-2fa?email=" + email + "&code=" + fullNum,
+            data: JSON.stringify(fullNum),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (response) {
+                console.log(response);
+                if (response.status === "success") {
+                    Toastify({
+                        text: "Verification Successful!",
+                        duration: 1500,
+                        gravity: "top",
+                        position: "center",
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+                    }).showToast();
+
+                    setTimeout(function () {
+                        window.location = response.targetUrl;
+                    }, 2000);
+                } else if (response.status === "error") {
+                    Toastify({
+                        text: "Incorrect! Wrong code!",
+                        duration: 1500,
+                        gravity: "top",
+                        position: "center",
+                        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)"
+                    }).showToast();
+
+                    setTimeout(function () {
+                        window.location = "/login";
+                    }, 2000);
+                }
+            },
+            error: function (response) {
+                console.log("Gabim: " + JSON.stringify(response));
+                Toastify({
+                    text: "Something went wrong! Please try again!",
+                    duration: 1500,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)"
+                }).showToast();
+
+                setTimeout(function () {
+                    window.location = "/login";
+                }, 2000);
+
+                resetVerificationState();
+            }
+        });
+    }
+
+    // Funksioni per te pare a eshte verifikuar nje here apo jo
+    function resetVerificationState() {
+        isVerifying = false;
+        document.getElementById('verifyButton').disabled = false;
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Panel Allbookers </title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="vendors/feather/feather.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="images/favicon.png"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <style>
+
+        .dataTables_filter input {
+            border: 1px solid #ddd;
+            padding: 10px 10px 10px 20px; /* Adjust padding for icon space */
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: #333;
+        }
+
+        .dataTables_filter .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .dataTables_filter svg {
+            position: absolute;
+            left: 20px;
+            width: 16px;
+            height: 16px;
+            fill: #aaa; /* Adjust color as needed */
+        }
+
+        .dataTables_filter input {
+            padding-left: 40px; /* Adjust padding for icon space */
+        }
+
+        /* Change input focus outline */
+        .dataTables_filter input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        img.t-2w {
+            width: 38px;
+        }
+        .\33 -1-t.d-flex {
+            flex-direction: column;
+        }
+        .\33 -1-t.d-flex {
+            flex-direction: column;
+            margin-left: 21px;
+        }
+
+        .title1{
+            margin: 0px;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            opacity: 1;
+            text-transform: uppercase;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(103, 116, 142);
+            font-weight: 600;
+        }
+
+        .title2{
+            font-size: 1.25rem;
+            line-height: 1.375;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            opacity: 1;
+            text-transform: none;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(52, 71, 103);
+            font-weight: 700;
+        }
+
+        canvas {
+            border-radius: 20px;
+            --bg-opacity: 1;
+            border-width: 1px;
+            --border-opacity: 1;
+            border-color: #e2e8f0;
+            border-color: rgba(226, 232, 240, var(--border-opacity));
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                <h3 class="font-weight-bold mt-4" style="font-size: 25px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 50px;">[[#{client.Dashboard}]]</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 grid-margin transparent">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 stretch-card transparent">
+                                <div class="card card-dark-blue">
+                                    <a th:href="${'/propertylist'}">
+                                        <div class="card-body d-flex ch-card">
+                                            <div class="icon-1-2-1">
+                                                <img src="images/hotelikone.png" class="t-2w">
+                                            </div>
+                                            <div class="3-1-t d-flex">
+                                            <p class=" title1">[[#{client.properties}]]</p>
+                                            <p class="title2" th:text="${propertyNumber - suspendProperty}"></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4 stretch-card transparent">
+                                <div class="card card-dark-blue">
+                                    <a th:href="${'/users'}">
+                                        <div class="card-body d-flex ch-card">
+                                            <div class="icon-1-2-1">
+                                                <img src="images/gr.png" class="t-2w">
+                                            </div>
+                                            <div class="3-1-t d-flex">
+                                            <p class="title1">[[#{client.Users}]] </p>
+                                            <p class="title2" th:text="${users}"></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/commonJs.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/'  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+
+
+<script>
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+
+<!--Script for new charts-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+
+</body>
+</html>
+

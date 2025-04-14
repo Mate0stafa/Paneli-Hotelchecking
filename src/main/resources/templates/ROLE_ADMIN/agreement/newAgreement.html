@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>New Agreement | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+
+    <style>
+        .fix-top-content{
+            padding-top: 100px !important;
+        }
+        .active {
+            background-color: #e2e6ea;
+        }
+
+        @media only screen and (max-width: 600px) {
+            select#version {
+                display: none;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            h4.font-weight-bold.hgh {
+                display: none;
+            }
+
+            select#version {
+                display: none;
+            }
+        }
+
+        button.btn.h-1-2-3 {
+            background: #0b3d75;
+            color: white;
+            padding: 6px 12px;
+        }
+        .p-title-o {
+            font-size: 23px;
+            font-weight: 500;
+            color: #0b3d75;
+        }
+
+        .card.c-1-1-1 {
+            padding: 24px 6px;
+            border: 1px solid #00000036;
+            border-radius: 5px;
+            margin-top: 11px;
+            background: azure;
+        }
+        button.btn.btn-btn-1-1 {
+            background: #0b3d75;
+            color: white;
+            border-radius: 7px;
+        }
+        .sh-1-1 {
+            margin: auto!important;
+            font-weight: 600;
+            color: #000000b5;
+        }
+        .d-1-1-111 {
+            color: #000000b8;
+        }
+
+        .n-1-1-p {
+            font-size: 22px;
+            font-weight: 600;
+            color: #0b3d75;
+        }
+
+        .n-1-1-p1 {
+            font-weight: 600;
+        }
+
+        .p-subtitle {
+            color: #000000c2;
+            font-weight: 500;
+        }
+
+        #successMessage {
+            display: none;
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+    <!-- partial:partials/_settings-panel.html -->
+    <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+    <!-- partial -->
+    <div class="main-panel">
+        <div class="content-wrapper fix-top-content">
+
+            <div class="row">
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="b-b-b-1">
+                                <h4 class="card-title" style="font-size: 21px;color: #1A1A1A;line-height:normal;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.SelectPropertyNamefrom}]]</h4>
+                            </div>
+                            <form th:action="@{/searchIntoProperty}" method="get">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="id">[[#{client.ByID}]]:</label>
+                                            <input type="number" id="id" name="id" class="form-control" th:value="${id}" th:placeholder="#{client.EnterId}" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="search">[[#{client.ByName}]]:</label>
+                                            <input type="text" id="search" name="search" class="form-control" th:value="${search}" th:placeholder="#{client.EnterName}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label> </label>
+                                            <button type="submit" class="btn btn-light btn-icon-text mt-4">
+                                                <i class="ti-search btn-icon-append allb-nn"></i> [[#{client.Search}]]
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="table-responsive table-striped mt-3">
+                                <table id="table_idd" class="table table-hover">
+                                    <thead>
+                                    <tr style="background: #214162;padding: 10px;color: #ffffff;font-size: 14px;">
+                                        <th>[[#{client.Id}]]</th>
+                                        <th>[[#{client.PropertyName}]]</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="property : ${properties}" onclick="selectProperty(this)">
+                                        <td th:text="${property.id}"></td>
+                                        <td th:text="${property.name}" th:value="${property.email}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 grid-margin stretch-card" style="max-height: 360px">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h4 class="card-title" style="font-size: 21px;color: #1A1A1A;line-height: normal;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.ChangeAgreement}]]</h4>
+                            </div>
+                            <div class="row">
+
+                                <form class="forms-sample col-12" id="the-form" method="post">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">[[#{client.PropertyName}]]</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="propertyName" name="propertyName" class="form-control" th:placeholder="#{client.SelectPropertyName}" required readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">[[#{client.Email}]]</label>
+                                        <div class="col-sm-9">
+                                            <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+                                        </div>
+                                    </div>
+                                    <div id="message-container"></div>
+                                    <input type="hidden" name="propertyId">
+                                    <div class="d-flex sa12 mb-2">
+                                        <button type="submit" id="submitButton" class="btn btn-primary mr-2">[[#{client.Send}]]</button>
+                                        <button type="button" onclick="window.location.href='/changeAgreement'" class="btn btn-light">[[#{client.Cancel}]]</button>
+                                    </div>
+                                </form>
+
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#the-form').submit(function(event) {
+                                            event.preventDefault();
+
+                                            $.ajax({
+                                                url: '/newAgreement',
+                                                type: 'POST',
+                                                data: $(this).serialize(),
+                                                success: function(response) {
+                                                    $('#message-container').empty();
+                                                    if (response.success) {
+                                                        $('#message-container').append('<div class="alert alert-success" role="alert">' + response.message + '</div>');
+                                                    } else {
+                                                        $('#message-container').append('<div class="alert alert-danger" role="alert">' + response.message + '</div>');
+                                                    }
+                                                },
+                                                error: function() {
+                                                    $('#message-container').empty();
+                                                    $('#message-container').append('<div class="alert alert-danger" role="alert">An error occurred while processing your request.</div>');
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+    </div>
+</div>
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script>
+    function checkInputs() {
+        var propertyName = document.getElementById('propertyName').value.trim();
+        var email = document.getElementById('email').value.trim();
+
+        return propertyName && email;
+    }
+
+    function toggleSubmitButton() {
+        var submitButton = document.getElementById('submitButton');
+        submitButton.disabled = !checkInputs();
+    }
+
+    var inputs = document.querySelectorAll('#the-form input');
+    inputs.forEach(function(input) {
+        input.addEventListener('input', toggleSubmitButton);
+    });
+    toggleSubmitButton();
+</script>
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+
+    $(function() {
+        $('#the-form').submit(function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#successMessage').fadeIn();
+                    $('#submitButton').prop('disabled',true);
+                    setTimeout(function (){
+                        $('#successMessage').fadeOut();
+                        $('#submitButton').prop('disabled',false);
+
+                    }, 5000);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+<script th:inline="javascript">
+    function selectProperty(row) {
+        var tableRows = document.querySelectorAll('#table_idd tbody tr');
+        tableRows.forEach(function(tr) {
+            tr.classList.remove('active');
+        });
+
+        row.classList.add('active');
+
+        var propertyName = row.cells[1].innerText;
+        var email = row.cells[1].getAttribute("value");
+
+        document.getElementsByName("propertyName")[0].value = propertyName;
+        document.getElementsByName("email")[0].value = email;
+
+        toggleSubmitButton(); // Trigger the function to update submit button state
+        event.preventDefault();
+    }
+</script>
+
+
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+
+<script>
+    $('#table_idd').DataTable({
+        lengthChange: false,
+        searching: false
+    });
+</script>
+
+</body>
+</html>
+

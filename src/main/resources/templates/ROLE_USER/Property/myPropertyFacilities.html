@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property Facilities | Panel Allbookers</title>
+    <link rel="stylesheet" href="vendors/feather/feather.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
+    <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="images/favicon.png"/>
+
+    <style>
+        .fix-top-content {
+            padding-top: 100px;
+        }
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 1.2rem !important;
+            cursor: pointer;
+            font-size: 0.875rem;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 2px solid #fb8540;
+            transition-duration: 250ms;
+            border-radius: 2px;
+        }
+
+
+        .container input:checked ~ .checkmark {
+            border-color: #fb8540;
+            background-color: #fb8540;
+            outline: 0;
+            -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
+            box-shadow: 0 0 0 .25rem #fb854024;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .container .checkmark:after {
+            left: 5px;
+            top: -4px;
+            width: 7px;
+            height: 18px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            transition-duration: 250ms;
+            font-size: .9375rem;
+            font-family: themify;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div class="container-scroller">
+  <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+          <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="">
+                            <input type="hidden" id="propertyId" th:value="${property.getId()}">
+                            <h4 style=" font-size: 23px;color: #000;font-weight: 700;position: relative;padding-top: 20px;"
+                                class="card-title">[[#{client.EditFacility}]]</h4>
+                            <p class="card-description">
+                                [[#{client.Editpropertyfacilities}]]
+                            </p>
+                            <form class="forms-sample col-10"
+                                  th:action="@{'/myPropertyFacilities?id='+${property.getId()}}" th:object="${property}"
+                                  method="post">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-xs-4 col-sm-4 container"
+                                               th:each="book, itemStat : ${hotelFacilites}">
+
+                                            <input type="checkbox" class="form-check-input languages-checkbox"
+                                                   th:field="${property.hotel_facility}" th:value="${book.id}"
+                                                   onkeypress="return event.key !== 'Enter';"   th:text="#{'client.' +${book.name.replace(' ', '').replace(':','')}}" style="display: none;"/>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2 mt-4">[[#{client.Submit}]]</button>
+                                <a href="/" th:if="${!(hasGroupAccountUser ?: false)}">
+                                    <button type="button" class="btn btn-light mt-4">[[#{client.Cancel}]]</button>
+                                </a>
+                                <a th:href="@{'/propertydashboard?propertyId='+${property.getId()}}" th:if="${hasGroupAccountUser ?: false}">
+                                    <button type="button" class="btn btn-light mt-4">[[#{client.Cancel}]]</button>
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_USER/Layouts/footerL"></div>
+
+        </div>
+    </div>
+</div>
+
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+
+
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/myPropertyFacilities?id=' + propertyId   ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+</body>
+
+</html>
+

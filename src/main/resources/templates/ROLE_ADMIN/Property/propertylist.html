@@ -1,0 +1,358 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property List | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <style>
+        /* Stilizimi i hiperlidhjeve për faqet e tjera */
+        .ab {
+            margin: 0px;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            opacity: 1;
+            text-transform: uppercase;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(103, 116, 142);
+            font-weight: 600;
+        }
+        .pagination {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            color: black;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .fix-top-content {
+            padding-top: 100px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            color: #0b3d75;
+            border-radius: 5px;
+            cursor: pointer;
+            color: black;
+        }
+
+        .pagination a:hover {
+            background-color: #0b3d75;
+            color: white;
+        }
+
+        .pagination .active a {
+            background-color: #0b3d75;
+            color: white;
+            cursor: default;
+            border: 1px solid #0b3d75;
+        }
+        .button1 {
+            padding: 0.5rem 0.85rem !important;
+        }
+
+        @media only screen and (max-width: 600px) {
+            button.btn.btn-inverse-primary.btn-fw {
+                display: none;
+            }
+
+            select#version {
+                display: none;
+            }
+        }
+        #table_idd{
+            width: 100% !important;
+        }
+
+        .column2{
+            width: 245px !important;
+        }
+
+        .column3{
+           max-width: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 style="font-size: 25px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title"> [[#{client.Allproperties}]]</h4>
+
+                                <div class="table-responsive" style="overflow-x:hidden;">
+
+                                    <div class="table-responsive mt-3">
+                                        <table id="table_idd" class="table table-hover table-striped">
+                                            <thead>
+                                            <tr style="background: #214162;padding: 10px;color: #ffffff;font-size: 14px;">
+                                                <th>Id</th>
+                                                <th>[[#{client.HotelName}]]</th>
+                                                <th>[[#{client.City}]]</th>
+                                                <th>[[#{client.NoofRooms}]]</th>
+                                                <th>[[#{client.Status}]]</th>
+                                                <th>Tel</th>
+                                                <th>Email</th>
+                                                <th>[[#{client.Promote}]]</th>
+                                                <th>[[#{client.Rankings}]]</th>
+                                                <th>[[#{client.Edit}]]</th>
+                                                <th> [[#{client.seasonaldeals}]]  </th>
+                                            </tr>
+                                            </thead>
+                                            <!--<tbody>
+                                            <tr th:each="count: ${properties}">
+                                                <td th:text="${count.loginId}"></td>
+                                                <td >
+                                                    <a th:href="${'/propertyDashboard?id='+ count.getId()}" th:text="${count.name}" class="ab"></a>
+                                                </td>
+                                                <td th:text="${count.getCity()}"></td>
+                                                <td th:text="${count.getRooms().size()}"></td>
+                                                <td><label th:class="${count.getHotel_status().getStatus()=='active'? 'badge badge-success' : 'badge badge-danger'}" th:text="${count.getHotel_status().getStatus()}"></label></td>
+                                                <td class="text-danger">
+                                                    <form th:action="@{'/promoteProperty?id='+${count.getId()}}" method="post" style="display: flex; justify-content: space-between; align-items: center; column-gap: 4px;">
+                                                        <button th:class="${(count.isPromote()==true)}? 'btn btn-outline-primary btn-sm' : 'btn btn-outline-primary btn-sm'" class="btn btn-outline-primary btn-sm"
+                                                                type="submit" style="padding: 0.5rem 0.85rem !important;"
+                                                                th:text="${count.isPromote()==true ? 'Demote' : 'Promote'}">
+                                                        </button>
+                                                        <i th:class="${(count.isPromote()==true)}? 'ti-arrow-down' : 'ti-arrow-up'"></i>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <div th:if="${count.isPromote()==true}">
+                                                        <a class="promote" th:href="@{'/rankProperty?id=' + ${count.getId()}}"><button type="button" class="btn btn-outline-primary btn-sm">List Property</button></a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button"
+                                                            th:attr="onclick='goToEditProperty(' + ${count.getId()}+')'"
+                                                            class="btn btn-primary btn-sm btn-icon-text" style="padding: 0.5rem 0.85rem !important;">Edit<i class="ti-file btn-icon-append allb-nn " ></i></button>
+                                                </td>
+                                                <td>
+                                                    <form th:action="@{'/seasonalDeals'}" method="post" style="display: flex; justify-content: space-between; align-items: center; column-gap: 4px;">
+                                                        <input type="hidden" name="id" th:value="${count.getId()}"/>
+                                                        <button class="btn seasonal-deals-btn" style="padding: 0.5rem 0.85rem !important;"
+                                                                th:classappend="${count.isSeasonalDeals()} ? 'btn-outline-success' : 'btn-outline-danger'"
+                                                                type="submit"
+                                                                th:disabled="${count.getHotel_status().getStatus() == 'Suspended'}">
+                                                            Seasonal Deals
+                                                        </button>
+                                                        <i class="ti-arrow-right"></i>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            </tbody>-->
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+
+    </div>
+</div>
+
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="js/commonJs.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+
+<script type="text/javascript" th:inline="none" class="init">
+    function goToEditProperty(propId) {
+        // window.location = "propertyDetails?id="+propId, '_blank';
+        window.open(
+            '/propertyDetails?id=' + propId,
+            '_blank' // <- This is what makes it open in a new window.
+        );
+    }
+
+
+</script>
+<script>
+
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#table_idd').DataTable({
+            "paging":   true,
+            "ordering": true,
+            "info":     false,
+            "searching": true,
+            "order":[0,"asc"],
+            "deferRender": true,
+            "sAjaxDataProp": "",
+            "ajax":{
+                "url":'/lists/Property',
+                "type":"GET",
+                "dataSrc":function(response){
+                    console.log("server response: "+JSON.stringify(response,  null, 2)+"\n");
+                    return response;
+                },
+            },
+            "columns":[
+                {"data":"id", },
+                {"data":"name",
+                    "render":function (data, type, row) {
+                        return `<a href="/propertyDashboard?id=${row.id}"  class="ab" >${data}</a>`;
+                    }
+                },
+                {"data":"city"},
+                {"data":"rooms"},
+                {"data":"status",
+                    "render":function (data, type, row){
+                        return `<label class="${ data == 'active' ? 'badge badge-success' : 'badge badge-danger'}" >${data}</label>`;
+                    }
+                },
+                {"data": "addressTelephone"},
+                {"data": "addressEmail"},
+                {"data":"promote",
+                    "render":function (data,type,row) {
+                        return `<form class="text-danger"   action="promoteProperty?id=${row.id}" method="post" style="display: flex; justify-content: space-between; align-items: center; column-gap: 4px;">
+                                    <button  class="btn btn-outline-primary btn-sm" type="submit" style="padding: 0.5rem 0.85rem !important;">
+                                        ${data ==true ? 'Demote' : 'Promote'}
+                                    </button>
+                                    <i class="${data ==true ? 'ti-arrow-down' : 'ti-arrow-up'}"></i>
+                                </form>`;
+                    }
+                },
+                {"data":"rankings",
+                    "render": function (data, type, row) {
+                        return row.promote ? `<div><a class="promote" href="/rankProperty?id=${row.id}"><button type="button" class="btn btn-outline-primary btn-sm button1">List Property</button></a></div>` : '';
+                    }
+                },
+                {"data":"edit",
+                    "render":function (data,type,row) {
+                        return `<button type="button" onclick="goToEditProperty(${row.id})" class="btn btn-primary btn-sm btn-icon-text"
+                                    style="padding: 0.5rem 0.85rem !important;">
+                                    Edit
+                                    <i class="ti-file btn-icon-append allb-nn " ></i>
+                                </button>`
+                    }
+                },
+                {"data":"seasonalDeals",
+                    "render":function (data,type,row) {
+
+                        return `<form action="seasonalDeals?id=${row.id}" method="post" style="display: flex; justify-content: space-between; align-items: center; column-gap: 4px;">
+                                    <button class="${row.seasonal == true ? 'btn seasonal-deals-btn btn-outline-success' : 'btn seasonal-deals-btn btn-outline-danger'}"
+                                            type="submit" style="padding: 0.5rem 0.85rem !important;"
+                                            ${row.status =="Suspended" ? "disabled":' '}>
+                                        Seasonal Deals
+                                    </button>
+                                    <i class="ti-arrow-right"></i>
+                                </form>`;
+                    }
+                },
+            ],
+            "columnDefs":[
+                {"targets":1,
+                    "className": 'text-wrap column2',
+                },
+                {"targets":2,
+                    "className":'column3'
+
+                }
+            ]
+        });
+    });
+</script>
+
+
+<script>
+    function changeLanguageController(param) {
+
+         var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/propertylist ' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

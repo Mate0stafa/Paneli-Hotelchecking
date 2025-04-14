@@ -1,0 +1,215 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add City | Admin Panel Allbookers</title>
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <style>
+        .fix-top-content{padding-top: 100px;}
+        select.form-control {
+            color: black!important;
+            outline-color: black!important;
+        }
+        a.btn.btn-dark {
+            background: #c9c8c8;
+            color: black;
+            border: none;
+        }
+        a.btn.btn-dark:hover {
+            background: darkgray;
+            color: black;
+            border: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.Addcity}]]</h4>
+                                <form class="form-sample" th:action="@{/city/addCity}" method="post">
+                                    <p class="card-description">
+                                        [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Country}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select id="country" class="form-control" name="country" required>
+                                                        <option th:each="count:${countries}" th:text="${count.getCountry_name()}" th:value="${count.getId()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.County}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="county" name="county" required>
+                                                        <option disabled selected value="">[[#{client.Selectacounty}]]</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.CityName}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="cityName" name="cityName" required >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Citytax}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="number" pattern="^[0-9]*(\.[0-9]+)?$" step="0.01" id="cityTax" name="cityTax" class="form-control" required >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.CityDesc}]]</label>
+                                                <div class="col-sm-9">
+                                                    <textarea id="description" name="description" class="form-control" rows="5" required ></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">[[#{client.Save}]] </button>
+                                        <a th:href="@{/cityList}" class="btn btn-light">[[#{client.Close}]] </a>
+                                    </div>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+
+<script th:inline="javascript">
+    document.getElementById("country").addEventListener("change",(c)=>{
+        const county = $("#county");
+        const noCountiesText =/*[[#{client.Selectacounty}]]*/'';
+        county.html("");
+        county.append(`<option disabled selected value="">${noCountiesText}</option>`);
+        $.ajax({
+            url:'/getCountiesByCountry?countryId='+c.target.value,
+            method:'GET',
+            contentType:'application/json',
+            success:function (response,data) {
+                if(response.length >=1){
+                    response.forEach(function (c){
+                        county.append(`
+                        <option value="${c.id}">${c.name}</option>
+                    `)
+                    })
+                }
+            },
+            error:function (response){
+                console.log("We haven't yet got counties for that country.  ¯\\_(ツ)_/¯")
+            }
+        })
+        
+    })
+</script>
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/addCity' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+</body>
+
+</html>

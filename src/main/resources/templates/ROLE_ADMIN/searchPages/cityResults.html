@@ -1,0 +1,167 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PanelAdmin | Allbookers.com</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <a class="panel-booker-buton lm" th:href="@{/}">
+                        <button type="button" class="btn btn-inverse-primary btn-rounded btn-icon">
+                            <i class="ti-home"></i>
+                        </button>
+                    </a>
+                    <a class="panel-booker-buton" th:href="@{/cityList/addNewCity}">
+                        <button type="submit" class="btn btn-success btn-sm">[[#{client.AddnewCountry}]]</button>
+                    </a>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">[[#{client.AllCountries}]]</h4>
+
+
+
+                                <table id="table_idd" class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>[[#{client.Id}]]</th>
+                                        <th>[[#{client.CityName}]]</th>
+                                        <th>[[#{client.Region}]]</th>
+                                        <th>[[#{client.Promote/Demote}]]</th>
+                                        <th>[[#{client.Actions}]]</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="count: ${cities}">
+                                        <td th:text="${count.getId()}"></td>
+                                        <td><a th:href="@{'/showCity?cityId='+${count.getId()}}">[[${count.getFull_name()}]]</a></td>
+                                        <td th:text="${count.getCc_fips()}"></td>
+                                        <td class="text-danger"><button th:class="${(count.show_city==0)}? 'btn btn-success btn-sm' : 'btn btn-outline-danger btn-sm'" class="btn btn-outline-danger btn-sm" type="button" th:attr="onclick='shtoPromoted(' + ${count.getId()}+  ');'" th:text="${(count.show_city==0)}? 'Promote' : 'Demote'" >Promote</button> <i th:class="${(count.show_city==0)}? 'ti-arrow-up' : 'ti-arrow-down'" ></i></td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" th:attr="onclick='deleteCity(' + ${count.getId()}+  ');'" type="button" >[[#{client.Delete}]]</button>
+                                            <button type="button" th:attr="onclick='goToEditCityPage(' + ${count.getId()}+  ');'" class="btn btn-primary btn-sm btn-icon-text">[[#{client.Edit}]]<i class="ti-file btn-icon-append allb-nn"></i></button>
+                                        </td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="js/commonJs.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+
+<script type="text/javascript" th:inline="none" class="init">
+
+    function goToEditCityPage(id){
+        window.location = "editCity?id="+id;
+    }
+
+    $(document).ready(function () {
+        $('#table_idd').DataTable({
+            "paging":   true,
+            "ordering": true,
+            "info":     false
+        });
+    });
+</script>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+<!-- endinject -->
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+</html>

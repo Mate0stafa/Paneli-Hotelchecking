@@ -1,0 +1,258 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Show City | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 style="font-size: 25px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.AllProperties}]]</h4>
+                                <p class="card-description" th:text="'View all properties of ' + ${city.getFull_name()}"></p>
+
+                                <!-- Search Form -->
+                                <form th:action="@{/showCity}" method="GET">
+                                    <input type="hidden" name="cityId" th:value="${city.id}">
+                                    <div class="form-row align-items-center d-flex justify-content-between">
+                                        <div class="col-6 col-lg-3">
+                                            <label for="search" class="sr-only">Search by Property Name:</label>
+                                            <input type="text" id="search" name="search" th:value="${search}" class="form-control form-control-navS" placeholder="Enter Property Name" required>
+                                        </div>
+                                        <div class="col-5 col-lg-9">
+                                            <button type="submit" class="btn btn-primary">[[#{client.search}]]</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="table-responsive mt-3">
+                                    <table id="table_id" class="table table-hover table-striped">
+                                        <thead>
+                                        <tr style="background: #214162; color: #ffffff; font-size: 14px;">
+                                            <th >[[#{client.Id}]]</th>
+                                            <th >[[#{client.PropertyName}]]</th>
+                                            <th >Property Country</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="address: ${addresses}">
+                                            <td th:text="${address.property.id}"></td>
+                                            <td >
+                                                <a th:href="@{'/propertyDetails?id='+${address.property.id}+'&propertyName='+${address.property.name}}">[[${address.property.name}]]</a>
+                                            </td>
+                                            <td th:text="${address.property.country}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                <!-- Pagination -->
+                                <div th:if="${page.totalPages > 1}" class="pagination-container mt-4">
+                                    <ul class="pagination">
+                                        <li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
+                                            <a th:href="@{/showCity(cityId=${city.id}, page=0, size=${page.size}, search=${search})}">&laquo;&laquo;</a>
+                                        </li>
+                                        <li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
+                                            <a th:href="@{/showCity(cityId=${city.id}, page=${page.number - 1}, size=${page.size}, search=${search})}">&laquo;</a>
+                                        </li>
+                                        <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}"
+                                            th:class="${pageNum == page.number + 1 ? 'page-item active' : 'page-item'}">
+                                            <a th:href="@{/showCity(cityId=${city.id}, page=${pageNum - 1}, size=${page.size}, search=${search})}"
+                                               th:text="${pageNum}"></a>
+                                        </li>
+                                        <li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
+                                            <a th:href="@{/showCity(cityId=${city.id}, page=${page.number + 1}, size=${page.size}, search=${search})}">&raquo;</a>
+                                        </li>
+                                        <li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
+                                            <a th:href="@{/showCity(cityId=${city.id}, page=${page.totalPages - 1}, size=${page.size}, search=${search})}">&raquo;&raquo;</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <style>
+                                    .fix-top-content{
+                                        padding-top: 100px;
+                                    }
+                                    .pagination-container {
+                                        display: flex;
+                                        justify-content: center;
+                                        margin-top: 20px;
+                                    }
+                                    .pagination {
+                                        list-style: none;
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        padding: 0;
+                                        margin: 0;
+                                    }
+                                    .pagination li {
+                                        margin: 0 2px;
+                                    }
+                                    .pagination a {
+                                        line-height: 1.3;
+                                        display: block;
+                                        padding: 8px 12px;
+                                        text-decoration: none;
+                                        color: #333;
+                                        margin-top: 3px;
+                                        background-color: #f8f9fa;
+                                        border: 1px solid #dee2e6;
+                                        border-radius: 4px;
+                                    }
+                                    .pagination .active a {
+                                        background-color: #007bff;
+                                        color: white;
+                                        border-color: #007bff;
+                                    }
+                                    .pagination .disabled a {
+                                        color: #6c757d;
+                                        pointer-events: none;
+                                        background-color: #fff;
+                                    }
+                                    .pagination li:first-child a,
+                                    .pagination li:last-child a {
+                                        font-weight: bold;
+                                    }
+                                    .pagination {
+                                        list-style: none;
+                                        display: flex;
+                                        justify-content: center;
+                                        padding: 10px;
+                                        color: black;
+                                    }
+                                    .pagination li {
+                                        margin: 0 5px;
+                                    }
+                                    .pagination a {
+                                        text-decoration: none;
+                                        padding: 8px 16px;
+                                        border: 1px solid #ddd;
+                                        border-radius: 5px;
+                                        cursor: pointer;
+                                        color: black;
+                                    }
+                                    .pagination a:hover {
+                                        background-color: #0b3d75;
+                                        color: white;
+                                    }
+                                    .pagination .active a {
+                                        background-color: #0b3d75;
+                                        color: white;
+                                        cursor: default;
+                                        border: 1px solid #0b3d75;
+                                    }
+                                    /*search mobile res*/
+                                    @media (max-width: 767px) {
+                                        .form-row {
+                                            flex-direction: row !important;
+                                            justify-content: space-between !important;
+                                        }
+                                    }
+                                    .form-control-navS {
+                                        background-image: url('data:image/svg+xml,%3Csvg viewBox%3D%220 0 512 512%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2216px%22 height%3D%2216px%22%3E%3Cpath d%3D%22M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z%22 fill%3D%22%23aaa%22%2F%3E%3C%2Fsvg%3E');
+                                        background-repeat: no-repeat;
+                                        background-position: 10px center;
+                                        padding-left: 30px;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+
+<script type="text/javascript" th:inline="none" class="init">
+    $(document).ready(function () {
+        $('#table_id').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false
+        });
+    });
+</script>
+<!-- endinject -->
+
+<script>
+    $("#exampleFormControlSelect3").change(function () {
+        $.post("changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function () {
+            location.reload();
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+</body>
+</html>

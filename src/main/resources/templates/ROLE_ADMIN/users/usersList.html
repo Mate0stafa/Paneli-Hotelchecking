@@ -1,0 +1,340 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Users List | Admin Panel Allbookers</title>
+
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+  <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+        rel = "stylesheet">
+  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <style>
+    .fix-top-content {
+      padding-top: 100px;
+    }
+    .ab {
+      margin: 0px;
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      opacity: 1;
+      text-transform: uppercase;
+      vertical-align: unset;
+      text-decoration: none;
+      color: rgb(103, 116, 142);
+      font-weight: 600;
+    }
+
+    @media only screen and (max-width: 600px) {
+      h4.font-weight-bold.hgh {
+        display: none;
+      }
+
+      select#version {
+        display: none;
+      }
+    }
+    table thead th{
+      text-wrap: nowrap !important;
+    }
+    table tbody #columnFirst{
+      max-width: 87px !important;
+    }
+    table tbody #columnLast{
+      text-wrap: nowrap !important;
+    }
+    table tbody td{
+      max-width: 200px !important;
+      text-wrap: wrap !important;
+
+    }
+
+    #table_idd1{
+      width: 100%!important;
+      white-space: nowrap !important;
+    }
+  </style>
+
+</head>
+<body>
+<div class="container-scroller">
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+
+    <div class="main-panel">
+      <div class="content-wrapper fix-top-content">
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title"
+                    style="font-size: 23px;color: rgba(26,26,26,0.91);font-weight: 700;position: relative;padding-top: 20px;">
+                  [[#{client.AllUsers}]]</h4>
+                <p class="card-description">
+                  [[#{client.viewAndManage32}]]
+
+                </p>
+                <div class="table-responsive" style="overflow-x:hidden;">
+                  <form id="searchForm" method="get">
+                    <div class="form-row align-items-center">
+                      <div class="col-auto">
+                        <label for="id" style="margin: 0px; font-size: 0.875rem; line-height: 1.5; letter-spacing: 0.15px; color: rgba(58, 53, 65, 0.68); font-weight: 600;">[[#{client.SearchbyID}]]  </label>
+                        <input type="number" id="id" name="id" class="form-control" placeholder="Enter ID" min="0">
+                      </div>
+                      <div class="col-auto">
+                        <label for="search" style="margin: 0px; font-size: 0.875rem; line-height: 1.5; letter-spacing: 0.15px; color: rgba(58, 53, 65, 0.68); font-weight: 600;">[[#{client.SearchbyUserName}]] </label>
+                        <input type="text" id="search" name="search" class="form-control" th:placeholder="#{client.EnterUserName}">
+                      </div>
+                      <div class="col-auto" style="margin-left: 30px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary">[[#{client.Search}]] </button>
+                      </div>
+                    </div>
+                  </form>
+
+
+
+                  <!-- jQuery library -->
+                  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                  <!-- DataTables library -->
+                  <link rel="stylesheet" type="text/css" href="https://datatables.net/media/css/jquery.dataTables.css"/>
+
+
+                  <div class="table-responsive mt-4">
+                    <table id="table_idd1" class="table table-striped">
+                         <thead>
+                                <tr style="background: #214162; padding: 10px; color: #ffffff; font-size: 14px;">
+                                   <th>[[#{client.Id}]]</th>
+                                   <th>[[#{client.UserName}]]</th>
+                                   <th>[[#{client.FullName}]]</th>
+                                   <th>[[#{client.Email}]]</th>
+                                   <th>[[#{client.PasswordExpired}]]</th>
+                                   <th>[[#{client.AccountLocked}]]</th>
+                                   <th>[[#{client.Actions}]]</th>
+                                </tr>
+                         </thead>
+                       <tbody>
+
+                       </tbody>
+                    </table>
+
+
+                    <script>
+                      $(document).ready(function () {
+                        var table = $('#table_idd1').DataTable({
+                          "paging": true,
+                          "ordering": true,
+                          "info": false,
+                          "searching": false,
+                          "order": [0, 'asc'],
+                          "lengthChange": false,
+                          "deferRender": true,
+                          "sAjaxDataProp": "",
+                          "ajax": {
+                            "url": "/users/data",
+                            "type": "GET",
+                            "data": function (d) {
+                              d.id = $('#id').val();
+                              d.search = $('#search').val();
+                            },
+                            "dataSrc": function (json) {
+                              if (Array.isArray(json)) {
+                                return json;
+                              } else {
+                                console.error("Unexpected data format:", json);
+                                return [];
+                              }
+                            }
+                          },
+                          "columns": [
+                            { "data": "id" },
+                            { "data": "username" },
+                            { "data": "full_name" },
+                            { "data": "email" },
+                            {
+                              "data": "password_expired",
+                              "render": function (data, type, row) {
+                                return `<input type="checkbox" class="password-expired" data-id="${row.id}" ${data == 1 ? 'checked' : ''}>`;
+                              }
+                            },
+                            {
+                              "data": "account_locked",
+                              "render": function (data, type, row) {
+                                return `<input type="checkbox" class="account-locked" data-id="${row.id}" ${data == 1 ? 'checked' : ''}>`;
+                              }
+                            },
+                            {
+                              "data": null,
+                              "render": function (data, type, row) {
+                                const isDisabled = row.id === 1 ? 'disabled' : '';
+                                return `
+                                    <button type="button" onclick="goToEditUser(${row.id});" class="btn btn-primary btn-sm btn-icon-text"
+                                            style="padding: 4px 11px 5px 18px;" ${isDisabled} title="${isDisabled ? 'Admin account not editable!':''}">
+                                      [[#{client.Edit}]]
+                                      <i class="ti-file btn-icon-append allb-nn"></i>
+                                    </button>`;
+                              }
+                            }
+
+                          ],
+                          "columnDefs":[
+                            {"targets":0,
+                              "createdCell": function(td, cellData, rowData, row, col) {
+                                $(td).attr('id', 'columnFirst');
+                              }
+                            },
+                            {"targets":6,
+                              "createdCell": function(td, cellData, rowData, row, col) {
+                                $(td).attr('id', 'columnLast');
+                              },
+                              "orderable":false,
+                            }
+                          ]
+                        });
+
+                        $('#table_idd1').on('change', '.password-expired', function () {
+                          const userId = $(this).data('id');
+                          const isChecked = $(this).is(':checked');
+                          change_statuspass(userId, isChecked);
+                        });
+
+                        $('#table_idd1').on('change', '.account-locked', function () {
+                          const userId = $(this).data('id');
+                          const isChecked = $(this).is(':checked');
+                          change_statusaccount(userId, isChecked);
+                        });
+
+                        $('#searchForm').on('submit', function (e) {
+                          e.preventDefault();
+                          table.ajax.reload();
+                        });
+                      });
+                    </script>
+
+                  </div>
+                  <br>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+    </div>
+  </div>
+</div>
+
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="js/commonJs.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+<script>
+
+
+  function change_statuspass(id){
+    $.post("/changePasswordStatus", { id: id })
+            .done(function (response) {
+              location.reload();
+              console.log("Account status changed:", response);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+              console.error("Error changing account status:", textStatus, errorThrown);
+            });
+  }
+
+
+  function change_statusaccount(id) {
+    $.post("/accountLockedStatus", { id: id })
+            .done(function (response) {
+              location.reload();
+              console.log("Account status changed:", response);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+              console.error("Error changing account status:", textStatus, errorThrown);
+            });
+  }
+
+
+
+  function goToEditUser(id){
+    window.location = "editUser?id="+id;
+  }
+
+
+</script>
+
+<script>
+  function changeLanguageController(param) {
+
+    var a = 'sq';
+    if (param == null) {
+      param = a;
+    }
+    var search = {"lang": a};
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: {
+        lang: param
+      },
+      success: function (result) {
+        window.location = '/users' ;
+      },
+      error: function (e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+</script>
+
+<!-- endinject -->
+<script>
+
+  $(function() {
+    var a = $("#nameInput").val();
+    $("#nameInput").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: "/autocomplete",
+          dataType: "json",
+          data: {
+            searchvalue : $("#nameInput").val(),
+          },
+          success: function(data) {
+            response(data);
+          }
+        });
+      },
+      minLength : 3,
+    })
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit User | Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link href=“https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css” rel=“stylesheet”>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+          integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+
+    <style>
+        .my-form .form-group label {
+            white-space: nowrap;
+            margin: 0px;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            letter-spacing: 0.15px;
+            color: rgba(58, 53, 65, 0.84);
+            font-weight: 600;
+        }
+        .form-group label {
+            vertical-align: top;
+            margin-bottom: .5rem;
+            color: #141824;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            letter-spacing: 0.15px;
+            color: rgba(58, 53, 65, 0.84);
+            font-weight: 600;
+        }
+
+        .containerCh {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .page-body-wrapper {
+            min-height: calc(110vh - 60px);
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 50%;
+            left: 11px;
+            transform: translateY(-50%);
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 2px solid #fb8540;
+            transition-duration: 250ms;
+            border-radius: 2px;
+        }
+
+
+        .containerCh input:checked ~ .checkmark {
+            border-color: #fb8540;
+            background-color: #fb8540;
+            outline: 0;
+            -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
+            box-shadow: 0 0 0 .25rem #fb854024;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .containerCh input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .containerCh .checkmark:after {
+            left: 5px;
+            top: -4px;
+            width: 7px;
+            height: 18px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            transition-duration: 250ms;
+            font-size: .9375rem;
+            font-family: themify;
+        }
+
+        .col-lg-4 {
+            flex: 0 0 48% ;
+            max-width: 46%;
+        }
+        .col-sm-3 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        .col-sm-9 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        .col-sm-4.containerCh {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        .col-sm-6 {
+            flex: 0 0 100%;
+            max-width: 95%;
+            margin-left: -15px;
+        }
+        .form-check-input{
+            display: none;
+        }
+
+        @media(max-width: 992px){
+            .col-md-6 {
+                max-width: 100% !important;
+            }
+            .col-lg-4 {
+                max-width: 100%;
+                flex: 0 0 100%;
+            }
+            .col-sm-4.containerCh {
+                flex: 0 0 49.33333%;
+                max-width: 63.33333%;
+            }
+        }
+        @media (max-width: 767px) {
+
+            .toggle-password {
+                right: -65px !important;
+            }
+
+            .form-control {
+                width: 100% !important;
+            }
+
+            .form-control-pass {
+                width: 140% !important;
+            }
+
+            .flex-column-mob {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .full-width-mob {
+                width: 100% !important;
+            }
+
+            .padd-pass-mob {
+                padding-top: 25px !important;
+
+            }
+
+            .card-body {
+                display: block;
+            }
+
+
+            .form-sample,
+            .forms-sample {
+                width: 100%;
+            }
+
+
+            .toggle-password {
+                right: 5px;
+            }
+
+            .password-container {
+                margin-bottom: 10px;
+            }
+
+
+            label {
+                font-size: 16px;
+            }
+        }
+
+        @media(max-width: 479px){
+            .col-sm-4.containerCh {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+        .my-form .form-group label {
+            white-space: nowrap;
+            margin-bottom: 15px;
+        }
+
+        .fix-top-content {
+            padding-top: 100px;
+        }
+
+        .admin {
+            margin: 15px 0px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .cancel99 {
+            border-radius: 15px;
+            padding: 12px 25px;
+            background-color: gainsboro;
+            font-weight: 400;
+            color: #585757;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .cancel99:hover {
+            background-color: darkgray;
+            font-weight: 600;
+            color: white;
+            border-radius: 15px;
+            padding: 12px 25px;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            h4.font-weight-bold.hgh {
+                display: none;
+            }
+
+            select#version {
+                display: none;
+            }
+        }
+
+        label.col-xs-4.col-sm-4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .row.juu {
+            margin-left: 7px;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 48%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="card">
+                    <h4 class="card-title"
+                        style="font-size: 22px; color: #1A1A1A; line-height: 20px; font-weight: 700; position: relative; padding-top: 20px;">
+                        [[#{client.EditUser}]]
+                    </h4>
+                    <p class="card-description pb-2">
+                        [[#{client.Pleasefillinallthefieldscorrectly}]]
+                    </p>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 card-body m-2"
+                             style="background-image: linear-gradient(180deg, rgba(255,255,255,0.63) 0%, rgba(242,244,245,0.6) 100%);">
+                            <form class="form-sample" th:action="@{'/edituser?id='+${user.getId()}}" th:object="${user}" method="post" id="editUserForm">
+                                <div class="form-group row">
+                                    <label for="username" class="col-sm-4 col-form-label">[[#{client.UserName}]]</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" th:field="*{username}" class="form-control" id="username"  onkeypress="return event.key !== 'Enter';" />
+                                        <p id="username-match" style="margin: 2px; font-size: 14px;"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="full_name"
+                                           class="col-sm-4 col-form-label">[[#{client.FullName}]]</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" th:field="*{full_name}" class="form-control" id="full_name"  onkeypress="return event.key !== 'Enter';"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="email" class="col-sm-4 col-form-label">[[#{client.Email}]]</label>
+                                    <div class="col-sm-8">
+                                        <input type="email" th:field="*{email}" class="form-control" id="email"  onkeypress="return event.key !== 'Enter';" />
+                                        <p id="email-match" style="margin: 2px; font-size: 14px;"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label class="containerCh">
+                                            [[#{client.TwoFactorAuth}]]
+                                            <input type="checkbox" th:field="*{twoFA}" class="admin" id="twoFA"  onkeypress="return event.key !== 'Enter';" style="display: none;font-size: 16px"/>
+                                            <span class="checkmark test"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6" th:if="${!adminExists || hasRoleWithId3}">
+                                        <label class="containerCh">
+                                            [[#{client.makeAdmin}]]
+                                            <input type="checkbox" class="admin form-check-input"  onkeypress="return event.key !== 'Enter';" th:field="*{is_admin}" id="is_admin" style="display: none;font-size: 16px"/>
+                                            <span class="checkmark test"></span>
+                                        </label>
+                                    </div>
+                                </div><hr>
+                                <div class="mt-4 " >
+                                    <div class="form-group row">
+                                        <div class=" d-flex flex-wrap align-items-center">
+                                            <h5 class="card-description mr-3" style="text-transform: capitalize">[[#{client.Giveuseraccessrights}]]</h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <div class="form-group">
+                                        <div class="row mb-3">
+                                            <label class="col-xs-4 col-sm-4 containerCh">
+                                                <input type="checkbox" class="form-check-input" id="checkAll"  onkeypress="return event.key !== 'Enter';"/> [[#{client.checkAll}]]
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="col-xs-4 col-sm-4 containerCh" th:each="book : ${rolet}">
+                                                <input type="checkbox" class="form-check-input" name="chk"
+                                                       onkeypress="return event.key !== 'Enter';"  id="grand_role" th:field="${user.grand_role}"
+                                                       th:value="${book.id}" th:text=" #{'client.' +${book.role_name.replaceAll(' ', '')}}"
+                                                />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-primary" id="editButton">
+                                        [[#{client.EditUser}]]
+                                    </button>
+                                    <a class="btn btn-light"
+                                       th:href="@{'/addnewuserr?propertyId=' + ${property.getId()}}">[[#{client.Cancel}]]</a>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12 card-body"
+                             style="background-image: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);">
+                            <div class="full-width-mob padd-pass-mob pt-4">
+                                <h4 class="card-title">[[#{client.SetNewPassword}]]</h4>
+                                <form class="forms-sample col-9">
+                                    <input type="hidden" th:value="${user.getId()}" id="userId"  onkeypress="return event.key !== 'Enter';">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">[[#{client.Newpassword}]]</label>
+                                        <div class="col-sm-9">
+                                            <div class="password-container">
+                                                <input type="password" class="form-control form-control-pass"
+                                                       onkeypress="return event.key !== 'Enter';"       th:placeholder="#{client.NewPassword}" id="password"
+                                                       oninput="isPasswordValid()" required>
+                                                <i class="toggle-password fa fa-eye" onclick="seePassword()"></i>
+                                            </div>
+                                            <span style="color: red; display: none; font-size: 11px; margin-top: 5px; text-align: left"
+                                                  id="passwordNotValid">[[#{client.passMustBe12}]]</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">[[#{client.RepeatNewPassword}]]</label>
+                                        <div class="col-sm-9">
+                                            <input type="password" class="form-control form-control-pass"
+                                                   onkeypress="return event.key !== 'Enter';"    th:placeholder="#{client.repeat}"  id="confirmPassword"
+                                                   onkeyup="checkPassword()" required>
+                                            <div id="messageSpan" style="font-size: 11px"></div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary mr-2" onclick="save(this)">
+                                        [[#{client.Changepassword}]]
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div th:replace="/ROLE_USER/Layouts/footerL"></div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    function changeLanguageController(param) {
+        var userId= document.getElementById("userId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/edituserr?id=' + userId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script>
+
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+<!--Ky script sherben per te ndaluar regjistrimin me te njejtin email&&username . -->
+<!--Nese email||username ekziston butoni behet disabled-->
+<script th:inline="javascript">
+    let editUserForm = document.getElementById("editUserForm");
+    let email = document.getElementById("email");
+    let username = document.getElementById("username");
+    var EmailMatch = document.getElementById("email-match");
+    var UsernameMatch = document.getElementById("username-match");
+    let submitButton = document.getElementById("editButton");
+    var listaEmails = /*[[${emails}]]*/;
+    var listaUsernames = /*[[${usernames}]]*/;
+    var currentUserEmail = /*[[${user.getEmail()}]]*/;
+    var currentUserUsername = /*[[${user.getUsername()}]]*/;
+
+    email.addEventListener("input", compareEmail);
+    username.addEventListener("input", compareUsername);
+
+    // Initially compare email and username on page load
+    compareEmail();
+    compareUsername();
+
+    function compareEmail() {
+        if (listaEmails.includes(email.value) && email.value !== currentUserEmail) {
+            EmailMatch.textContent = "This email is already registered!";
+            EmailMatch.style.color = "red";
+            submitButton.disabled = true;
+        } else {
+            EmailMatch.textContent = "This email is available!";
+            EmailMatch.style.color = "green";
+            checkSubmitButtonState();
+        }
+    }
+
+    function compareUsername() {
+        if (listaUsernames.includes(username.value) && username.value !== currentUserUsername) {
+            UsernameMatch.textContent = "This username is already taken!";
+            UsernameMatch.style.color = "red";
+            submitButton.disabled = true;
+        } else {
+            UsernameMatch.textContent = "This username is available!";
+            UsernameMatch.style.color = "green";
+            checkSubmitButtonState();
+        }
+    }
+
+    function checkSubmitButtonState() {
+        // Enable the submit button only if both email and username are available
+        if (EmailMatch.style.color === "green" && UsernameMatch.style.color === "green") {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+    editUserForm.addEventListener("submit", function(event) {
+        submitButton.disabled = true;
+    });
+</script>
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<script>
+
+    function seePassword() {
+        var passwordInput = document.getElementById("password");
+        var eyeIcon = document.querySelector(".toggle-password");
+
+        if (passwordInput.getAttribute("type") === "password") {
+            passwordInput.setAttribute("type", "text");
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordInput.setAttribute("type", "password");
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+        }
+    }
+
+    function isPasswordValid() {
+        var passDiv = document.getElementById("password");
+        var newPassword = document.getElementById("password").value;
+
+        if (newPassword.length >= 12 && /[a-zA-Z]/.test(newPassword) && /\d/.test(newPassword)) {
+            passDiv.style.border = "green 1px solid";
+            passDiv.style.outline = "1px solid green"
+            document.getElementById('passwordNotValid').style.display = "none";
+        } else {
+            passDiv.style.border = "red 1px solid";
+            passDiv.style.outline = "1px solid red"
+            document.getElementById('passwordNotValid').style.display = "block";
+        }
+    }
+
+    function checkPassword() {
+        var password = document.getElementById("password");
+        var confirm_pass = document.getElementById("confirmPassword");
+
+        if (password.value == confirm_pass.value) {
+            confirm_pass.style.border = "green 1px solid";
+            confirm_pass.style.outline = "1px solid green";
+            document.getElementById("messageSpan").innerHTML = '';
+            document.getElementById("messageSpan").style.color = 'green';
+            document.getElementById("messageSpan").style.display = 'flex';
+            document.getElementById("messageSpan").style.marginTop = '5px';
+        } else if (password.value != confirm_pass.value) {
+            confirm_pass.style.border = "red 1px solid";
+            confirm_pass.style.outline = "1px solid red";
+            document.getElementById("messageSpan").style.color = 'red';
+            document.getElementById("messageSpan").innerHTML = 'Passwords do not match'
+            document.getElementById("messageSpan").style.display = 'flex';
+            document.getElementById("messageSpan").style.marginTop = '5px';
+        } else {
+            confirm_pass.style.border = "red 1px solid";
+            confirm_pass.style.outline = "1px solid red";
+            document.getElementById("messageSpan").style.color = 'red';
+            document.getElementById("messageSpan").innerHTML = 'Passwords do not match';
+            document.getElementById("messageSpan").style.display = 'flex';
+            document.getElementById("messageSpan").style.marginTop = '5px';
+        }
+    }
+
+    function save(element) {
+        element.disabled = true;
+        setTimeout(function () {
+            element.disabled = false;
+        }, 5000);
+
+        var passwordDto = {};
+        passwordDto.newPassword = document.getElementById("password").value;
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            headers: {'x-my-custom-header': 'some value'},
+            url: "/edituserPassword?id=" + document.getElementById("userId").value,
+            data: JSON.stringify(passwordDto),
+            dataType: 'text',
+            cache: false,
+            timeout: 600000,
+            success: function (response) {
+                Toastify({
+                    text: "Saved",
+                    duration: 3000,
+                    style: {
+                        background: "linear-gradient(109.6deg, rgb(0, 204, 130) 11.2%, rgb(58, 181, 46) 91.7%)",
+                    },
+                    close: true,
+                    offset: {
+                        x: 50,
+                        y: 10
+                    },
+                }).showToast();
+
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            },
+            error: function (response) {
+                Toastify({
+                    text: response.responseText,
+                    duration: 3000,
+                    style: {
+                        background: "linear-gradient(122deg, rgba(180,58,58,1) 8%, rgba(253,29,29,1) 47%, rgba(253,29,29,1) 62%, rgba(252,96,69,1) 100%)",
+                    },
+                    close: true,
+                    offset: {
+                        x: 50,
+                        y: 10
+                    },
+                }).showToast();
+            }
+        });
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var checkAll = document.getElementById("checkAll");
+        var checkboxes = document.querySelectorAll(".form-check-input[id='grand_role']");
+
+        checkAll.addEventListener("change", function () {
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = checkAll.checked;
+            });
+        });
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                if (!checkbox.checked) {
+                    checkAll.checked = false;
+                } else {
+                    // Kontrollo nëse të gjitha checkbox janë të zgjedhura
+                    var allChecked = Array.from(checkboxes).every(function (cbx) {
+                        return cbx.checked;
+                    });
+                    checkAll.checked = allChecked;
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+
+</html>
+

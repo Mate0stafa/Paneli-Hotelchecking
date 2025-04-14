@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Promotions | Admin Panel Allbookers</title>
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- plugins:css -->
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+</head>
+<body>
+
+<br>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <h2>[[#{client.Choosenewpromotion}]]</h2>
+                <br>
+                <h3>[[#{client.CAMPAIGNDEALS}]]  </h3>
+                <p>  [[#{client.Getvisibility}]]</p>
+
+                <div class="promotions" th:each="promotionType:${promotionTypes}" th:if="${promotionType.getCategory()=='CAMPAIGN DEALS' && promotionType.getActive() == true} ">
+                    <div class="promotionContent" style="width: 15%; padding: 10px;">
+                        <img th:if="${promotionType.file_name != null}"
+                             th:src="@{'/uploads/promotiontype/' + ${promotionType.file_name}}"
+                             style="height: 100px; width: 100px;">
+                        <img th:unless="${promotionType.file_name != null}"
+                             src="https://allbookers.com/images/DefaultImage.png"
+                             style="height: 100px; width: 100px;">
+                    </div>
+                    <div class="promotionContent" style="width: 20%; padding-left: 15px;">
+                        <b style="font-size: 18px;" th:text="${promotionType.getPromotionName()}"></b>
+                        <b style="font-size: 14px;" th:text="#{Recommended}+ ' ' +  ${promotionType.getRecommendedPercentage()} + ' ' + #{discountormore}"></b>
+                    </div>
+                    <div class="promotionContent" style="width: 20%">
+                        <p>[[#{client.Suggestedbooking}]]</p>
+                        <p style="color: gray;" th:text="${todayDate} + #{to} + ${ month}"></p>
+                    </div>
+                    <div class="promotionContent" style="width: 30%">
+                        <p th:text=" #{'client.' + ${promotionType.getDescription().replace(' ', '') }}"></p>
+                    </div>
+                    <div class="promotionContent" style="width: 15%; text-align: center; margin-top: 20px;">
+                        <a th:href="@{'createNewPromotion?propertyId='+${property.getId()}+'&promotionTypeId='+${promotionType.getId()}}">
+                            <button class="btn btn-primary btn-sm btn-icon-text" type="button">[[#{client.Addpromotion}]]</button>
+                        </a>
+                    </div>
+
+                </div>
+                <br>
+                <br>
+                <h3>[[#{client.DEEPDEALS}]] </h3>
+                <p>[[#{client.Gainaquick}]] </p>
+                <div class="promotions" th:each="promotionType:${promotionTypes}" th:if="${promotionType.getCategory()=='DEEP DEALS' && promotionType.getActive() == true}">
+
+
+                    <div class="promotionContent" style="width: 15%">
+                        <img th:if="${promotionType.file_name != null}"
+                             th:src="@{'/uploads/promotiontype/' + ${promotionType.file_name}}"
+                             style="height: 100px; width: 100px;">
+                        <img th:unless="${promotionType.file_name != null}"
+                             src="https://allbookers.com/images/DefaultImage.png"
+                             style="height: 100px; width: 100px;">
+                    </div>
+                    <div class="promotionContent" style="width: 20%; padding-left: 15px;">
+                        <b style="font-size: 18px;" th:text="${promotionType.getPromotionName()}"></b>
+                        <b style="font-size: 14px;" th:text="#{Recommended}+ ' ' +  ${promotionType.getRecommendedPercentage()} + ' ' + #{discountormore}"></b>
+                    </div>
+                    <div class="promotionContent" style="width: 20%">
+                        <p>[[#{client.Suggestedbooking}]] </p>
+                        <p style="color: gray;" th:text="${todayDate} + #{to} +  ${month}"></p>
+                    </div>
+                    <div class="promotionContent" style="width: 30%">
+                        <p th:text="#{'client.' + ${promotionType.getDescription().replace(' ', '') }}"></p>
+                    </div>
+                    <div class="promotionContent" style="width: 15%; text-align: center; margin-top: 20px;">
+                        <a th:href="@{'createNewPromotion?propertyId='+${property.getId()}+'&promotionTypeId='+${promotionType.getId()}}">
+                            <button class="btn btn-primary btn-sm btn-icon-text" type="button">[[#{client.Addpromotion}]]</button>
+                        </a>
+                    </div>
+
+                </div>
+                <br>
+                <br>
+                <h3>[[#{client.PORTFOLIODEALS}]]  </h3>
+                <p>[[#{client.Aimyourdiscount}]] </p>
+                <div class="promotions" th:each="promotionType:${promotionTypes}" th:if="${promotionType.getCategory()=='PORTFOLIO DEALS' && promotionType.getActive() == true }">
+
+                    <div class="promotionContent" style="width: 15%">
+                        <img th:if="${promotionType.file_name != null}"
+                             th:src="@{'/uploads/promotiontype/' + ${promotionType.file_name}}"
+                             style="height: 100px; width: 100px;">
+                        <img th:unless="${promotionType.file_name != null}"
+                             src="https://allbookers.com/images/DefaultImage.png"
+                             style="height: 100px; width: 100px;">
+                    </div>
+                    <div class="promotionContent" style="width: 20%; padding-left: 15px;">
+                        <b style="font-size: 18px;" th:text="${promotionType.getPromotionName()}"></b>
+                         <b style="font-size: 14px;" th:text="#{Recommended}+ ' ' +  ${promotionType.getRecommendedPercentage()} + ' ' + #{discountormore}"></b>
+
+                    </div>
+                    <div class="promotionContent" style="width: 20%">
+                        <p>[[#{client.Suggestedbooking}]]</p>
+                        <p style="color: gray;" th:text="${todayDate} + #{to} + ${ month}"></p>
+                    </div>
+                    <div class="promotionContent" style="width: 30%">
+                        <p th:text="#{'client.' + ${promotionType.getDescription().replace(' ', '') }}"></p>
+                    </div>
+                    <div class="promotionContent" style="width: 15%; text-align: center; margin-top: 20px;">
+                        <a th:href="@{'createNewPromotion?propertyId='+${property.getId()}+'&promotionTypeId='+${promotionType.getId()}}">
+                            <button class="btn btn-primary btn-sm btn-icon-text" type="button">[[#{client.Addpromotion}]] </button>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+
+<style>
+
+    .page-body-wrapper {
+        min-height: calc(110vh - 60px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .fix-top-content {
+        padding-top: 100px;
+    }
+    .promotions {
+        display: flex;
+        padding: 10px;
+        border: 1px solid #d5d5d5;
+        margin: 10px 0px;
+        background-color: white;
+        box-shadow: 5px 5px 20px -8px rgba(0, 0, 0, 0.4);
+        border-radius: 15px;
+        width: 85%;
+    }
+    .promotionContent {
+        padding: 0px 10px;
+    }
+
+    /* Media Queries for responsiveness */
+    @media (max-width: 768px) {
+        .promotions {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .promotionContent {
+            width: 100% !important;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .promotionContent img {
+            width: 80%;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .promotions {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .promotionContent {
+            width: 100% !important;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .promotionContent img {
+            width: 80%;
+            height: auto;
+        }
+    }
+
+</style>
+<script src="../../js/sweetAlert.js"></script>
+
+<input type="hidden" id="propertyId" th:value="${property.getId()}">
+
+<script>
+    function changeLanguageController(param) {
+
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/promotions?id=' + propertyId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+</body>
+</html>

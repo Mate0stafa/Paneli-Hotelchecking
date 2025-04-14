@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="vendors/feather/feather.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="images/favicon.png"/>
+    <style>
+        @media (max-width: 767px){
+            .list-wrapper {
+                display: contents!important;
+            }
+        }
+        .form-check {
+            padding-left: 0.25rem!important;
+        }
+        .list-wrapper ul li {
+            padding: 0.3rem 1.4rem!important;
+        }
+        .list-wrapper > div:first-child {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .dataTables_filter input {
+            border: 1px solid #ddd;
+            padding: 10px 10px 10px 20px; /* Adjust padding for icon space */
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: #333;
+        }
+
+        .dataTables_filter .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .dataTables_filter svg {
+            position: absolute;
+            left: 20px;
+            width: 16px;
+            height: 16px;
+            fill: #aaa; /* Adjust color as needed */
+        }
+
+        .dataTables_filter input {
+            padding-left: 40px; /* Adjust padding for icon space */
+        }
+
+        /* Change input focus outline */
+        .dataTables_filter input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        img.t-2w {
+            width: 38px;
+        }
+
+        .\33 -1-t.d-flex {
+            flex-direction: column;
+        }
+
+        .\33 -1-t.d-flex {
+            flex-direction: column;
+            margin-left: 21px;
+        }
+
+        .title1 {
+            margin: 0px;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            opacity: 1;
+            text-transform: uppercase;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(103, 116, 142);
+            font-weight: 600;
+        }
+
+        .title2 {
+            font-size: 1.25rem;
+            line-height: 1.375;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            opacity: 1;
+            text-transform: none;
+            vertical-align: unset;
+            text-decoration: none;
+            color: rgb(52, 71, 103);
+            font-weight: 700;
+        }
+
+        canvas {
+            border-radius: 20px;
+            --bg-opacity: 1;
+            border-width: 1px;
+            --border-opacity: 1;
+            border-color: #e2e8f0;
+            border-color: rgba(226, 232, 240, var(--border-opacity));
+        }
+
+        .bad-review112 {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1A1A1A;
+            padding-right: 0px !important;
+        }
+
+        .bad-review {
+            font-weight: 600;
+            font-size: 14px;
+            color: #911a1a;
+        }
+
+        .row.r_1_1 {
+            margin-top: 6px;
+        }
+
+        .c-1 {
+            width: 15%;
+        }
+
+        .t-2-3-1 {
+            width: 65%;
+        }
+
+        .c-2-3-wqw {
+            display: flex;
+        }
+
+        img.ikona-1-1- {
+            width: 50px;
+        }
+
+        .rating-box {
+            text-align: center;
+            display: grid;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            width: 8rem;
+            height: 8rem;
+            opacity: 1;
+            background: linear-gradient(120deg, #e75829, #dc35454f);
+            color: rgb(255, 255, 255);
+            border-radius: 0.75rem;
+            box-shadow: rgba(20, 20, 20, 0.12) 0rem 0.25rem 0.375rem -0.0625rem, rgba(20, 20, 20, 0.07) 0rem 0.125rem 0.25rem -0.0625rem;
+        }
+
+        .rating-label {
+            font-weight: bold
+        }
+
+        .rating-bar {
+            width: 300px;
+            padding: 8px;
+            border-radius: 5px
+        }
+
+        .bar-container {
+            width: 100%;
+            background-color: #f1f1f1;
+            text-align: center;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 5px
+        }
+
+        td {
+            padding-bottom: 10px
+        }
+
+        .star-active {
+            color: #ffcc85;
+            margin-top: 10px;
+            margin-bottom: 10px
+        }
+
+        .star-active:hover {
+            color: #F9A825;
+            cursor: pointer
+        }
+
+        .star-inactive {
+            color: #CFD8DC;
+            margin-top: 10px;
+            margin-bottom: 10px
+        }
+
+        a:hover {
+            color: white;
+            text-decoration: none !important;
+        }
+
+        a {
+            color: white;
+        }
+
+        .list-wrapper ul li .form-check {
+            max-width: 100%;
+        }
+
+        .list-wrapper ul li {
+
+            padding-right: 0.3rem !important;
+            padding-left: 0.3rem !important;
+        }
+
+        .todo-list-custom {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .todo-list-custom li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            background-color: #fff;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .todo-list-custom li.completed .task-desc {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .form-check-label {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .form-check-label .task-desc {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+
+        .todo-list-input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .btn-icon {
+            font-size: 20px;
+        }
+
+        .text-danger {
+            color: #dc3545;
+        }
+
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-top: 7px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 2px solid #fb8540;
+            transition-duration: 250ms;
+            border-width: 2px;
+            border-radius: 2px;
+        }
+
+        .container input:checked ~ .checkmark {
+            border-color: #fb8540;
+            background-color: #fb8540;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .container .checkmark:after {
+            left: 5px;
+            top: -4px;
+            width: 7px;
+            height: 18px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            transition-duration: 250ms;
+            font-size: .9375rem;
+            font-family: themify;
+        }
+
+        .alert-primary.custom-alert-icon {
+            border-radius:15px;
+            border-width: 1px;
+            border-inline-start-width: 9px;
+            border-style: solid;
+            border-inline-start-color: #214162;
+            --tw-bg-opacity: 1;
+            font-size: .813rem;
+            --tw-text-opacity: 1;
+            color: black;
+            background: unset;
+        }
+        .alert-primary {
+            color: #272659;
+            background-color: #dbdbee;
+            border-color: #cdcce8;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                <h3 class="font-weight-bold mt-4"
+                                    style="font-size: 25px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 50px;">
+                                    [[#{client.Dashboard}]]
+                                    <label th:if="${property.getHotel_status().getStatus() == 'active'}"   th:class="${'badge badge-success'}" th:text="${'Open/Bookable'}" ></label>
+                                    <label th:class="${'badge badge-danger'}" th:if="${property.getHotel_status().getStatus() == 'Suspended'}" th:text="${'Closed/Not Bookable'}" ></label>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:if="${property.getHotelierId() == null && property.getNUIS() == null && (property.getAgreement() == null or property.getAgreement().getNuis() == null) }" style=" display: flex; gap: 11px;" class="alert alert-primary alert-dismissible dark:!bg-bodybg fade show custom-alert-icon shadow-sm flex items-center" role="alert" id="dismiss-alert40">
+                    <div>
+                        <img style="width: 23px;   " src="/images/icons8-box-important-50.png"  >
+                    </div>
+
+                    <div class="divi " style=" ">
+                        <p class="card-desc pb-2" style="font-weight: 600;font-size: 15px;"> [[#{client.requiredcomplete}]] </p>
+                        <p class="card-desc pb-2" > [[#{client.complyvaious}]]  </p>
+                        <p>  [[#{client.informationneed}]] </p>
+
+                        <button style=" " class="btn btn-outline-primary btn-icon-text" onclick="go()">  [[#{client.goToHost}]]      </button>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="mx-1 my-1"></div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: -36px;">
+                    <div class="col-md-6 grid-margin transparent">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 stretch-card transparent">
+                                <div class="card card-dark-blue test-card">
+                                    <div class="card-body d-flex">
+                                        <div class="icon-1-2-1">
+                                            <img src="images/hotelikone.png" class="t-2w">
+                                        </div>
+                                        <div class="3-1-t d-flex">
+                                            <div class="title1">[[#{client.Properties}]]</div>
+                                            <div class="title2" th:text="${propSize}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row t-r-w-1" th:if="${not #maps.isEmpty(ratingPercentages)}">
+                    <div class="col-md-6 mb-3">
+                        <div class="card p-2"
+                             style="box-shadow: 0px 12px 16px -4px rgba(39, 45, 61, 0.08), 0px 4px 6px -2px rgba(39, 45, 61, 0.03); --bg-opacity: 1;border-width: 1px; --border-opacity: 1;border-color: #e2e8f0;border-color: rgba(226, 232, 240, var(--border-opacity));}">
+                            <div class="row justify-content-left d-flex">
+                                <div class="col-md-4 d-flex" style="padding: 15px;">
+                                    <div class="rating-box">
+                                        <h1 class="pt-4" th:text="${mes * 2 }"></h1>
+
+                                    </div>
+                                    <div><span class="fa fa-star star-active mx-1"></span> <span
+                                            class="fa fa-star star-active mx-1"></span> <span
+                                            class="fa fa-star star-active mx-1"></span> <span
+                                            class="fa fa-star star-active mx-1"></span> <span
+                                            class="fa fa-star star-inactive mx-1"></span></div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="rating-bar0 justify-content-center">
+                                        <table class="text-left mx-auto">
+                                            <tr th:each="entry : ${ratingPercentages}">
+                                                <td class="rating-label">[[#{client.Rating + ${entry.key}}]]</td>
+                                                <td class="rating-bar">
+                                                    <div class="bar-container">
+                                                        <div th:class="'bar-' + ${entry.key}"
+                                                             th:style="'width: ' + ${entry.value} + '%'"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-right">
+                                                    <script th:inline="javascript">
+                                                        /*<![CDATA[*/
+                                                        var value = /*[[${entry.value}]]*/ 0; // Fetch the value from Thymeleaf
+                                                        var formattedValue = (Math.round(value * 10) / 10).toFixed(1); // Format value to one decimal place
+                                                        document.write(formattedValue + '%'); // Write the formatted value with the percent sign
+                                                        /*]]>*/
+                                                    </script>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card p-2 bg-holder p-x1 bg-card"
+                             style="box-shadow: 0px 12px 16px -4px rgba(39, 45, 61, 0.08), 0px 4px 6px -2px rgba(39, 45, 61, 0.03); overflow: auto; max-height: 185px; background: url(/images/corner-1.png) no-repeat center center; background-size: cover !important;">
+                            <div class="h-2-1" th:each="r : ${property.getReviewsTabList()}">
+                                <div class="c-2-3-wqw px-3 py-2 border-bottom">
+                                    <div class="c-1">
+                                        <img src="https://i.ibb.co/QbV7Fc9/review-2.png" class="ikona-1-1- img-fluid">
+                                    </div>
+                                    <div class="t-2-3-1">
+                                        <div class="row r_1_1 mb-2">
+                                            <div class="col bad-review112">
+                                                <span>[[#{client.GoodReview}]]</span><span
+                                                    th:text="${r.getGood_review()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row r_1_1">
+                                            <div class="col bad-review">
+                                                <span>[[#{client.BadReview}]]</span><span
+                                                    th:text="${r.getBad_review()}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section>
+                    <div class="row">
+                        <div class="col-md-4 grid-margin stretch-card">
+                            <div class="card" style="border-radius: 8px;">
+                                <div class="card-body" style="background-color: #fff3f28a;">
+                                    <h4 class="card-title">[[#{client.ToDoLists}]]</h4>
+
+                                    <!-- List wrapper -->
+                                    <div class="list-wrapper pt-2" style="display: block; flex-direction:column; height: 300px;">
+                                        <div style="overflow-y: auto;">
+                                            <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
+                                                <li th:each="todo : ${todos}" th:classappend="${todo.completed} ? 'completed'"
+                                                    style="border-radius: 4px; margin-bottom: 8px;">
+                                                    <div class="form-check form-check-flat d-flex justify-content-between">
+                                                        <label class="form-check-label d-flex align-items-center w-100 mb-0">
+                                                            <form th:action="@{/todos/{id}(id=${todo.id})}" method="post" class="d-inline w-100 toggle-form">
+                                                                <input type="hidden" name="_method" value="put"/>
+                                                                <input type="hidden" name="completed" th:value="|${not todo.completed}|"/>
+                                                                <label class="container">
+                                                                    <input class="checkbox" type="checkbox"
+                                                                           th:checked="${todo.completed}"
+                                                                           onchange="handleToggle(this, event)">
+                                                                    <span class="checkmark"></span>
+                                                                    <span class="task-desc ml-2" th:text="${todo.description}"></span>
+                                                                </label>
+                                                            </form>
+                                                        </label>
+                                                        <form th:action="@{/todos/{id}(id=${todo.id})}" method="post" class="d-inline delete-form">
+                                                            <input type="hidden" name="_method" value="delete"/>
+                                                            <button type="button" onclick="handleDelete(this, event)"
+                                                                    class="btn btn-icon text-danger">
+                                                                <i class="ti-close"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add form -->
+                                    <div class="add-items d-flex" style="margin-top: 20px;">
+                                        <form id="addTodoForm" method="post" action="/todos" class="d-flex w-100">
+                                            <input type="text" name="description" th:placeholder="#{Addnewtask}"
+                                                   class="form-control todo-list-input" required>
+                                            <input type="hidden" th:value="${property.getId()}" name="propertyId">
+                                            <button type="submit" class="btn btn-primary" style="margin-left: 10px;">[[#{client.Create}]]</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div th:replace="/ROLE_USER/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<!-- End plugin js for this page -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+    function showToast(message, isError = false) {
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            style: {
+                background: isError ? "#ff5252" : "#4caf50",
+            }
+        }).showToast();
+    }
+
+    function setLoading(element, isLoading) {
+        if (isLoading) {
+            element.disabled = true;
+            element.style.opacity = '0.5';
+        } else {
+            element.disabled = false;
+            element.style.opacity = '1';
+        }
+    }
+
+    function handleToggle(checkbox, event) {
+        if (checkbox.disabled) return;
+
+        // merr gjendjen e checkboxit
+        const newCheckedState = checkbox.checked;
+
+        setLoading(checkbox, true);
+
+        const form = checkbox.closest('form');
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form)
+        }).then(response => {
+            if(response.ok) {
+                const li = checkbox.closest('li');
+                if (newCheckedState) {
+                    li.classList.add('completed');
+                } else {
+                    li.classList.remove('completed');
+                }
+                showToast('Task status updated');
+            } else {
+                // If request fails, revert the checkbox
+                checkbox.checked = !newCheckedState;
+                throw new Error('Failed to update todo');
+            }
+        }).catch(error => {
+            showToast('Failed to update task status', true);
+            checkbox.checked = !newCheckedState;
+        }).finally(() => {
+            setLoading(checkbox, false);
+        });
+    }
+
+    function handleDelete(button, event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (button.disabled) return;
+        setLoading(button, true);
+
+        const form = button.closest('form');
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form)
+        }).then(response => {
+            if(response.ok) {
+                form.closest('li').remove();
+                showToast('Task deleted successfully');
+            } else {
+                throw new Error('Failed to delete todo');
+            }
+        }).catch(error => {
+            showToast('Failed to delete task', true);
+        }).finally(() => {
+            setLoading(button, false);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const addForm = document.getElementById('addTodoForm');
+
+        addForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitButton = this.querySelector('button[type="submit"]');
+            if (submitButton.disabled) return;
+
+            setLoading(submitButton, true);
+            const formData = new FormData(this);
+            const description = this.querySelector('input[name="description"]').value;
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if(!response.ok) throw new Error('Failed to create todo');
+                return response.json();
+            }).then(data => {
+                const list = document.querySelector('.todo-list-custom');
+                const newTodo = `
+                                            <li style="border-radius: 4px; margin-bottom: 8px;">
+                                                <div class="form-check form-check-flat d-flex justify-content-between">
+                                                    <label class="form-check-label d-flex align-items-center w-100 mb-0">
+                                                        <form action="/todos/${data.id}" method="post" class="d-inline w-100 toggle-form">
+                                                            <input type="hidden" name="_method" value="put"/>
+                                                            <input type="hidden" name="completed" value="false"/>
+                                                            <label class="container">
+                                                                <input class="checkbox" type="checkbox"
+                                                                       onchange="handleToggle(this, event)">
+                                                                <span class="checkmark"></span>
+                                                                <span class="task-desc ml-2">${description}</span>
+                                                            </label>
+                                                        </form>
+                                                    </label>
+                                                    <form action="/todos/${data.id}" method="post" class="d-inline delete-form">
+                                                        <input type="hidden" name="_method" value="delete"/>
+                                                        <button type="button" onclick="handleDelete(this, event)"
+                                                                class="btn btn-icon text-danger">
+                                                            <i class="ti-close"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </li>
+                                        `;
+                list.insertAdjacentHTML('afterbegin', newTodo);
+                this.reset();
+                showToast('Task added successfully');
+            }).catch(error => {
+                showToast('Failed to add task', true);
+            }).finally(() => {
+                setLoading(submitButton, false);
+            });
+        });
+    });
+</script>
+
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<!-- Custom js for chart-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    function changeLanguageController(param) {
+        //ky index.html kthehet nga dy GET te ndryshem , per te bere rederirectin pas ndryshimit te gjuhes , marrim url ku jemi
+        var currentFullUrl = window.location.href;
+
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                // Redirect to the exact same full URL
+                window.location.href = currentFullUrl;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+<input type="hidden" id="idd" th:value="${property.getId()}" >
+<input type="hidden" id="nipt" th:value="${property.getNUIS()}" >
+<input type="hidden" id="idcard" th:value="${property.getHotelierId()  }" >
+</body>
+</html>

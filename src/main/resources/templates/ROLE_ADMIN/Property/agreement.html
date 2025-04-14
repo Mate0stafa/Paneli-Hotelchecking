@@ -1,0 +1,838 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Contracts | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        .tax-extract-container, .hotelier-id-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .tax-extract-container .label, .hotelier-id-container .label {
+            margin-right: 15px;
+            font-weight: 600;
+            color: #444444;
+            font-size: 16px;
+        }
+
+        .tax-extract-container .image-wrapper, .hotelier-id-container .image-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .tax-extract-container .btn, .hotelier-id-container .btn {
+            margin-bottom: 10px;
+        }
+
+        .tax-extract-container img, .hotelier-id-container img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+        .card.card-img-holder .card-img-absolute {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+        }
+        .fix-top-content {
+            padding-top: 100px;
+        }
+        /* Stili për tooltip */
+        .icon {
+            font-size: 18px;
+            color: #4e4c4c;
+            cursor: pointer;
+            position: relative;
+            margin: 0px 10px;
+        }
+        .tooltip {
+            font-size: 12px;
+            visibility: hidden;
+            width: 250px;
+            background-color: #4a4848;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-family: system-ui;
+            margin: -10px 20px;
+        }
+        .icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-dialog {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .red{
+            width: 45%;
+            border: 1px solid red;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .red:hover{
+            border: 2px solid red;
+        }
+        .green{
+            width: 45%;
+            border: 1px solid green;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .green:hover{
+            border: 2px solid green;
+        }
+        button.btn.btn-default {
+            background-color: #c9c2c2;
+            color: #605d5d;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            /*border: 1px solid gray;*/
+        }
+        button.btn.btn-default:hover {
+            background-color: gray;
+            color: white;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            /*border: 1px solid gray;*/
+        }
+        @media only screen and (max-width: 600px) {
+            h4.font-weight-bold.hgh {
+                display: none;
+            }
+            .fix-top-content {
+                padding-top: 30px;
+            }
+        }
+        .nav-divider {
+            border-right: 1px solid silver;
+        }
+
+        li.nav-item.mr-3.nav-divider {
+            margin-left: 12px;
+        }
+        .row.agreement-row {
+            margin-bottom: 20px;
+        }
+        .col-sm-12.col-md-2.col-lg-2.col-xl-2.left-part-pnl {
+            font-weight: 600;
+            color: #0b3d75;
+        }
+        label.label-ch {
+            margin-left: 30px;
+        }
+
+        label.form-check-label {
+            margin-left: 18px;
+            margin-right: 13px;
+        }
+        nav.navbar.navbar-expand-lg.navbar-light.bg-light.second-nav-propdetails {
+            z-index: 99999;
+            background: #0b3d75!important;
+            color: white!important;
+        }
+        span.navbar-brand {
+            color: #f5f7ff!important;
+            font-size: 19px;
+            font-weight: 400;
+            font-family: sans-serif;
+        }
+        .nav-link{
+            color: white!important;
+        }
+        a.nav-link:hover {
+            color: white!important;
+            border-radius: 4px;
+        }
+        a.nav-link.activeclass {
+            color: #00aeef!important;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="col-md-12 col-sm-12 grid-margin stretch-card">
+                    <div class="card">
+                        <input type="hidden" id="propertyId" th:value="${property.getId()}">
+                        <h4 class="card-title" style="font-size: 25px;color: rgba(26,26,26,0.91);line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;">
+                            [[#{client.Agreement}]]
+                        </h4>
+                        <p class="card-description">
+                            [[#{client.Youraccommodationagreementwith}]] Allbookers.com
+                        </p>
+                        <div th:style="${notification==null?'display: none;' : 'width: 50%;margin-left: auto;text-align:center;margin-right: auto;'}">
+                            <h4 th:text="${notification}" style="padding: 10px;background-color: #d4f7d4;border-radius: 5px;"></h4>
+                        </div>
+
+                        <!-- Case: No Agreement Exists -->
+                        <div class="row" style="display: flex;" th:if="${@agreementRepository.findByProperty(property)==null}">
+                            <div class="card col-md-11 col-sm-12 mt-4 bg-holder p-x1 bg-card m-2" style="background: url(/images/corner-5.png) no-repeat center center;background-size: cover !important;">
+                                <div class="col-md-6 p-2">
+                                    <h4 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">
+                                        [[#{client.AdminDetails}]]
+                                    </h4>
+                                    <div class="row agreement-row" th:if="${property.getFirstName()==null and property.getLastName()==null}">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Fullname}]] :</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" style="max-width: 70%;flex: 0 0 70%;" th:text="${property.getRoles().get(0).getUsers().get(0).getFull_name()}"></div>
+                                    </div>
+                                    <div class="row agreement-row" th:if="${property.getFirstName()!=null and property.getLastName()!=null}">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Firstname}]]:</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getFirstName()}"></div>
+                                    </div>
+                                    <div class="row agreement-row" th:if="${property.getFirstName()!=null and property.getLastName()!=null}">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Lastname}]] :</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getLastName()}"></div>
+                                    </div>
+                                    <div class="row agreement-row">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Email}]] :</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" style="max-width: 70%;flex: 0 0 70%;" th:text="${property.getAddress().getEmail()}"></div>
+                                    </div>
+                                    <div class="row agreement-row">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Phonenumber}]] :</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" style="max-width: 70%;flex: 0 0 70%;" th:text="${property.getAddress().getTelephone()}"></div>
+                                    </div>
+                                </div>
+                                <hr style="width: 45%">
+                                <div class="col-md-6 p-2">
+                                    <h4 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">[[#{client.PropertyDetails}]]</h4>
+                                    <div>
+                                        <div class="row agreement-row">
+                                            <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Propertyname}]]</div>
+                                            <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" style="max-width: 70%;flex: 0 0 70%;" th:text="${property.getName()}"></div>
+                                        </div>
+                                        <div class="row agreement-row">
+                                            <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Address}]]:</div>
+                                            <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" style="max-width: 70%;flex: 0 0 70%;" th:text="${property.getAddress().getStreet() + ', ' + property.getCity() + ', ' + property.getAddress().getCity().getCounty().getName() + ', ' + property.getCountry()}"></div>
+                                        </div>
+                                        <!-- Conditional Display for No Agreement -->
+                                        <div th:unless="${#strings.isEmpty(property.getNUIS())}">
+                                            <div class="row agreement-row">
+                                                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.NUIS/VAT}]]:</div>
+                                                <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getNUIS()}"></div>
+                                            </div>
+                                            <div class="row agreement-row">
+                                                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px; flex: 0 0 150px; text-transform: capitalize;">[[#{client.TaxExtract}]]:</div>
+                                                <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl">-</div>
+                                            </div>
+                                        </div>
+                                        <div th:if="${#strings.isEmpty(property.getNUIS())}">
+                                            <div th:if="${property.getHotelierId() != null}">
+                                                <div class="row agreement-row">
+                                                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.HotelierID}]]:</div>
+                                                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getHotelierId().getIdCard()}"></div>
+                                                </div>
+                                                <div class="row agreement-row">
+                                                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px; flex: 0 0 150px; text-transform: capitalize;">[[#{client.IDPhoto}]]:</div>
+                                                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl">
+                                                        <div class="hotelier-id-container">
+                                                            <div class="image-wrapper">
+                                                                <a th:href="@{'/' + ${property.getHotelierId().getLogo()}}"
+                                                                   download
+                                                                   class="btn btn-outline-primary btn-sm">[[#{client.Download}]]</a>
+                                                                <img th:src="@{'/' + ${property.getHotelierId().getLogo()}}"
+                                                                     alt="Hotelier ID Photo"
+                                                                     class="img-thumbnail"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div th:if="${property.getHotelierId() == null}">
+                                                <div class="row agreement-row">
+                                                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.NUIS/VAT}]]:</div>
+                                                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl">-</div>
+                                                </div>
+                                                <div class="row agreement-row">
+                                                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.TaxExtract}]]:</div>
+                                                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Case: Agreement Exists -->
+                        <div class="row" style="display: flex;" th:if="${@agreementRepository.findByProperty(property) != null}">
+                            <div class="card col-md-11 col-sm-12 mt-4 bg-holder p-x1 bg-card m-2" style="background: url(/images/corner-5.png) no-repeat center center;background-size: cover !important;">
+                                <div class="col-md-6 p-2">
+                                    <h4 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">[[#{client.AdminDetails}]]</h4>
+                                    <div class="row agreement-row">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Firstname}]]</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getAgreement().getFirst_name()}"></div>
+                                    </div>
+                                    <div class="row agreement-row">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Lastname}]]</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getAgreement().getLast_name()}"></div>
+                                    </div>
+                                    <div class="row agreement-row">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Email}]]</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getAgreement().getEmail()}"></div>
+                                    </div>
+                                    <div class="row agreement-row">
+                                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Phonenumber}]]</div>
+                                        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getAgreement().getPhone_number()}"></div>
+                                    </div>
+                                </div>
+                                <hr style="width: 45%">
+                                <div class="col-md-6 p-2">
+                                    <h4 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">[[#{client.PropertyDetails}]]</h4>
+                                    <div>
+                                        <div class="row agreement-row">
+                                            <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Propertyname}]]:</div>
+                                            <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" style="max-width: 70%;flex: 0 0 70%;" th:text="${property.getAgreement().getLegal_bussines_name()}"></div>
+                                        </div>
+                                        <div class="row agreement-row">
+                                            <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.Address}]]:</div>
+                                            <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" style="max-width: 70%;flex: 0 0 70%;" th:text="${property.getAddress().getStreet() + ', ' + property.getCity() + ', ' + property.getAddress().getCity().getCounty().getName() + ', ' + property.getCountry()}"></div>
+                                        </div>
+                                        <!-- Conditional Display for Agreement Exists -->
+                                        <div th:unless="${#strings.isEmpty(property.getAgreement().getNuis())}">
+                                            <div class="row agreement-row">
+                                                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.NUIS/VAT}]]:</div>
+                                                <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getAgreement().getNuis()}"></div>
+                                            </div>
+                                            <div class="row agreement-row">
+                                                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px; flex: 0 0 150px; text-transform: capitalize;">[[#{client.TaxExtract}]]:</div>
+                                                <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl">
+                                                    <div th:if="${property.getTaxExtractFileName() != null}">
+                                                        <div class="tax-extract-container">
+                                                            <div class="image-wrapper">
+                                                                <a th:href="@{'/uploads/taxExtracts/' + ${property.getTaxExtractFileName()}}"
+                                                                   download
+                                                                   class="btn btn-outline-primary btn-sm">[[#{client.Download}]]</a>
+                                                                <img th:src="@{'/uploads/taxExtracts/' + ${property.getTaxExtractFileName()}}"
+                                                                     alt="Tax Extract"
+                                                                     class="img-thumbnail"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div th:if="${property.getTaxExtractFileName() == null}">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div th:if="${#strings.isEmpty(property.getAgreement().getNuis())}">
+                                            <div th:if="${property.getHotelierId() != null}">
+                                                <div class="row agreement-row">
+                                                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.HotelierID}]]:</div>
+                                                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl" th:text="${property.getHotelierId().getIdCard()}"></div>
+                                                </div>
+                                                <div class="row agreement-row">
+                                                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px; flex: 0 0 150px; text-transform: capitalize;">[[#{client.IDPhoto}]]:</div>
+                                                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl">
+                                                        <div class="hotelier-id-container">
+
+                                                            <div class="image-wrapper" th:if="${property.getHotelierId().getLogo() != 'uploads/hotelierId/null'}">
+                                                                <a th:href="@{${property.getHotelierId().getLogo()}}"
+                                                                   download
+                                                                   class="btn btn-outline-primary btn-sm">[[#{client.Download}]]</a>
+                                                                <img th:src="@{${property.getHotelierId().getLogo()}}"
+                                                                     alt="Hotelier ID Photo"
+                                                                     class="img-thumbnail"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div th:if="${property.getHotelierId() == null}">
+                                                <div class="row agreement-row">
+                                                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.NUIS/VAT}]]:</div>
+                                                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl">-</div>
+                                                </div>
+                                                <div class="row agreement-row">
+                                                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 left-part-pnl" style="max-width: 150px;flex: 0 0 150px;text-transform: capitalize;">[[#{client.TaxExtract}]]:</div>
+                                                    <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 right-part-pnl">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr style="width: 45%">
+                                <div class="row agreement-row" style="text-align: right;width: 45%;display: block;">
+                                    <button class="btn btn-primary" style="margin-left: 2%" onclick="editAgreement()">[[#{client.EditAgreement}]]</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Request for Agreement Section -->
+                        <div class="row" style="display: flex">
+                            <div class="card-body mt-4 col-lg-3 m-2 col-md-2 col-sm-12" style="min-width: 300px !important; background-image: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);">
+                                <h3 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">[[#{client.Requestforgreement}]]</h3>
+                                <br>
+                                <h5 style="color: darkgreen;" th:if="${@agreementRepository.findByProperty(property)!=null}">
+                                    [[#{client.Youhaveacontract1}]] [[${property.getName()}]] [[#{client.since}]] [[${property.getAgreement().getDate().toString().substring(0,10)}]].
+                                </h5>
+                                <h5 style="color: #041e3d;" th:if="${@agreementRepository.findByProperty(property)==null}">
+                                    <svg style="width: 20px" data-test-id="default-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                                        <path d="M49.4 85l4.2-17.2c.7-2.7.8-3.8 0-3.8a29 29 0 0 0-8.8 3.8l-1.8-3A48 48 0 0 1 66.7 53c3.7 0 4.3 4.3 2.5 11l-5 18c-.7 3.3-.3 4.3.5 4.3a19 19 0 0 0 8.2-4L75 85c-8.6 8.7-18.2 12-21.8 12s-6.4-2.3-3.8-12zM75 36a9.2 9.2 0 0 1-9.2 9c-4.4 0-7-2.7-6.8-7a9 9 0 0 1 9.1-9c4.6 0 6.9 3.2 6.9 7z"></path>
+                                        <path d="M62 16a48 48 0 1 1-48 48 48 48 0 0 1 48-48m0-8a56 56 0 1 0 56 56A56 56 0 0 0 62 8z"></path>
+                                    </svg>
+                                    [[#{client.donothavecontract}]] [[${property.getName()}]] .<br> [[#{client.agreementclicking}]] .
+                                </h5>
+                                <br>
+                                <div th:if="${property.getAgreementRequest() != null}">
+                                    <div style="color: #d17300;font-weight: 500;" th:if="${property.getAgreementRequest().getSend()==true and property.getAgreementRequest().getStatus()==0}">
+                                        [[#{client.sentrequest}]] .<br> [[#{client.Pleasewaitreply}]] .
+                                    </div>
+                                    <div style="color: darkred;font-weight: 500;" th:if="${property.getAgreementRequest().getSend()==true and property.getAgreementRequest().getStatus()==2}">
+                                        [[#{client.requestrejected}]] .
+                                    </div>
+                                </div>
+                                <br>
+                                <form method="post" th:action="@{'/sendrequestAgreement?id='+${property.getId()}}" onsubmit="disableButton4()">
+                                    <span th:if="${property.getAgreementRequest() == null}">
+                                        <button type="submit" class="btn btn-primary" th:if="${@agreementRepository.findByProperty(property)==null}" id="butoni4">[[#{client.Requestagreement}]]</button>
+                                    </span>
+                                    <script>
+                                        function disableButton4() {
+                                            var butoni = document.getElementById("butoni4");
+                                            butoni.disabled = true;
+                                            setTimeout(function() {
+                                                butoni.disabled = false;
+                                            }, 30000);
+                                        }
+                                    </script>
+                                </form>
+                                <form th:if="${@agreementRepository.findByProperty(property)==null}" method="post" th:action="@{'/showRequestAgainForAgreement?id='+${property.getId()}}" onsubmit="disableButton3()">
+                                    <span th:if="${property.getAgreementRequest() != null}">
+                                        <button type="submit" class="request" style="padding: 8px 10px;border-radius: 15px;color: #fff; background-color: #214162; border-color: #214162;" th:if="${@agreementRepository.findByProperty(property)!=null or property.getAgreementRequest().getSend()==true and property.getAgreementRequest().getStatus()==2}" id="butoni3">[[#{client.Requestagreement}]]</button>
+                                    </span>
+                                    <script>
+                                        function disableButton3() {
+                                            var butoni = document.getElementById("butoni3");
+                                            butoni.disabled = true;
+                                            setTimeout(function() {
+                                                butoni.disabled = false;
+                                            }, 30000);
+                                        }
+                                    </script>
+                                </form>
+                                <br>
+                            </div>
+
+                            <!-- Show Agreement Section -->
+                            <div class="padd-fix card-body mr-2 mt-4 col-md-5 col-sm-12" style="min-width: 350px!important; background-image: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);">
+                                <h3 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">[[#{client.Showagreement}]]</h3>
+                                <div th:if="${@agreementRepository.findByProperty(property)==null}">
+                                    <p style="margin-left: 5px;">[[#{client.Youdonothaveanargument}]] [[${property.getName()}]] .</p>
+                                </div>
+                                <div th:if="${@agreementRepository.findByProperty(property)!=null}">
+                                    <p style="margin-left: 5px;">[[#{email.Ifyouwantacopyoftheagreement}]]</p>
+                                    <br>
+                                    <div style="display: flex;">
+                                        <!-- English Agreement -->
+                                        <div style="margin-right: 20px;">
+                                            <form th:if="${@agreementRepository.findByProperty(property)!=null}" method="post" th:action="@{'submitSendAgreement?id='+${property.getId()}}" onsubmit="disableButton1()">
+                                                <button type="submit" class="btn btn-primary" style="padding: 8px 10px;margin-left: 23%; justify-content: left;" id="butoni1">
+                                                    [[#{client.SendviaEmail}]]
+                                                </button>
+                                                <script>
+                                                    function disableButton1() {
+                                                        var butoni = document.getElementById("butoni1");
+                                                        butoni.disabled = true;
+                                                        setTimeout(function() {
+                                                            butoni.disabled = false;
+                                                        }, 30000);
+                                                    }
+                                                </script>
+                                            </form>
+                                            <a class="btn btn-outline-danger btn-icon-text mt-2" download="English_Agreement.pdf"
+                                               id="downloadLinkEn" onclick="startCountdownEn()" style="padding: 8px 10px;"
+                                               th:href="@{'/downloadEnglishAgreement?id=' + ${property.id}}">
+                                                [[#{client.DownloadEnglishAgreement}]]
+                                            </a>
+                                            <div id="countdownEn" style="text-align: center"></div>
+                                        </div>
+                                        <!-- Albanian Agreement -->
+                                        <div>
+                                            <form th:if="${@agreementRepository.findByProperty(property)!=null}" method="post" th:action="@{'submitsendagreement?id='+${property.getId()}}" onsubmit="disableButton2()">
+                                                <button type="submit" class="btn btn-secondary" style="padding: 8px 10px;margin-left: 23%; justify-content: right;color: white !important; border: none!important;" id="butoni2">
+                                                    [[#{email.shqip}]]
+                                                </button>
+                                                <script>
+                                                    function disableButton2() {
+                                                        var butoni = document.getElementById("butoni2");
+                                                        butoni.disabled = true;
+                                                        setTimeout(function() {
+                                                            butoni.disabled = false;
+                                                        }, 30000);
+                                                    }
+                                                </script>
+                                            </form>
+                                            <a class="btn btn-outline-danger btn-icon-text mt-2" download="English_Agreement.pdf"
+                                               id="downloadLinkAl" onclick="startCountdownAl()" style="padding: 8px 10px;"
+                                               th:href="@{'/downloadAlbanianAgreement?id=' + ${property.id}}">
+                                                [[#{client.DownloadAlbanianAgreement}]]
+                                            </a>
+                                            <div id="countdownAl" style="text-align: center"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Change of Ownership Section -->
+                            <div class="card-body mr-2 mt-4 col-md-3 col-sm-12" style="min-width: 300px !important; background-image: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);">
+                                <h3 style="font-size: 18px; font-weight: 700; height: auto; line-height: 24px;text-transform: capitalize;">[[#{client.Changeofownership}]]</h3>
+                                <br>
+                                <div style="color: #d17300;font-weight: 500;" th:if="${nrchange!=0}">
+                                    [[#{client.requestownershiphas}]] [[${property.getName()}]] .
+                                </div>
+                                <div style="color: #041e3d;font-size: 16px; font-weight: 700;" th:if="${nrchange==0}">
+                                    <svg style="width: 20px" data-test-id="default-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                                        <path d="M49.4 85l4.2-17.2c.7-2.7.8-3.8 0-3.8a29 29 0 0 0-8.8 3.8l-1.8-3A48 48 0 0 1 66.7 53c3.7 0 4.3 4.3 2.5 11l-5 18c-.7 3.3-.3 4.3.5 4.3a19 19 0 0 0 8.2-4L75 85c-8.6 8.7-18.2 12-21.8 12s-6.4-2.3-3.8-12zM75 36a9.2 9.2 0 0 1-9.2 9c-4.4 0-7-2.7-6.8-7a9 9 0 0 1 9.1-9c4.6 0 6.9 3.2 6.9 7z"></path>
+                                        <path d="M62 16a48 48 0 1 1-48 48 48 48 0 0 1 48-48m0-8a56 56 0 1 0 56 56A56 56 0 0 0 62 8z"></path>
+                                    </svg>
+                                    [[#{client.propertydoesnothaveownership}]] .
+                                </div>
+                                <br>
+                                <div>
+                                    <div th:if="${@agreementRepository.findByProperty(property)!=null}">
+                                        <div th:if="${property.getAgreement().getChangeofownerships().size() != 0 and nrchange!=0}" style="margin-right: 20px;">
+                                            <button type="button" data-toggle="modal" data-target="#myModal3" class="btn btn-primary">View the request</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Change of Ownership Modal -->
+                        <div class="modal fade" id="myModal3" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content" th:if="${@agreementRepository.findByProperty(property)!=null and property.getAgreementRequest()!=null}">
+                                    <div class="modal-header" style="display: flex">
+                                        <div>
+                                            <b><h3 class="modal-title">[[#{client.Requestforchangeofownership}]]</h3></b>
+                                            <p>[[${property.getName()}]] has made a request to change ownership.</p>
+                                        </div>
+                                        <button type="button" class="close" style="margin-top: -20px;margin-right: -10px;font-size: 25px;" data-dismiss="modal">×</button>
+                                    </div>
+                                    <form th:if="${property.getAgreementRequest().getStatus()!=2}" method="post" th:action="@{'/processchangeofownership?id='+${property.getId()}}" th:object="${changeofownership}" onsubmit="disableButton5()">
+                                        <h4 style="margin: 20px 20px -5px 20px;">[[#{client.Belowdetails}]] .</h4>
+                                        <div class="modal-body" style="display: flex">
+                                            <div class="red">
+                                                <h3>Current Agreement</h3>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.PropertyName}]]</div>
+                                                    <div th:text="${property.getAgreement().getLegal_bussines_name()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Email}]]</div>
+                                                    <div th:text="${property.getAgreement().getEmail()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Phonenumber}]]</div>
+                                                    <div th:text="${property.getAgreement().getPhone_number()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">First name</div>
+                                                    <div th:text="${property.getAgreement().getFirst_name()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Lastname}]]</div>
+                                                    <div th:text="${property.getAgreement().getLast_name()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.NUIS/VAT}]]</div>
+                                                    <div th:text="${property.getAgreement().getNuis()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;display: flex;">
+                                                        [[#{client.Address}]]
+                                                        <div class="icon">
+                                                            <i class="fa-solid fa-circle-info"></i>
+                                                            <span class="tooltip">[[#{client.Addresscreated}]]: <br> [[#{client.aa}]]</span>
+                                                        </div>
+                                                    </div>
+                                                    <div th:text="${property.getAgreement().getAddress()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">Street name</div>
+                                                    <div th:text="${property.getAgreement().getStreet()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.City}]]</div>
+                                                    <div th:text="${property.getAgreement().getCity().getFull_name()}"></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.ZipCode}]]</div>
+                                                    <div th:text="${property.getAgreement().getZip_code()}"></div>
+                                                </div>
+                                            </div>
+                                            <div style="width: 10%;text-align: center;padding-top: 140px;">
+                                                <div>
+                                                    <div style="font-size: 40px;color: red;font-weight: bold;">➡</div>
+                                                    <div style="font-size: 40px;color: green;font-weight: bold;">⬅</div>
+                                                </div>
+                                            </div>
+                                            <div class="green" th:if="${nrchange!=0}">
+                                                <h3>New Agreement</h3>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Propertyname}]]</div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" class="first_name" th:field="*{legal_business_name}" required/></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">Attn.</div>
+                                                    <div style="width: 70%;font-weight: 400;font-size: 16px;color: #444444;">AllBookers.com</div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Email}]]</div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" class="first_name" th:field="*{email}" required/></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Phonenumber}]]</div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" class="first_name" th:field="*{phone_number}" required/></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Firstname}]]</div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" class="first_name" th:field="*{first_name}" required/></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Lastname}]]</div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" class="last_name" th:field="*{last_name}" required/></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.NUIS/VAT}]]</div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" class="nuis" th:field="*{nuis}" required/></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.Streetname}]]</div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" th:field="*{street}" required/></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.City}]]</div>
+                                                    <div style="width: 70%;">
+                                                        <select class="city" th:field="*{city}" style="width: 100%;border-radius: 5px;">
+                                                            <option th:each="count :${cities}" th:value="${count.id}" th:text="${count.full_name}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;">[[#{client.ZipCode}]]</div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" th:field="*{zip_code}" required/></div>
+                                                </div>
+                                                <div style="display: flex;max-width: 100%;margin: 10px 0px;">
+                                                    <div style="max-width: 150px;width: 150px;font-weight: 600;font-size: 16px;color: #444444;display: flex;">
+                                                        [[#{client.Address}]]
+                                                        <div class="icon">
+                                                            <i class="fa-solid fa-circle-info"></i>
+                                                            <span class="tooltip">[[#{client.aa11}]] :<br> [[#{client.aa}]]</span>
+                                                        </div>
+                                                    </div>
+                                                    <div style="width: 70%;"><input style="border: 1px solid grey;border-radius: 5px;font-size: 15px;width: 100%;" type="text" placeholder="Your address will be created automatically" th:field="*{address}" readonly/></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="justify-content: left;">
+                                            <button type="submit" class="btn btn-primary" id="butoni5">[[#{client.Accept}]]</button>
+                                            <script>
+                                                function disableButton5() {
+                                                    var butoni5 = document.getElementById("butoni5");
+                                                    var butoni6 = document.getElementById("butoni6");
+                                                    var butoniClose = document.getElementById("butoniClose");
+                                                    butoniClose.disabled = true;
+                                                    butoni5.disabled = true;
+                                                    butoni6.disabled = true;
+
+                                                    setTimeout(function() {
+                                                        butoniClose.disabled = false;
+                                                        butoni5.disabled = false;
+                                                        butoni6.disabled = false;
+                                                    }, 60000);
+                                                }
+                                            </script>
+                                        </div>
+                                    </form>
+                                    <div style="display: flex;margin-top: -50px;justify-content: flex-end;margin-left: 50%;">
+                                        <form method="post" th:action="@{'/processrefusedchangeofownership?id='+${property.getId()}}" onsubmit="disableButton6()">
+                                            <button type="submit" class="btn btn-outline-danger" style="margin-right: 15px" id="butoni6">[[#{client.Refuse}]]</button>
+                                            <script>
+                                                function disableButton6() {
+                                                    var butoni5 = document.getElementById("butoni5");
+                                                    var butoni6 = document.getElementById("butoni6");
+                                                    var butoniClose = document.getElementById("butoniClose");
+                                                    butoniClose.disabled = true;
+                                                    butoni5.disabled = true;
+                                                    butoni6.disabled = true;
+
+                                                    setTimeout(function() {
+                                                        butoniClose.disabled = false;
+                                                        butoni5.disabled = false;
+                                                        butoni6.disabled = false;
+                                                    }, 60000);
+                                                }
+                                            </script>
+                                            <button type="button" id="butoniClose" class="btn btn-light" data-dismiss="modal" style="margin-right: 15px">[[#{client.Close}]]</button>
+                                        </form>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+<script>
+    function startCountdownEn() {
+        document.getElementById("downloadLinkEn").style.pointerEvents = "none";
+        var countdownDivEn = document.getElementById("countdownEn");
+        var seconds = 5;
+
+        var countdownInterval = setInterval(function() {
+            countdownDivEn.textContent = "Try again in " + seconds + " sec";
+            seconds--;
+            if (seconds < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("downloadLinkEn").style.pointerEvents = "auto";
+                countdownDivEn.textContent = "";
+            }
+        }, 1000);
+    }
+    function startCountdownAl() {
+        document.getElementById("downloadLinkAl").style.pointerEvents = "none";
+        var countdownDivAl = document.getElementById("countdownAl");
+        var seconds = 5;
+
+        var countdownInterval = setInterval(function() {
+            countdownDivAl.textContent = "Try again in " + seconds + " sec";
+            seconds--;
+            if (seconds < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("downloadLinkAl").style.pointerEvents = "auto";
+                countdownDivAl.textContent = "";
+            }
+        }, 1000);
+    }
+</script>
+
+<script>
+    function changeLanguageController(param) {
+        var propertyId= document.getElementById("propertyId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/agreement?id=' + propertyId  ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+<input type="hidden" id="agr" th:value="${property.getAgreement() != null ? property.getAgreement().getId() : ''}" />
+
+<script>
+    function editAgreement(){
+        var agreementId = document.getElementById("agr").value.trim();
+        console.log(agreementId);
+        window.location.href = '/editAgreement?id=' + agreementId;
+    }
+</script>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+</body>
+</html>

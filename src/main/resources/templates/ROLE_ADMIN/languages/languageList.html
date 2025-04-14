@@ -1,0 +1,290 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Language List | Admin Panel Allbookers</title>
+  <!-- plugins:css -->
+
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+  <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+        rel="stylesheet">
+  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+
+  <style>
+    .fix-top-content {
+      padding-top: 100px;
+    }
+    .ab {
+      margin: 0px;
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      opacity: 1;
+      text-transform: uppercase;
+      vertical-align: unset;
+      text-decoration: none;
+      color: rgb(103, 116, 142);
+      font-weight: 600;
+    }
+    .table-container {
+      overflow-x: auto;
+      position: relative;
+    }
+    .pagination-controls {
+      background: #fff;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+    }
+    .dataTables_filter input {
+      border: 1px solid #ddd;
+      padding: 10px 10px 10px 20px;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+      color: #333;
+    }
+    .dataTables_filter .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .dataTables_filter svg {
+      position: absolute;
+      left: 20px;
+      width: 16px;
+      height: 16px;
+      fill: #aaa;
+    }
+    .dataTables_filter input {
+      padding-left: 40px;
+    }
+    .dataTables_filter input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+  </style>
+
+
+</head>
+<body>
+<div class="container-scroller">
+  <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper fix-top-content">
+        <div class="row">
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <a class="panel-booker-buton" th:href="@{/addLanguage}">
+                  <button type="submit" class="btn btn-outline-primary mb-4 rounded"><i class="ti-plus btn-icon-pretend"></i> [[#{client.AddNewLanguage}]]</button>
+                </a>
+                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.AllLanguages}]]</h4>
+                <p class="card-description">[[#{client.Viewandmanagealllanguages}]] </p>
+                <div class="table-responsive mt-3">
+                  <table id="table_idd" class="table table-hover table-striped">
+                    <thead>
+                    <tr style="background: #214162;padding: 10px;color: #ffffff;font-size: 14px;">
+                      <th>[[#{client.Id}]]</th>
+                      <th>[[#{client.Code}]]</th>
+                      <th>[[#{client.Name}]]</th>
+                      <th style="width: 150px;">[[#{client.Actions}]]</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="count: ${languages}">
+                      <td th:text="${count.getId()}"></td>
+                      <td th:text="${count.getCode()}"></td>
+                      <td><a class="ab" > [[${count.getName()}]] </a></td>
+                      <td>
+                        <button class="btn btn-outline-danger btn-sm" type="button" th:attr="onclick='event.preventDefault(); deleteLanguage(' + ${count.getId()}+  ');'" style="padding: 0.5rem 0.81rem">[[#{client.Delete}]] <i class="ti-alert btn-icon-prepend"></i></button>
+                        <button type="button" th:attr="onclick='goToEditLanguage(' + ${count.getId()}+  ');'" class="btn btn-primary btn-sm btn-icon-text" style="padding: 0.5rem 0.81rem">[[#{client.Edit}]]<i class="ti-file btn-icon-append allb-nn"></i></button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function goToEditLanguage(id) {
+    window.location = "editLanguage?id=" + id;
+  }
+</script>
+
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/chart.js/Chart.min.js"></script>
+
+<script>
+  function changeLanguageController(param) {
+
+    var a = 'sq';
+    if (param == null) {
+      param = a;
+    }
+    var search = {"lang": a};
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: {
+        lang: param
+      },
+      success: function (result) {
+        window.location = '/languageList' ;
+      },
+      error: function (e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+</script>
+
+
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="js/off-canvas.js"></script>
+<script src="js/hoverable-collapse.js"></script>
+<script src="js/template.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="js/dashboard.js"></script>
+<script src="js/Chart.roundedBarCharts.js"></script>
+<script>
+
+  $(function() {
+    var a = $("#nameInput").val();
+    $("#nameInput").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: "/autocomplete",
+          dataType: "json",
+          data: {
+            searchvalue : $("#nameInput").val(),
+          },
+          success: function(data) {
+            response(data);
+          }
+        });
+      },
+      minLength : 3,
+    })
+  });
+</script>
+<script>
+  function deleteLanguage(id) {
+    const button = event.currentTarget;
+
+    button.disabled = true;
+
+    fetch('/deleteLanguage?id=' + id, {
+      method: 'POST',
+    })
+            .then(response => response.text())
+            .then(data => {
+              if (data === 'Language deleted successfully') {
+                Toastify({
+                  text: "Language deleted successfully",
+                  duration: 2000,
+                  close: true,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                }).showToast();
+                setTimeout(() => location.reload(), 2000);
+              } else {
+                Toastify({
+                  text: data,
+                  duration: 2000,
+                  close: true,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }).showToast();
+
+                setTimeout(() => {
+                  button.disabled = false;
+                }, 3000);
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+              Toastify({
+                text: "An error occurred while deleting the language",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+              }).showToast();
+
+              setTimeout(() => {
+                button.disabled = false;
+              }, 3);
+            });
+  }
+</script>
+
+<script type="text/javascript" th:inline="none" class="init">
+  $(document).ready(function () {
+    $('#table_idd').DataTable({
+      "paging": true,
+      "ordering": true,
+      "info": false,
+      "order": [ 0 , "desc"],
+      "language": {
+        search: '' //remove the default "Search" label
+      },
+      initComplete: function() {
+        var table = '#table_idd';
+        var $searchInput = $(table + '_filter input');
+        $searchInput.wrap('<div class="input-wrapper"></div>');
+        $searchInput.attr('placeholder','Search...');
+        $(table + '_filter .input-wrapper').prepend('<svg viewBox="0 0 512 512"><path d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"></path></svg>');
+      }
+    });
+    // var pagination = $('.dataTables_paginate');
+    // $('#pagination_controls').append(pagination);
+  });
+</script>
+
+</body>
+</html>

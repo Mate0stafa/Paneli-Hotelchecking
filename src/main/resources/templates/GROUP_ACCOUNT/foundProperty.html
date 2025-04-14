@@ -1,0 +1,305 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Existing Property | Allbookers Group Account</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+
+<body>
+
+
+<div class="container-scroller">
+    <div th:replace="/GROUP_ACCOUNT/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div th:replace="/GROUP_ACCOUNT/Layouts/sidebar"></div>
+        <!-- partial -->
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="terai-123">
+                    <h2 >The property that was found</h2>
+                </div>
+                <hr class="tey-q">
+
+                <div class="yew-121">
+                    <div class="card tr-q-1">
+                        <div class="r-2648">
+                            <div class="i-12">
+                                <a class="vvd" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
+                                    <img class="yet-12" th:src="${property.getPrimaryImage()==null} ? 'https://panel.allbookers.com/images/www.allbookers.com.png' :${'https://panel.allbookers.com'+property.getPrimaryImage().getImagePath()}">
+                                </a>
+                            </div>
+                            <div class="1-13">
+                                <div class="prope-name-1">
+                                    <a class="vvd" style="text-decoration: none;" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
+                                        <div class="property-anmi3" th:text="${property.getName()}"></div>
+                                    </a>
+                                    <div class="locationdj-1">
+                                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                        <div class="tgdhs-city" th:text="${property.getAddress().getCity().getFull_name()}"></div>
+                                    </div>
+                                </div>
+
+                                <div class="rating-34">
+                                    <div class="ks-129">
+                                        [[#{client.Rating}]]
+                                    </div>
+                                    <div class="ths-start-" style="display: flex;">
+                                        <div th:if="${property.getStars() != 0}" style="margin-top: 1px;font-size: 14px;color: #fb8402;">
+                                            <span class="fa fa-star checked" th:each="stars: ${#numbers.sequence(0, property.getStars() -1)}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="kx-123">
+                                    <span th:text="
+                                        ${property.getHotel_facility().size() > 0 ? property.getHotel_facility().get(0)?.getName() + (property.getHotel_facility().size() > 1 ? ', ' : '') + ' ' : ''} +
+                                        ${property.getHotel_facility().size() > 1 ? property.getHotel_facility().get(1)?.getName()+ (property.getHotel_facility().size() > 2 ? ', ' : '') + ' ' : ''} +
+                                        ${property.getHotel_facility().size() > 2 ? property.getHotel_facility().get(2)?.getName()+ (property.getHotel_facility().size() > 3 ? ', ' : '') + ' ' : ''} +
+                                        ${property.getHotel_facility().size() > 3 ? property.getHotel_facility().get(3)?.getName()+ (property.getHotel_facility().size() > 4 ? ', ' : '') + ' ' : ''} +
+                                        ${property.getHotel_facility().size() > 4 ? property.getHotel_facility().get(4)?.getName()+ (property.getHotel_facility().size() > 5 ? ', ' : '') + ' ' : ''} +
+                                        ${property.getHotel_facility().size() > 5 ? property.getHotel_facility().get(5)?.getName()+ (property.getHotel_facility().size() > 6 ? ', ' : '') + ' ' : ''} +
+                                        ${property.getHotel_facility().size() > 6 ? property.getHotel_facility().get(6)?.getName()+ (property.getHotel_facility().size() > 7 ? ', ' : '') + ' ' : ''} +
+                                        ${property.getHotel_facility().size() > 7 ? property.getHotel_facility().get(7)?.getName() + ' ' : ''} +
+                                        '.' "></span>
+                                </div>
+
+
+                                <div class="proep-s">
+                                    <div class="left1 0part">
+                                        <div class="stak-1">
+                                            [[#{client.Statusi}]]
+                                        </div>
+                                        <div class="hgs-23" th:text="${property.getHotel_status().getStatus()}">
+                                        </div>
+                                    </div>
+                                    <div class="right-part-1">
+                                        <button type="button" class="btn jdsh-ke" th:id="${property.getId()}" onclick="addProperty(this)">
+                                            [[#{client.Addproperty}]]
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/GROUP_ACCOUNT/Layouts/footer.html"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .content-wrapper {
+        padding: 6rem 1.5rem 3rem 1.5rem;
+        width: 100%;
+    }
+    span.man-12 {
+        font-weight: 600;
+        font-size: 35px;
+        font-family: system-ui;
+    }
+
+    span.hgs-12 {
+        font-weight: 600;
+        font-size: 29px;
+        font-family: system-ui;
+    }
+
+    .proep-s {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+    span.fa.fa-star.checked.yeu {
+        color: #d1692c;
+    }
+
+    .kx-123 {
+        font-size: 13px;
+        color: green;
+    }
+
+    .property-anmi3 {
+        font-weight: 600;
+        color: #0b3d75;
+        font-size: 17px;
+    }
+
+    .ks-129 {
+        color: #ff5200;
+        font-weight: 600;
+        margin-right: 5px;
+    }
+
+    .tgdhs-city {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0b3d75;
+    }
+
+    .rating-34 {
+        display: flex;
+    }
+
+    .r-2648 {
+        display: flex;
+    }
+
+    .left1.\30 part {
+        display: flex;
+    }
+
+    .hgs-23 {
+        color: green;
+        font-weight: 600;
+    }
+
+    img.yet-12 {
+        height: 140px;
+        border-radius: 10px;
+        width: 140px;
+        margin: 10px;
+    }
+
+    button.btn.jdsh-ke {
+        background: green;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        padding: 10px;
+    }
+
+    .\31 -13 {
+        width: -webkit-fill-available;
+        margin: 10px;
+    }
+
+    .stak-1 {
+        font-weight: 600;
+        color: #2e3c61;
+        margin-right: 5px;
+    }
+
+    .stak-1 {
+        font-weight: 600;
+        color: #2e3c61;
+    }
+    .prope-name-1 {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .card.tr-q-1 {
+        width: 60%;
+        position: relative;
+        word-wrap: break-word;
+        background-clip: border-box;
+        border: 1px solid #e3e3e3;
+        border-radius: 20px;
+        box-shadow: 5px 20px 24px -4px rgba(39, 45, 61, 0.08), 8px 8px 8px 2px rgb(116 123 143 / 15%);
+        background-color: #fbfbf8;
+        padding: 5px;
+    }
+    .card.tr-q-1:hover {
+        box-shadow: 5px 20px 24px -4px rgba(39, 45, 61, 0.08), 8px 8px 8px 2px rgb(116 123 143 / 18%);
+        background-color: #fcfcf2;
+
+    }
+    button.btn.jdsh-ke:hover {
+        background: darkgreen;
+    }
+
+</style>
+
+
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<script src="../../js/sweetAlert.js"></script>
+
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+
+<!-- End custom js for this page-->
+
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+    function addProperty(event) {
+        swal({
+            title: "Are you sure that you want to add this property to your Account?",
+            text: "Once added, you will manage this property in your current logged in Account!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willAdd) => {
+                if (willAdd) {
+                    $.post('addPropertyToMyPrimaryAccount', { propertyId: event.id })
+                        .done(function(response) {
+                            swal("Success!", response, "success").then(function() {
+                                window.location = "/login";
+                            });
+                        })
+                        .fail(function(xhr) {
+                            let errorMessage = xhr.responseText || "An unexpected error occurred.";
+                            swal("Error!", errorMessage, "error");
+                        });
+                } else {
+                    swal("Cancelled!");
+                }
+            });
+    }
+
+    /*]]>*/
+</script>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+</body>
+</html>

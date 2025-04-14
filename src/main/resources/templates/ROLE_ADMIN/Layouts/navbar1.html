@@ -1,0 +1,356 @@
+
+<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" id="navbarfordesktop">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo mr-5" href="/"><img src="/images/logo.png" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-allbookers1.png" alt="logo"/></a>
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <form id="search-form" action="/searchByValue">
+            <style>
+                /* Remove default hover effect on select options */
+                select option:hover,
+                select option:focus {
+                    background-color: inherit; /* Inherit the background color */
+                    color: inherit; /* Inherit the text color */
+                }
+
+                /* Additional styling to remove any focus or hover effects */
+                select:focus,
+                select:active,
+                select option:focus,
+                select option:active {
+                    outline: none; /* Remove focus outline */
+                    background-color: inherit; /* Inherit background color */
+                    color: inherit; /* Inherit text color */
+                }
+
+                select option {
+                    background-color: white; /* Ensure the background color is white */
+                    color: black; /* Ensure the text color is black */
+                    pointer-events: none; /* Disable hover effect */
+                }
+            </style>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2">
+                        <div class="input-group">
+                            <input type="text" name="searchValue" id="nameInput" size="50"  class="form-control form-control-navS"  placeholder="Search Property\PropertyID\Category\City\Country" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-inverse-primary btn-fw">[[#{client.Search}]]</button>
+        </form>
+        <ul class="navbar-nav navbar-nav-right">
+            <li>
+                <h4 class="font-weight-bold hgh" th:text="${property.getName()+' - '+ property.getLoginId()}">[[#{client.Welcometo}]] </h4>
+            </li>
+            <li>
+                <a class="vvd" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
+                    <img th:src="${property.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + property.getPrimaryImage().getImagePath()}"  data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">
+<!--                    <img th:src="${property.getHotelPhotos() != null ? property.getPrimaryImage().getImagePath() : (property.getPrimaryImage1(hotelPhotos) != null ? property.getPrimaryImage1(hotelPhotos).getImagePath() : '')}"-->
+<!--                         data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">-->
+                </a>
+            </li>
+
+            <li class="nav-item nav-profile dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                    <img src="/images/logo-allbookers1.png" alt="profile"/>
+                </a>
+                <!--Here dropdown-->
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                    <div class="card p-0 bg-light">
+                        <div class="text-center pt-4 pb-3">
+                            <div class="avatar avatar-xl">
+                                <img class="rounded-circle" src="https://cdn-icons-png.freepik.com/256/4032/4032591.png" alt="">
+                                <!-- Photo icon overlay -->
+
+                            </div>
+                            <h6 class=" emriprones" th:text="${#authentication.getName().toUpperCase()}">[[#{client.Welcometo}]]</h6>
+                        </div>
+                    </div>
+                    <a class="dropdown-item " style="display:flex;align-items: stretch;justify-content: center;" th:href="@{'/connectivity?id='+${property.getId()}}">
+                        <i class="ti-upload text-primary"></i>Connectivity
+                    </a>
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" th:href="@{'/privacy-policy.pdf'}">
+                        <i class="ti-lock text-primary"></i>
+                        Privacy Policy
+                    </a>
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" href="https://allbookers.com/customerservice.sq.html">
+                        <i class="ti-help text-primary"></i>
+                        Help Center
+                    </a>
+                    <div class="px-3 text-center " > <a class="btn btn-light d-flex flex-center w-100 text-center " style="display:flex;
+    align-items: stretch;
+    justify-content: center;" th:href="@{'/logout'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        &nbsp;   [[#{client.Logout}]]</a></div>
+                </div>
+            </li>
+
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="icon-menu"></span>
+        </button>
+    </div>
+</nav>
+
+<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" id="navbarformobile">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo mr-5" href="/"><img src="/images/logo.png" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-allbookers1.png" alt="logo"/></a>
+
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav navbar-nav-right">
+            <li>
+                <h4 class="font-weight-bold hgh" th:text="${property.getName()+' - '+ property.getLoginId()}">[[#{client.Welcometo}]] </h4>
+            </li>
+            <li>
+
+                <a class="vvd" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
+                    <img th:src="${property.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + property.getPrimaryImage().getImagePath()}"  data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">
+<!--                    <img th:src="${property.getHotelPhotos() != null ? property.getPrimaryImage().getImagePath() : (property.getPrimaryImage1(hotelPhotos) != null ? property.getPrimaryImage1(hotelPhotos).getImagePath() : '')}"-->
+<!--                         data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">-->
+                </a>
+
+            <li class="nav-item nav-profile dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown2">
+                    <img class="logo-iccon" src="/images/logo-allbookers1.png" alt="profile"/>
+                </a>
+
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                <div class="card p-0 bg-light">
+                    <div class="text-center pt-4 pb-3">
+                        <div class="avatar avatar-xl">
+                            <img class="rounded-circle" src="https://cdn-icons-png.freepik.com/256/4032/4032591.png" alt="">
+                            <!-- Photo icon overlay -->
+
+                        </div>
+                        <h6 class=" emriprones" th:text="${#authentication.getName().toUpperCase()}">[[#{client.Welcometo}]]</h6>
+                    </div>
+                </div>
+                <a class="dropdown-item " style="display:flex;align-items: stretch;justify-content: center;" th:href="@{'/connectivity?id='+${property.getId()}}">
+                    <i class="ti-upload text-primary"></i>Connectivity
+                </a>
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" th:href="@{'/privacy-policy.pdf'}">
+                    <i class="ti-lock text-primary"></i>
+                    Privacy Policy
+                </a>
+                <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" href="https://allbookers.com/customerservice.sq.html">
+                    <i class="ti-help text-primary"></i>
+                    Help Center
+                </a>
+                <div class="px-3 text-center " > <a class="btn btn-light d-flex flex-center w-100 text-center " style="display:flex;
+    align-items: stretch;
+    justify-content: center;" th:href="@{'/logout'}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    &nbsp;   [[#{client.Logout}]]</a></div>
+            </div>
+            </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="icon-menu"></span>
+        </button>
+    </div>
+    <form id="search-form" action="/searchByValue">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-8 col-xs-offset-2">
+                    <div class="input-group">
+                        <input type="text" name="searchValue" id="nameInput" size="50"  class="form-control form-control-navS"  placeholder="Search Property\PropertyID\Category\City\Country">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-inverse-primary btn-fw">[[#{client.Search}]]</button>
+    </form>
+</nav>
+<style>
+    .form-control-navS {
+        background-image: url('data:image/svg+xml,%3Csvg viewBox%3D%220 0 512 512%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2216px%22 height%3D%2216px%22%3E%3Cpath d%3D%22M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z%22 fill%3D%22%23aaa%22%2F%3E%3C%2Fsvg%3E');
+        background-repeat: no-repeat;
+        background-position: 10px center;
+        padding-left: 30px;
+    }
+    .form-control-navS::placeholder{
+        color: #aaa;
+    }
+
+    .avatar-xl {
+        height: 3rem;
+        width: 3rem;
+    }
+    .avatar {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .avatar img {
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    #navbarformobile{
+        display: none!important;
+    }
+
+    h4.font-weight-bold.hgh {
+        margin-top: 22px;
+        margin-right: 17px;
+    }
+
+    img.jjn {
+        width: 44px;
+        margin-top: 7px;
+        border-radius: 0px 5px 5px 0px;
+        /* border: 1px red; */
+        margin-right: 8px!important;
+        height: 46px;
+    }
+
+    form#search-form {
+        display: flex;
+    }
+
+    button.btn.btn-inverse-primary.btn-fw {
+        margin-left: 10px;
+        height: 45px;
+    }
+
+    select.form-select.form-select-sm {
+        border: none;
+    }
+
+    input#nameInput {
+        border-radius: 15px 15px 15px 15px;
+        padding-left: 35px;
+    }
+
+    select.form-select.form-select-sm {
+        border: 1px solid #214162;
+        border-radius: 0px 15px 15px 0px;
+        height: 46px;
+        color: #ffffff;
+        font-weight: 500;
+        background-color: #214162;
+    }
+    @media only screen and (max-width: 600px) {
+        img.logo-iccon {
+            width: 30px!important;
+            height: 30px!important;
+            border-radius: 100%!important;
+        }
+        img.jjn {
+            width: 40px;
+            margin-top: 10px;
+            border-radius: 0px 5px 5px 0px;
+            margin-right: 8px!important;
+            height: 40px;
+        }
+        h4.font-weight-bold.hgh {
+            margin-top: 20px;
+            margin-right: 15px;
+            font-size: 17px;
+        }
+        #navbarfordesktop{
+            display: none!important;
+        }
+        #navbarformobile{
+            display: flex!important;
+            background-color: white;
+            font-size: 14px;
+        }
+        .page-body-wrapper {
+            min-height: calc(100vh - 60px);
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 100px;
+        }
+        form#search-form {
+            margin-bottom: 10px;
+        }
+        nav#sidebar {
+            top: 100px;
+        }
+        input#nameInput {
+            border-radius: 15px 15px 15px 15px;
+            border-color: #214162;
+            padding-left: 35px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        button.btn.btn-inverse-primary.btn-fw {
+            margin-right: 10px;
+            margin-left: 10px;
+            padding: 5px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .dropdown-menu.dropdown-menu-right.navbar-dropdown.show {
+            width: calc(100% - 200px)!important;
+            margin-left: 135px;
+        }
+        h4.font-weight-bold.hgh {
+            margin-top: 20px;
+            margin-right: 15px;
+            font-size: 15px;
+        }
+
+
+    }
+
+    /*Search box list*/
+    .ui-autocomplete {
+        max-width: 440px !important;
+        max-height: 350px !important;
+        top: 63px !important;
+        z-index: 1001 !important;
+        /* border-left: 3px solid #FB8540 !important; */
+        /* color: #333333 !important; */
+        box-shadow: 0px 12px 16px -4px rgba(39, 45, 61, 0.08), 0px 4px 6px -2px rgba(39, 45, 61, 0.03) !important;
+        /* background-color: #fff !important; */
+        max-height: 200px !important;
+        overflow-x: auto;
+        overflow-y: auto;
+        background: #fff !important;
+        border: 1px solid #ccc;
+        border-top-color: #d9d9d9 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+        -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        cursor: default !important;
+        border-radius: 12px !important;
+        position: fixed !important;
+    }
+    .ui-widget-content {
+        background: #fff !important;
+    }
+    .ui-widget-content a {
+        color: rgb(3, 3, 3);
+        cursor: default;
+        display: block;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        height: 32px;
+        line-height: 32px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<!--Script for search-->
+<script th:inline="javascript">
+
+    function search(){
+        $.get( "/searchByValue", {searchValue: $('#nameInput').val() });
+    }
+    $( "#search-form" ).submit(function() {
+        search();
+    });
+</script>

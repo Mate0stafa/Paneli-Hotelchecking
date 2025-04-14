@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Promotion Type | Admin Panel Allbookers</title>
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- plugins:css -->
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+    <script>
+        function validateDates() {
+            const startDateInput = document.querySelector('input[name="startDate"]');
+            const endDateInput = document.querySelector('input[name="endDate"]');
+
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+
+            if (startDate) {
+                const minEndDate = new Date(startDate);
+                minEndDate.setDate(minEndDate.getDate() + 1);
+                endDateInput.min = minEndDate.toISOString().split('T')[0];
+
+                if (endDate && new Date(endDate) <= minEndDate) {
+                    endDateInput.value = minEndDate.toISOString().split('T')[0];
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;"> [[#{client.AddPromotionType}]] </h4>
+                                <form class="form-sample" th:action="@{'/savePromotionsAdmin'}" th:object="${promotionsType}" method="post" enctype="multipart/form-data">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.PromotionName}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" onkeypress="return event.key !== 'Enter';"  th:placeorder="#{client.PromotionName}" th:field="*{promotionName}" class="form-control" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Category}]] </label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" th:field="*{category}" required>
+                                                        <option value="" disabled selected>[[#{client.Selectanoption}]]  </option>
+                                                        <option value="DEEP DEALS">[[#{client.DEEPDEALS}]] </option>
+                                                        <option value="CAMPAIGN DEALS">[[#{client.CAMPAIGNDEALS}]] </option>
+                                                        <option value="PORTFOLIO DEALS">[[#{client.PORTFOLIODEALS}]]</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Description}]] </label>
+                                                <div class="col-sm-9">
+                                                    <textarea th:placeholder="#{client.Description}" th:field="*{description}" class="form-control" maxlength="500" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Recommendeddiscount}]] </label>
+                                                <div class="col-sm-9">
+                                                    <input type="number" onkeypress="return event.key !== 'Enter';" placeholder="%" th:field="*{recommendedPercentage}" class="form-control" min="1" max="99" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.StartDate}]] </label>
+                                                <div class="col-sm-9">
+                                                    <input type="date" onkeypress="return event.key !== 'Enter';" th:field="*{startDate}" class="form-control" required onchange="validateDates()"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.EndDate}]] </label>
+                                                <div class="col-sm-9">
+                                                    <input type="date" onkeypress="return event.key !== 'Enter';" th:field="*{endDate}" class="form-control" required onchange="validateDates()"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">[[#{client.UploadPhoto}]]</label>
+                                            <div class="col-sm-9">
+                                                <input type="file" id="file" name="file" style="display: none" onkeypress="return event.key !== 'Enter';" onchange="displayPhoto(this)"/>
+                                                <div id="photo-container" style="display: none">
+                                                    <img id="uploaded-photo" src="#"  class="img-thumbnail me-3" alt="Uploaded Photo" style="max-width: 200px; max-height: 200px; padding: 5px;"/>
+                                                    <button type="button" onclick="removePhoto()" class="btn btn-outline-primary btn-sm">
+                                                        <i class="ti-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <button type="button" onclick="document.getElementById('file').click();" class="btn btn-outline-primary btn-icon-text btn-sm">
+                                                    <i class="ti-upload btn-icon-prepend"></i>
+                                                    [[#{client.Upload}]]
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+
+
+                            <div class="form-group">
+                                        <button type="submit" class="btn btn-primary mr-2">[[#{client.Save}]]</button>
+                                        <a th:href="@{'/promotionsAdmin'}" class="btn btn-light">[[#{client.Cancel}]]</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/addPromotionsAdmin' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script src="../../js/sweetAlert.js"></script>
+
+<style>
+    .fix-top-content{
+        padding-top: 100px;
+    }
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+
+        select#version {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+<script>
+    <!--  Script to upload/remove photo-->
+    function displayPhoto(input){
+        var file = input.files[0];
+        if(file){
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('uploaded-photo').src = e.target.result;
+                document.getElementById('photo-container').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function removePhoto(){
+        document.getElementById('file').value = '';
+        document.getElementById('photo-container').style.display = 'none';
+    }
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+
+</html>

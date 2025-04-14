@@ -1,0 +1,421 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit City | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
+    <!-- Plugin -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <!-- Plugin CSS Dropzone-->
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css" />
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
+    <!-- Plugin -->
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png"/>
+    <!--AJAX-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
+</head>
+
+<body>
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.Edit}]] [[${city.getFull_name}]]</h4>
+                                <form class="form-sample" th:action="@{'/editCity?id='+${city.getId()}}" method="post">
+                                    <p class="card-description">
+                                        [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.County}]]</label>
+                                                 <div class="col-sm-9">
+                                                     <select class="form-control" name="country" id="county" >
+                                                         <option th:each="count:${counties}" th:text="${count.name}" th:value="${count.id}" ></option>
+                                                     </select>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Citynamess}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" th:value="${city.getFull_name()}" class="form-control" id="cityName" name="cityName" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.Citytax}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="number" pattern="^[0-9]*(\.[0-9]+)?$" step="0.01" th:value="${city.getCityTax()}" class="form-control" id="cityTax" name="cityTax" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.CityDesc}]]</label>
+                                                <div class="col-sm-9">
+                                                    <textarea th:text="${city.getCityDescription() == null ? '' : city.getCityDescription()}" rows="5" class="form-control" id="cityDescription" name="cityDescription"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">[[#{client.Save}]]</button>
+                                        <a th:href="@{/cityList}" class="btn btn-light">[[#{client.Close}]]</a>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-body ffk">
+                                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title"> [[#{client.UploadPhotoToThis}]]</h4>
+
+                                <form th:action="@{'/uploadCityImages?id='+ ${city.getId()}}" class="dropzone needsclick dz-clickable hello-cs" id="site-output-dropzone">
+                                    <div class="dz-default dz-message custom-cs">
+                                        <div class="upload-container">
+                                            <div class="circle-button">
+                                                <div class="folder-icon"></div>
+                                            </div>
+                                            <div class="upload-instructions">
+                                                <p>[[#{client.Draganddrop}]] </p>
+                                                <span> [[#{client.Or}]] , <a href="#">[[#{client.browsetoupload}]]</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                        Dropzone.options.siteOutputDropzone = {
+                                            init: function () {
+                                                this.on("success", function (file, response) {
+                                                    console.log("File uploaded successfully. Reloading in 5 seconds...");
+                                                    setTimeout(function () {
+                                                        location.reload();
+                                                    }, 5000);
+                                                });
+                                            }
+                                        };
+                                    });
+                                </script>
+                                <script src="path_to_image_compressor.js">
+                                    document.getElementById("site-output-dropzone").addEventListener("change", function (event) {
+                                        const files = event.target.files;
+
+                                        for (let i = 0; i < files.length; i++) {
+                                            const file = files[i];
+                                            const reader = new FileReader();
+
+                                            reader.onload = function (e) {
+                                                const img = new Image();
+
+                                                img.onload = function () {
+                                                    const maxWidth = 800;
+                                                    const maxHeight = 600;
+                                                    let width = img.width;
+                                                    let height = img.height;
+                                                    if (width > maxWidth || height > maxHeight) {
+                                                        if (width / maxWidth > height / maxHeight) {
+                                                            width = maxWidth;
+                                                            height = Math.round(maxWidth * (img.height / img.width));
+                                                        } else {
+                                                            height = maxHeight;
+                                                            width = Math.round(maxHeight * (img.width / img.height));
+                                                        }
+                                                    }
+                                                    const canvas = document.createElement("canvas");
+                                                    const ctx = canvas.getContext("2d");
+                                                    canvas.width = width;
+                                                    canvas.height = height;
+                                                    ctx.drawImage(img, 0, 0, width, height);
+                                                    const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.6);
+                                                    console.log(compressedDataUrl);
+                                                };
+
+                                                img.src = e.target.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
+                                </script>
+                            </div>
+
+                            <div style="cursor: pointer"  th:each="count:${city.getCityPhotos()}" th:id="${count.getId()}" class="item selfie col-lg-2 col-md-3 col-5 col-sm">
+                                    <div class="container111">
+                                        <a  data-toggle="modal" th:data-target="'#myModal1'+${count.getId()}">
+                                        <img class="img-fluid fweff" th:src="${count.getImagePath()}">
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger rgea"  th:attr="onclick='deleteCityImage(' + ${count.getId()}+');'" data-dismiss="modal">[[#{client.Deleteimage}]]</button>
+                                    </div>
+                            </div>
+
+                            <div class="modal" th:each="count:${city.getCityPhotos()}" th:id="'myModal1'+${count.getId()}"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-6 gj">
+
+                                                    <div class="photo-container">
+                                                        <img th:src="${count.getImagePath()}"  class="imazh-image" th:id="img">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                             <button type="button" class="btn btn-outline-danger rgea"  th:attr="onclick='deleteCityImage(' + ${count.getId()}+');'" data-dismiss="modal">[[#{client.Deleteimage}]]</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <style>
+
+                                .dz-default.dz-message.custom-cs {
+                                    display: flex;
+                                    justify-content: center;
+                                    flex-direction: column;
+                                    margin-top: 25px;
+                                }
+                                .dropzone{
+                                    border: 2px solid rgb(255 255 255 / 30%) !important;
+                                }
+                                .upload-container {
+                                    text-align: center;
+                                    padding: 20px;
+                                }
+                                .circle-button {
+                                    width: 120px;
+                                    height: 120px;
+                                    border-radius: 50%;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    background-color: #FBF7F4;
+                                    margin: 0 auto 20px;
+                                    cursor: pointer;
+                                    position: relative;
+                                }
+                                .circle-button::before {
+                                    content: "";
+                                    position: absolute;
+                                    top: -4px;
+                                    right: -4px;
+                                    bottom: -4px;
+                                    left: -4px;
+                                    border: 4px dashed #fb8540;
+                                    border-radius: 50%;
+                                    animation: rotate 35s linear infinite;
+                                }
+                                .folder-icon {
+                                    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="69" height="51" viewBox="0 0 69 51"><defs><linearGradient id="icon-drop-folder_svg__a" x1="34.5" x2="34.5" y1="48.67" y2="0.19" gradientUnits="userSpaceOnUse"><stop offset="0.67" stop-color="%23112caf"></stop><stop offset="0.77" stop-color="%232250f4"></stop></linearGradient></defs><path fill="url(%23icon-drop-folder_svg__a)" d="M62.93 6.8H37.11L29.84.19H6.07a3.53 3.53 0 0 0-3.53 3.53v41.42a3.53 3.53 0 0 0 3.53 3.53h56.86a3.53 3.53 0 0 0 3.53-3.53V10.33a3.53 3.53 0 0 0-3.53-3.53"></path><path fill="%23ffdd73" d="M6.83 12.56h53.01V35.1H6.83z"></path><path fill="%23fff6d0" d="M10.27 9.83h53.01v22.54H10.27z"></path><path fill="%23a6bffd" d="M63.17 50.81H5.83a3.46 3.46 0 0 1-3.5-3.06l-2.07-29a3.25 3.25 0 0 1 3.29-3.51h61.9a3.25 3.25 0 0 1 3.29 3.51l-2.07 29a3.46 3.46 0 0 1-3.5 3.06"></path></svg>') no-repeat center center;
+                                    background-size: contain;
+                                    width: 50px;
+                                    height: 50px;
+                                    z-index: 1; /* Ensure it stays on top */
+                                }
+                                .upload-instructions p {
+                                    margin: 0;
+                                    font-size: 1rem;
+                                    font-weight: 700;
+                                    line-height: 1.5;
+                                    color: #141824;
+                                }
+                                .upload-instructions span {
+                                    font-size: 1rem;
+                                    font-weight: 700;
+                                    line-height: 1.5;
+                                    color: #007bff;
+                                }
+                                .upload-instructions a {
+                                    color: #fb8540;
+                                    text-decoration: none;
+                                }
+                                @keyframes rotate {
+                                    0% {
+                                        transform: rotate(0deg);
+                                    }
+                                    100% {
+                                        transform: rotate(360deg);
+                                    }
+                                }
+
+                                .fix-top-content{padding-top: 100px;}
+
+                                img#img {
+                                    width: 1000px;
+                                }
+                                .modal-content {
+                                    width: 1065px;
+                                    margin-left: 203px;
+                                }
+
+                                div#myModal111 {
+                                    background-color: #00000096;
+                                }
+
+                                .container111 {
+                                    margin-top: 32px;
+                                }
+                                img.img-fluid.fweff {
+                                    border-radius: 8px;
+                                }
+                                .card-body.ffk {
+                                    margin-top: 34px;
+                                }
+                                a.btn.btn-dark {
+                                    background: #c9c8c8;
+                                    color: black;
+                                    border: none;
+                                }
+                                a.btn.btn-dark:hover {
+                                    background: darkgray;
+                                    color: black;
+                                    border: none;
+                                    font-weight: bold;
+                                }
+
+                            </style>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<script src="../../js/sweetAlert.js"></script>
+
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+<script src="../../js/select2.js"></script>
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.js"></script>
+
+<input type="hidden" id="cityId" th:value="${city.getId()}">
+
+
+<script>
+    function changeLanguageController(param) {
+
+        var  cityId = document.getElementById("cityId").value;
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/editCity?id=' + cityId ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+
+<script>
+    function deleteCityImage(photoId){
+        document.getElementById(photoId).remove();
+        $.post( "/deleteCityImage", {photoId: photoId});
+    }
+</script>
+
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+</body>
+</html>

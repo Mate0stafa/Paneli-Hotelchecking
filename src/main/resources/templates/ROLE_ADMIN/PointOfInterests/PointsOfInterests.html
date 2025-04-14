@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Points Of Interests | Admin Panel Allbookers</title>
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <!-- plugins:css -->
+    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+
+                <div class="row">
+
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="/addNewPointOfInterest">
+                                    <button type="submit" class="btn btn-outline-primary mb-2 rounded"><i class="ti-plus btn-icon-pretend "></i>[[#{client.AddNewPoint}]] </button>
+                                </a>
+
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="card-title"
+                                        style="font-size: 23px;color: rgba(26,26,26,0.91);font-weight: 700;position: relative;padding-top: 20px;">
+                                     [[#{client.PointsOfInterests}]]   </h4>
+                                </div>
+                                <p class="card-description">[[#{client.Viewandmanageallpointsofinterests}]]</p>
+
+                                <div class="table-responsive">
+                                    <table id="table_idd1" class="table table-striped">
+                                        <thead>
+                                        <tr style="background: #214162;padding: 10px;color: #ffffff;font-size: 14px;">
+                                            <th>[[#{client.Id}]]</th>
+                                            <th>[[#{client.Name}]]</th>
+                                            <th>[[#{client.Status}]]</th>
+                                            <th>[[#{client.CreatedDate}]]</th>
+                                            <th>[[#{client.UpdatedDate}]]</th>
+                                            <th>[[#{client.Actions}]]</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="p:${points}">
+                                            <td th:text="${p.getId()}"></td>
+                                            <td th:text="${#messages.msgOrNull('client.' + p.getName().replaceAll(' ', '')) != null ? #messages.msgOrNull('client.' + p.getName().replaceAll(' ', '')) : p.getName()}"></td>
+                                            <td th:text="${p.getStatus() == 0 ? (#messages.msgOrNull('client.active') != null ? #messages.msgOrNull('client.active') : 'Active') : (#messages.msgOrNull('client.disabled') != null ? #messages.msgOrNull('client.disabled') : 'Disabled')}"></td>
+
+                                            <td th:text="${p.getCreatedDate()}"></td>
+                                            <td th:text="${p.getUpdatedDate()}"></td>
+                                            <td>
+                                                <a th:href="@{'editPoint?id='+${p.getId()}}">
+                                                    <button type="button" class="btn btn-primary btn-sm btn-icon-text">
+                                                        [[#{client.Edit}]]<i
+                                                            class="ti-file btn-icon-append allb-nn"></i></button>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <style>
+
+                    .b-b-b-1 {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 19px;
+                    }
+                </style>
+
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
+
+
+<style>
+    .fix-top-content {
+        padding-top: 100px;
+    }
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+
+        select#version {
+            display: none;
+        }
+    }
+
+</style>
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table_idd1').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": false,
+            "searching":true,
+            "order":[0,"asc"]
+        });
+        var searchBox = $('input[type="search"]');
+
+        searchBox.on('input', function(event) {
+            validateSearchInput($(this));
+        });
+    });
+
+    function validateSearchInput(searchBox) {
+        let inputValue = searchBox.val();
+        let validPattern = /^([a-zA-Z]+|([0-9]+(\.[0-9]{0,2})?))$/;
+
+        if (!validPattern.test(inputValue)) {
+            searchBox.val(inputValue.slice(0, -1));
+        }
+    }
+
+    function deletePropertyPointt(id) {
+        $.post("deletePropertyPoint", {id: id}, () => {
+            location.reload();
+        });
+        // document.getElementById(id).remove();
+    }
+
+
+
+</script>
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/PointsOfInterests' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<style>
+    @media only screen and (max-width: 600px) {
+        h4.font-weight-bold.hgh {
+            display: none;
+        }
+
+        select#version {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+
+    $(function () {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        })
+    });
+</script>
+
+
+</body>
+
+</html>
+

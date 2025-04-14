@@ -1,0 +1,218 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Amenity | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+    <style>
+        .fix-top-content {
+            padding-top: 100px;
+        }
+
+        select.form-control {
+            color: black !important;
+            outline-color: black !important;
+        }
+
+        @media only screen and (max-width: 600px) {
+            h4.font-weight-bold.hgh {
+                display: none;
+            }
+
+            select#version {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/sidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title" style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.CreateNewAmenity}]]</h4>
+                                <form class="form-sample" th:action="@{'/newAmenity'}" method="post" enctype="multipart/form-data">
+                                    <p class="card-description">
+                                        [[#{client.Pleasefillinallthefieldscorrectly!}]]
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.AmenityName}]]</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="amenityName"  onkeypress="return event.key !== 'Enter';"  name="amenityName" class="form-control" th:placeholder="#{client.AmenityName}" aria-label="Amenity Name" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="amenityDescription">[[#{client.AmenityDescription}]]</label>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" id="amenityDescription" name="amenityDescription" rows="4"   onkeypress="return event.key !== 'Enter';"  th:placeholder="#{client.EnterAmenityDesc}" required></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="amenityType">[[#{client.AmenityType}]]</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="amenityType" name="amenityType">
+                                                        <option value="Top Amenities">[[#{client.TopAmenities}]]</option>
+                                                        <option value="Room amenities">[[#{client.Roomamenities}]]</option>
+                                                        <option value="Bathroom">[[#{client.Bathroom}]]</option>
+                                                        <option value="Media & Technology">[[#{client.Media&Technology}]]</option>
+                                                        <option value="Food & Drink">[[#{client.Food&Drink}]]</option>
+                                                        <option value="Services & Extras">[[#{client.Services&Extras}]]</option>
+                                                        <option value="Outdoor & View">[[#{client.Outdoor&View}]]</option>
+                                                        <option value="Accessibility">[[#{client.Accessibility}]]</option>
+                                                        <option value="Entertainment & Family Services">[[#{client.Entertainment&FamilyServices}]]</option>
+                                                        <option value="Safety & security">[[#{client.Safety&security}]]</option>
+                                                        <option value="Cleanliness & disinfection">[[#{client.Cleanliness&disinfection}]]</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                    </div>
+
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">[[#{client.UploadPhoto}]]</label>
+                                                <div class="col-sm-10">
+                                                    <input type="file" id="file" name="file" style="display: none" onchange="displayPhoto(this)" required/>
+                                                    <div id="photo-container" style="display: none">
+                                                        <img id="uploaded-photo" class="img-thumbnail" src="#" alt="Uploaded Photo" style="max-width: 200px; max-height: 200px; padding: 5px;"/>
+                                                        <button type="button" onclick="removePhoto()" class="btn btn-outline-primary btn-sm">
+                                                            <i class="ti-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    <button type="button" onclick="document.getElementById('file').click();" class="btn btn-outline-primary btn-icon-text btn-sm">
+                                                        <i class="ti-upload btn-icon-prepend"></i>
+                                                        [[#{client.Upload}]]
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary">[[#{client.Save}]]</button>
+                                        <a th:href="@{'/roomAmenities'}">
+                                            <button type="button" class="btn btn-light">[[#{client.Cancel}]]</button>
+                                        </a>
+                                    </div>
+                                        </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeLanguageController(param) {
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/newRoomAmenity' ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<script>
+    // Script to upload/remove photo
+    function displayPhoto(input){
+        var file = input.files[0];
+        if(file){
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('uploaded-photo').src = e.target.result;
+                document.getElementById('photo-container').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function removePhoto(){
+        document.getElementById('file').value = '';
+        document.getElementById('photo-container').style.display = 'none';
+    }
+</script>
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+
+
+<script>
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue: $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        });
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<!-- endinject -->
+
+</body>
+</html>

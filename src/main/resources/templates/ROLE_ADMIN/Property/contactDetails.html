@@ -1,0 +1,193 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Property Contact | Admin Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="vendors/feather/feather.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- endinject -->
+    <link rel="shortcut icon" href="images/favicon.png" />
+    <style>
+        .fix-top-content{
+            padding-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-scroller">
+    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper fix-top-content">
+                <div class="col-md-10 col-sm-12">
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 22px;color: rgba(26,26,26,0.86);line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;">[[#{client.EditContact}]]</h4>
+                        <p class="card-description ">[[#{client.Editpropertycontact}]] </p>
+                        <div class="card-body" style="background-image: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(242,244,245,0.85) 100%);">
+                            <form class="forms-sample col-lg-9" th:action="@{'/contactDetails?id='+${property.getId()}}" th:object="${property}" method="post">
+                                <div style="padding: 10px 20px;border-radius: 10px;margin: 20px 0px;">
+                                    <h4>[[#{client.Personaldetails}]]</h4>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">[[#{client.Firstname}]] </label>
+                                        <div class="col-sm-9">
+                                            <input onkeypress="return event.key !== 'Enter';" type="text" class="form-control" th:placeholder="#{client.Firstname}" th:value="${property.getFirstName()!=null ? property.getFirstName() : (property.getAgreement() != null ? property.getAgreement().getFirst_name() : '')}" th:field="*{firstName}" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">[[#{client.Lastname}]] </label>
+                                        <div class="col-sm-9">
+                                            <input  onkeypress="return event.key !== 'Enter';" type="text" class="form-control" th:placeholder="#{client.Lastname}" th:value="${property.getLastName()!=null ? property.getLastName() : (property.getAgreement() != null ? property.getAgreement().getLast_name() : '') }" th:field="*{lastName}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="padding: 10px 20px;border-radius: 10px;margin: 20px 0px;">
+                                    <h4>[[#{client.Contactdetails}]]</h4>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">[[#{client.Email}]]</label>
+                                        <div class="col-sm-9">
+                                            <input   onkeypress="return event.key !== 'Enter';" type="email" class="form-control" th:placeholder="#{client.Email}" th:value="${property.getAddress().getEmail()}" th:field="*{address.email}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">[[#{client.Telephone}]]</label>
+                                        <div class="col-sm-9">
+                                            <input type="tel"
+                                                   onkeypress="return event.key !== 'Enter';"
+                                                   class="form-control"
+                                                   th:placeholder="#{client.YourNumber}"
+                                                   minlength="10"
+                                                   pattern="[\+0-9\(\)\s-]{10,}"
+                                                   th:value="${property.getAddress().getTelephone()}"
+                                                   th:field="*{address.telephone}"
+                                                   required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary mt-4">[[#{client.Submit}]]</button>
+                                <a th:href="@{'/propertyDashboard?id='+${property.getId()}}"><button type="button" class="btn btn-light mt-4" >[[#{client.Cancel}]]</button></a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
+
+
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<style>
+    .page-body-wrapper {
+        min-height: calc(110vh - 60px);
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+    }
+</style>
+<!-- plugins:js -->
+<script src="vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+
+<input type="hidden" id="propertyId" th:value="${property.getId()}">
+
+<script>
+    function changeLanguageController(param) {
+        var propertyId= document.getElementById("propertyId").value;
+        console.log(propertyId)
+
+        var a = 'sq';
+        if (param == null) {
+            param = a;
+        }
+
+        var search = {"lang": a};
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                window.location = '/contactDetails?id=' + propertyId   ;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+</script>
+
+<!-- End custom js for this page-->
+<script>
+
+    $(function() {
+        var a = $("#nameInput").val();
+        $("#nameInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/autocomplete",
+                    dataType: "json",
+                    data: {
+                        searchvalue : $("#nameInput").val(),
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength : 3,
+        })
+    });
+</script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+</body>
+
+</html>
+
