@@ -8,6 +8,7 @@ import com.example.paneli.Models.PanelUsers.Role;
 import com.example.paneli.Models.PanelUsers.User;
 import com.example.paneli.Repositories.*;
 import com.example.paneli.Repositories.UserPanel.UserRepository;
+import com.example.paneli.Services.Mail.JavaMailService;
 import com.example.paneli.Services.PasswordService;
 import com.example.paneli.Services.UserServices.UserPanelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,8 @@ public class UsersController {
     @Autowired
     private UserPanelService userPanelService;
 
+    @Autowired
+    private JavaMailService javaMailService;
 
 
 @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -365,13 +368,17 @@ public ModelAndView users(HttpServletRequest request,
     @ResponseBody
     public ResponseEntity<?> handleDeleteUser(@PathVariable Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
+        Map<String,String> map = new HashMap<>();
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.getRole().clear();
             userRepository.delete(user);
-            return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+            map.put("message", "User deleted successfully");
+            return ResponseEntity.ok(map);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found"));
+
+        map.put("message", "User not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
 
 
@@ -390,30 +397,7 @@ public ModelAndView users(HttpServletRequest request,
             user.setPassword_expired(1);
             userRepository.saveAndFlush(user);
 
-            String token = UUID.randomUUID().toString();
-            UserApiToken userApiToken = new UserApiToken(token, user.getUsername());
-            userApiTokenRepository.save(userApiToken);
-
-            MimeMessage message = sender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(user.getEmail());
-            helper.setSubject("Request to reset your password");
-            String htmlContent = "<div style=\"background:  #DBDBDB; display: flex;box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);padding: 20px; margin: 0 auto; max-width: 90%; flex-direction: column; align-items: center;\">"
-                    + "<div style=\"margin-left: 27%; margin-top: 10px;\">"
-                    + "<img src=\"https://join.allbookers.com/images/Allbookers.png\" style=\"width: 248px; margin-bottom: 5px;\">"
-                    + "</div>"
-                    + "<div style=\"margin-left: 30%; margin-top: 10px; float: right;\">"
-                    + "</div>"
-                    + "</div><div style=\"margin-left: 32%;\">"
-                    + "<h3>Your password have been expired . \n</h3>"
-                    + "<p>Simply click on the button below to choose a new one.</p>"
-                    + "<a style=\"text-align: center;font-size: 20px;\" href='" + constructResetTokenEmail(token, user) + "'><button style=\"padding: 10px 50px; border-radius: 5px; border: 1px solid cornflowerblue; color: #417eeb; font-weight: 600; background-color: #e7effd;\" class=\"backlogin\" type=\"button\">Reset password</button></a>"
-                    + "</div><br><hr style=\"width: 35%; margin-left: auto; margin-right: auto;\"><br>"
-                    + "<p style=\"text-align: center;\">© Copyright 2024 Allbookers.com | All rights reserved."
-                    + "<br>This e-mail was sent by allbookers.com.</p>";
-
-            helper.setText(htmlContent, true);
-            sender.send(message);
+            javaMailService.forgotPassEmail(user.getId());
 
         }else if (user.getPassword_expired()==1){
             user.setPassword_expired(0);

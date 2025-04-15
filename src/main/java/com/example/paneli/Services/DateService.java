@@ -192,4 +192,8 @@ public class DateService {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
+    public  Date getTomorrow(){
+        LocalDate today = LocalDate.now().plusDays(1);
+        return Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
 }
