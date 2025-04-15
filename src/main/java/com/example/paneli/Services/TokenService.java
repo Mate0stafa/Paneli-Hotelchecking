@@ -60,7 +60,7 @@ public class TokenService {
         }
 
         String tokenId = parts[0];
-        String tokenValue = parts[1];
+        String tokenValue = parts[1].trim();
 
         BCryptPasswordEncoder hasher = new BCryptPasswordEncoder(12);
 

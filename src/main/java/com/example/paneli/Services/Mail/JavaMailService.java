@@ -8,6 +8,8 @@ import com.example.paneli.Models.Contract.AgreementRequest;
 import com.example.paneli.Models.Contract.Changeofownership;
 import com.example.paneli.Models.PanelUsers.Role;
 import com.example.paneli.Models.PanelUsers.User;
+import com.example.paneli.Repositories.UserPanel.UserRepository;
+import com.example.paneli.Services.TokenService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -39,7 +41,11 @@ import javax.mail.internet.MimeMessage;
 public class JavaMailService {
 
     @Autowired
-    JavaMailSender sender;
+    private JavaMailSender sender;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private TokenService tokenService;
 
     public void sendMailPinCode(User user, PropertyAddRequest propertyAddRequest) throws MessagingException {
 
@@ -766,7 +772,7 @@ public class JavaMailService {
         String htmlContent = stringBuilder.toString();
 
         // Konverto HTML në PDF
-        byte[] pdfData = convertHtmlToPdff(htmlContent);
+        byte[] pdfData = convertHtmlToPdf(htmlContent);
 
         // Shtoni PDF-në si bashkëngjitje në email
         helper.setText(email, true);
@@ -941,18 +947,6 @@ public class JavaMailService {
 
     private String escapeHtml(String input) {
         return input.replaceAll("&", "&amp;");
-    }
-
-    public byte[] convertHtmlToPdf(String htmlContents) throws DocumentException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ITextRenderer renderer = new ITextRenderer();
-        String escapedHtmlContent = escapeHtml(htmlContents);
-        renderer.setDocumentFromString(escapedHtmlContent);
-        renderer.layout();
-        renderer.createPDF(outputStream);
-        renderer.finishPDF();
-        renderer = null;
-        return outputStream.toByteArray();
     }
 
     //    Request for agreement
@@ -1523,7 +1517,7 @@ public class JavaMailService {
         String pdfContent = pdfContentBuilder.toString();
 
         // Convert HTML to PDF
-        byte[] pdfData = convertHtmlToPdff(pdfContent);
+        byte[] pdfData = convertHtmlToPdf(pdfContent);
 
         // Add PDF as attachment
         helper.addAttachment("Marreveshje.pdf", new ByteArrayResource(pdfData), "application/pdf");
@@ -2102,7 +2096,7 @@ public class JavaMailService {
         String htmlContent = stringBuilder.toString();
 
         // Konverto HTML në PDF
-        byte[] pdfData = convertHtmlToPdff(htmlContent);
+        byte[] pdfData = convertHtmlToPdf(htmlContent);
 
         // Shtoni PDF-në si bashkëngjitje në email
         helper.setText(email, true);
@@ -2613,7 +2607,7 @@ public class JavaMailService {
         String htmlContent = stringBuilder.toString();
 
         // Konverto HTML në PDF
-        byte[] pdfData = convertHtmlToPdff(htmlContent);
+        byte[] pdfData = convertHtmlToPdf(htmlContent);
 
         // Shtoni PDF-në si bashkëngjitje në email
         helper.setText(email, true);
@@ -2623,7 +2617,7 @@ public class JavaMailService {
         System.out.println("Emaili per te njoftuar marrëveshjen u dergua...");
     }
 
-    public byte[] convertHtmlToPdff(String htmlContent) throws DocumentException {
+    public byte[] convertHtmlToPdf(String htmlContent) throws DocumentException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(htmlContent);
@@ -3201,7 +3195,7 @@ public class JavaMailService {
         }
     }
 
-    public void sendemailwhenAddnewProperty(User user, Property property , Agreement agreement) throws MessagingException, DocumentException {
+    public void sendemailwhenAddnewProperty(User user, Property property , Agreement agreement) throws MessagingException, DocumentException    {
 
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -3722,7 +3716,7 @@ public class JavaMailService {
         String htmlContent = stringBuilder.toString();
 
         // Konverto HTML në PDF
-        byte[] pdfData = convertHtmlToPdff(htmlContent);
+        byte[] pdfData = convertHtmlToPdf(htmlContent);
 
         // Shtoni PDF-në si bashkëngjitje në email
         helper.setText(email, true);
@@ -3732,5 +3726,35 @@ public class JavaMailService {
         System.out.println("Mail for accept Request for agreement Send...");
     }
 
+    public void forgotPassEmail(Long userId) throws MessagingException {
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(userRepository.findById(userId).get().getEmail());
+        helper.setSubject("Request to reset your password");
+        String htmlContent = "<div style=\"font-family: system-ui;\">" +
+                "<div style=\"background: #dbdbdb; display: flex;\">" +
+                "<div style=\"margin: 15px auto; width: 248px;\">" +
+                "<img src=\"https://allbookers.com/images/logoallbookers.png\" style=\"width: 100%; margin-bottom: 5px; display: block;\">" +
+                "</div>" +
+                "<div style=\"width: 7%; margin-top: 1%; color: black;\">" +
+                "</div>" +
+                "</div>" +
+                "<div style=\"text-align: center; width: 75%; margin: 1% 10%;\">" +
+                "<div style=\"width: 60%; margin: 0 auto; font-size: 16px; color: black; font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;\">" +
+                "<h3>Forgot your password?</h3>" +
+                "<p>Simply click on the button below to choose a new one.</p>" +
+                "<a style=\"text-align: center; font-size: 20px;\" href='http://localhost:2025/user/changePassword?token=" + tokenService.generateSecureToken(userId) + "'>" +
+                "<button style=\"padding: 10px 50px; border-radius: 5px; border: 1px solid cornflowerblue; color: #417eeb; font-weight: 600; background-color: #e7effd;\" class=\"backlogin\" type=\"button\">Reset password</button>" +
+                "</a>" +
+                "</div>" +
+                "</div>" +
+                "<br><hr style=\"width: 35%; margin-left: auto; margin-right: auto;\"><br>" +
+                "<p style=\"text-align: center;\">© Copyright 2024 Allbookers.com | All rights reserved.<br>This e-mail was sent by allbookers.com.</p>" +
+                "</div>";
+
+        helper.setText(htmlContent, true);
+        sender.send(message);
+
+    }
 
 }
