@@ -341,24 +341,6 @@
             font-size: .9375rem;
             font-family: themify;
         }
-
-        .alert-primary.custom-alert-icon {
-            border-radius:15px;
-            border-width: 1px;
-            border-inline-start-width: 9px;
-            border-style: solid;
-            border-inline-start-color: #214162;
-            --tw-bg-opacity: 1;
-            font-size: .813rem;
-            --tw-text-opacity: 1;
-            color: black;
-            background: unset;
-        }
-        .alert-primary {
-            color: #272659;
-            background-color: #dbdbee;
-            border-color: #cdcce8;
-        }
     </style>
 </head>
 
@@ -381,23 +363,6 @@
                                 </h3>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div th:if="${property.getHotelierId() == null && property.getNUIS() == null && (property.getAgreement() == null or property.getAgreement().getNuis() == null) }" style=" display: flex; gap: 11px;" class="alert alert-primary alert-dismissible dark:!bg-bodybg fade show custom-alert-icon shadow-sm flex items-center" role="alert" id="dismiss-alert40">
-                    <div>
-                        <img style="width: 23px;   " src="/images/icons8-box-important-50.png"  >
-                    </div>
-
-                    <div class="divi " style=" ">
-                        <p class="card-desc pb-2" style="font-weight: 600;font-size: 15px;"> [[#{client.requiredcomplete}]] </p>
-                        <p class="card-desc pb-2" > [[#{client.complyvaious}]]  </p>
-                        <p>  [[#{client.informationneed}]] </p>
-
-                        <button style=" " class="btn btn-outline-primary btn-icon-text" onclick="go()">  [[#{client.goToHost}]]      </button>
-                    </div>
-                    <div class="ms-auto">
-                        <div class="mx-1 my-1"></div>
                     </div>
                 </div>
 
@@ -500,7 +465,7 @@
                                     <h4 class="card-title">[[#{client.ToDoLists}]]</h4>
 
                                     <!-- List wrapper -->
-                                    <div class="list-wrapper pt-2" style="display: block; flex-direction:column; height: 300px;">
+                                    <div class="list-wrapper pt-2" style="display: block; flex-direction:column; height: 300px;scrollbar-width: none">
                                         <div style="overflow-y: auto;">
                                             <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
                                                 <li th:each="todo : ${todos}" th:classappend="${todo.completed} ? 'completed'"

@@ -498,21 +498,6 @@
                         </div>
                     </div>
                 </div>
-                <div th:if="${property.getHotelierId() == null && property.getNUIS() == null && (property.getAgreement() == null or property.getAgreement().getNuis() == null) }"
-                    style="    display: flex;   gap: 11px; " class="alert alert-primary alert-dismissible dark:!bg-bodybg fade show custom-alert-icon shadow-sm flex items-center" role="alert" id="dismiss-alert40">
-                    <div>
-                        <img style="width: 23px;   " src="/images/icons8-box-important-50.png"  >
-                    </div>
-                    <div class="divi " style=" ">
-                        <p class="card-desc pb-2" style="font-weight: 600;font-size: 15px;"> [[#{client.requiredcomplete}]] </p>
-                        <p class="card-desc pb-2" > [[#{client.complyvaious}]]  </p>
-                        <p>  [[#{client.informationneed}]] </p>
-                        <button style=" " class="btn btn-outline-primary btn-icon-text" onclick="go()">  [[#{client.goToHost}]]  </button>
-                    </div>
-                    <div class="ms-auto">
-                        <div class="mx-1 my-1"></div>
-                    </div>
-                </div>
                 <div class="row" style="margin-bottom: -36px;">
                     <div class="col-md-6 grid-margin transparent">
                         <div class="row">

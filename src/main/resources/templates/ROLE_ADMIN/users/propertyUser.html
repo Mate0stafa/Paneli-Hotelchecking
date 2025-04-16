@@ -101,7 +101,6 @@
                     <th>[[#{client.User}]]</th>
                     <th>[[#{client.Email}]]</th>
                     <th>[[#{client.Accessrights}]]</th>
-                    <th>Status</th>
                     <th>[[#{client.ACTIONS}]]</th>
                   </tr>
                   </thead>
@@ -110,7 +109,6 @@
                   <td th:text="${user.getId()}"></td>
                       <td th:text="${user.getUsername()}"></td>
                       <td th:text="${user.getEmail()}"></td>
-                      <td><span th:each="ff: ${user.getGrand_role()}" th:text="${ff.getRole_name()}+', '"></span> </td>
                       <td th:text="${user.is_admin==true?'Admin':'User'}"></td>
                       <td>
                         <span style="padding: 10px 20px; opacity: 0.6; cursor: not-allowed;" th:if="${#lists.size(users) == 1 || user.is_admin==true}" title="This user cannot be deleted." class="btn btn-outline-danger btn-sm disabled">[[#{client.Delete}]]</span>

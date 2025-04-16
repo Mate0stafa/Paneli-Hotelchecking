@@ -52,7 +52,6 @@
                                         <th>[[#{client.Id}]]</th>
                                         <th>[[#{client.User}]]</th>
                                         <th>[[#{client.Email}]]</th>
-                                        <th>[[#{client.Accessrights}]]</th>
                                         <th>Status</th>
                                         <th>[[#{client.Actions}]]</th>
                                     </tr>
@@ -62,8 +61,6 @@
                                         <td th:text="${count.getId()}"></td>
                                         <td th:text="${count.getUsername()}"></td>
                                         <td th:text="${count.getEmail()}"></td>
-                                        <td><span th:each="ff: ${count.getGrand_role()}"
-                                                  th:text="${ff.getRole_name()}+', '"></span></td>
                                         <td th:text="${count.is_admin==true?'Admin':'User'}"></td>
                                         <td>
                                             <span style="padding: 10px 20px; opacity: 0.6; cursor: not-allowed;"

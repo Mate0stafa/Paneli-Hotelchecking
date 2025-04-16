@@ -356,16 +356,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <label class="col-xs-4 col-sm-4 containerCh" th:each="book : ${rolet}">
-                                                <input type="checkbox" class="form-check-input" name="chk"
-                                                       id="grand_role" th:field="${user.grand_role}"
-                                                       onkeypress="return event.key !== 'Enter';"     th:value="${book.id}"  th:text=" #{'client.' +${book.role_name.replaceAll(' ', '')}}"/>
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div>
                                     <button type="submit" class="btn btn-primary" id="editButton">
