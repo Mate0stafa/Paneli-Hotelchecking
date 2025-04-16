@@ -139,6 +139,8 @@ public class PanelMainController {
                 int propSize = user.getRole().size() / 2;
                 modelAndView.addObject("propSize", propSize);
                 modelAndView.addObject("thirrje", request);
+                List<ToDo> todos = toDoService.getToDoByProperty(property.getId());
+                modelAndView.addObject("todos", todos);
 
                 long endTime = System.currentTimeMillis();
                 double durationInSeconds = (endTime - startTime) / 1000.0; // konvertohet në sekonda

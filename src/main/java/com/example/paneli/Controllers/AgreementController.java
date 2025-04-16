@@ -1340,6 +1340,7 @@ public class AgreementController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid agreement ID"));
         Property property = propertyRepository.findByAgreementId(dbAgr.getId());
 
+        City ciu = cityRepository.findByName(city);
         dbAgr.setFirst_name(firstName);
         dbAgr.setLast_name(lastName);
         dbAgr.setStreet(street);
@@ -1347,6 +1348,7 @@ public class AgreementController {
         dbAgr.setLegal_bussines_name(propertyName);
         dbAgr.setPhone_number(phoneNumber);
         dbAgr.setEmail(email);
+        dbAgr.setCity(ciu);
         dbAgr.setAddress(address);
         dbAgr.setNuis(nuis.isEmpty() ? null : nuis);
 

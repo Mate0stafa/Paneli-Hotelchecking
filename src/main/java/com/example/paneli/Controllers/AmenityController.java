@@ -1,5 +1,6 @@
 package com.example.paneli.Controllers;
 
+import com.example.paneli.DataObjects.AmenityDto;
 import com.example.paneli.Models.PanelUsers.Role;
 import com.example.paneli.Models.PanelUsers.User;
 import com.example.paneli.Models.Property;
@@ -13,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +24,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class AmenityController {
@@ -55,17 +53,9 @@ public class AmenityController {
             } else {
                 amenityPage = amenityRepository.findAll();
             }
-
-//            int totalPages = amenityPage.getTotalPages();
-//            int currentPage = amenityPage.getNumber() + 1;
-//            int startPage = Math.max(1, currentPage - 2);
-//            int endPage = Math.min(startPage + 4, totalPages);
-
             modelAndView.addObject("page", amenityPage);
             modelAndView.addObject("amenityList", amenityPage );
             modelAndView.addObject("search", search);
-//            modelAndView.addObject("startPage", startPage);
-//            modelAndView.addObject("endPage", endPage);
             modelAndView.setViewName("ROLE_ADMIN/Property/Amenity/amenityList");
         }
         return modelAndView;
@@ -137,6 +127,47 @@ public class AmenityController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/newAmenity")
+    public ModelAndView newAmenityPost(HttpServletRequest request,
+                                       AmenityDto amenityDto,
+                                       @RequestParam(value="file", required = false) MultipartFile file) throws IOException {
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            System.out.println(amenityDto.getAmenityName());
+            System.out.println(amenityDto.getAmenityType());
+            System.out.println(amenityDto.getAmenityDescription());
+
+
+            if ((long) amenityRepository.findAllByAmenityName(amenityDto.getAmenityName()).size() == 0) {
+                Path file1 = Paths.get("/home/allbookersusr/home/BookersDesk/data/uploads/amenity/");
+                if (!Files.exists(file1)) {
+                    Files.createDirectory(file1);
+                }
+
+                try {
+                    String fileName = null;
+                    if (file != null && !file.isEmpty()) {
+                        byte[] bytes = file.getBytes();
+                        fileName = file.getOriginalFilename();
+                        Path path = Paths.get(file1 + "/" + fileName);
+                        Files.write(path, bytes);
+                        System.out.println("File saved to: " + path.toString());
+                    }
+
+                    Amenity amenity = new Amenity(amenityDto.getAmenityName(), amenityDto.getAmenityType(), 0, amenityDto.getAmenityDescription(), fileName);
+                    amenityRepository.saveAndFlush(amenity);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            modelAndView.setViewName("redirect:/roomAmenities");
+        }
+
+        return modelAndView;
+    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/editRoomAmenity")
@@ -185,7 +216,6 @@ public class AmenityController {
                     }
 
                     amenityRepository.saveAndFlush(existingAmenity);
-                    syncWithSecondProject(existingAmenity);
 
                     modelAndView.setViewName("redirect:/roomAmenities");
                 }
@@ -194,27 +224,6 @@ public class AmenityController {
             }
         }
         return modelAndView;
-    }
-
-    private void syncWithSecondProject(Amenity amenity) {
-        RestTemplate restTemplate = new RestTemplate();
-        String secondProjectApiUrl = "https://join.allbookers.com/api/amenity/sync";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Amenity> request = new HttpEntity<>(amenity, headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(secondProjectApiUrl, HttpMethod.POST, request, String.class);
-            if (response.getStatusCode() == HttpStatus.OK) {
-                System.out.println("Amenity synced successfully with the second project.");
-            } else {
-                System.out.println("Failed to sync amenity with the second project.");
-            }
-        } catch (Exception e) {
-            System.out.println("Error syncing amenity: " + e.getMessage());
-        }
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -242,7 +251,6 @@ public class AmenityController {
 
                 // Delete the amenity from the repository
                 amenityRepository.deleteById(id);
-                syncDeleteWithSecondProject(id);
 
                 return ResponseEntity.ok("Amenity deleted successfully.");
             } else {
@@ -252,31 +260,6 @@ public class AmenityController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
         }
     }
-
-    private void syncDeleteWithSecondProject(Long id) {
-        RestTemplate restTemplate = new RestTemplate();
-        String secondProjectApiUrl = "https://join.allbookers.com/api/amenity/delete";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        Map<String, Long> requestBody = new HashMap<>();
-        requestBody.put("id", id);
-
-        HttpEntity<Map<String, Long>> request = new HttpEntity<>(requestBody, headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(secondProjectApiUrl, HttpMethod.POST, request, String.class);
-            if (response.getStatusCode() == HttpStatus.OK) {
-                System.out.println("Amenity deletion synced successfully with the second project.");
-            } else {
-                System.out.println("Failed to sync amenity deletion with the second project.");
-            }
-        } catch (Exception e) {
-            System.out.println("Error syncing amenity deletion: " + e.getMessage());
-        }
-    }
-
 
 }
 

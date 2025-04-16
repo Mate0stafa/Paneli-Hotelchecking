@@ -62,25 +62,15 @@ public class PropertyController {
     @Autowired
     CityRepository cityRepository;
     @Autowired
-    CountyRepository countyRepository;
-    @Autowired
     AddressRepostitory addressRepostitory;
-    @Autowired
-    ZanaTimeZoneRepository zanaTimeZoneRepository;
-    @Autowired
-    HotelTimeRepository hotelTimeRepository;
     @Autowired
     HotelAttributeRepository hotelAttributeRepository;
     @Autowired
     PropertyEncodeName propertyEncodeName;
     @Autowired
-    AgreementRepository agreementRepository;
-    @Autowired
     AddressChangeRepository addressChangeRepository;
     @Autowired
     JavaMailService javaMailService;
-    @Autowired
-    private HotelierRepository hotelierRepository;
     @Autowired
     private HotelPhotoRepository hotelPhotoRepository;
     @Autowired
@@ -347,8 +337,6 @@ public class PropertyController {
 
                     hotelFacilityRepository.saveAndFlush(existingFacility);
 
-                    syncWithSecondProject(existingFacility);
-
                     modelAndView.setViewName("redirect:/propertyAmenities");
                 }
             } catch (IOException e) {
@@ -387,9 +375,6 @@ public class PropertyController {
                         hotelFacilityRepository.flush();
                         System.out.println("4444444444444444444");
 
-                        // Sinkronizo me ndryshimet me Join-Allbookers
-                        syncDeleteWithSecondProject(id);
-
                         response.put("status", "success");
                         response.put("message", "Hotel facility deleted successfully!");
                     }
@@ -410,29 +395,6 @@ public class PropertyController {
         return response;
     }
 
-    private void syncDeleteWithSecondProject(Long id) {
-        RestTemplate restTemplate = new RestTemplate();
-        String secondProjectApiUrl = "https://join.allbookers.com/api/hotel-facility/delete";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        Map<String, Long> requestBody = new HashMap<>();
-        requestBody.put("id", id);
-
-        HttpEntity<Map<String, Long>> request = new HttpEntity<>(requestBody, headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(secondProjectApiUrl, HttpMethod.POST, request, String.class);
-            if (response.getStatusCode() == HttpStatus.OK) {
-                System.out.println("Hotel facility deletion synced successfully with the second project.");
-            } else {
-                System.out.println("Failed to sync hotel facility deletion with the second project.");
-            }
-        } catch (Exception e) {
-            System.out.println("Error syncing hotel facility deletion: " + e.getMessage());
-        }
-    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/addPropertyType")
@@ -532,10 +494,6 @@ public class PropertyController {
                 }
                 HotelFacility hotelFacility = new HotelFacility(0, newHotelFacility.getName(), newHotelFacility.getDescription(), fileName);
                 hotelFacilityRepository.saveAndFlush(hotelFacility);
-
-                // Bëj sinkronizimin me projektin e dytë
-                syncWithSecondProject(hotelFacility);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -545,27 +503,7 @@ public class PropertyController {
         return modelAndView;
     }
 
-//  This method serves to transfer the new facilities to the Join-Allbookers database
-    private void syncWithSecondProject(HotelFacility hotelFacility) {
-        RestTemplate restTemplate = new RestTemplate();
-        String secondProjectApiUrl = "https://join.allbookers.com/api/hotel-facility/sync";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<HotelFacility> request = new HttpEntity<>(hotelFacility, headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(secondProjectApiUrl, HttpMethod.POST, request, String.class);
-            if (response.getStatusCode() == HttpStatus.OK) {
-                System.out.println("Hotel facility synced successfully with the second project.");
-            } else {
-                System.out.println("Failed to sync hotel facility with the second project.");
-            }
-        } catch (Exception e) {
-            System.out.println("Error syncing hotel facility: " + e.getMessage());
-        }
-    }
 
     @Autowired
     ReviewService reviewService;
@@ -602,34 +540,6 @@ public class PropertyController {
         }
         modelAndView.setViewName("ROLE_ADMIN/Property/propertyDashboard");
         return modelAndView;
-    }
-
-    @PostMapping("/refused")
-        public String refused(@RequestParam (value="id") Long id) throws MessagingException {
-        Property property = propertyRepository.findById(id).get();
-        property.setStatus("refused");
-        property.setSubmissionDate(null);
-        if(property.isProfessionalHost() == true){
-            property.setNUIS(null);
-            property.setTaxname(null);
-            property.setUsername(null);
-            property.setStatus(null);
-            property.setProfessionalHost(false);
-        } else if (property.isPrivateHost() == true){
-                property.getHotelierId().setDateofbirth(null);
-                property.getHotelierId().setIdCard(null);
-                property.getHotelierId().setLogo(null);
-                property.getHotelierId().setProperty(null);
-                property.setHotelierId(null);
-                property.setUsername(null);
-                property.setStatus(null);
-                property.setPrivateHost(false);
-        }
-
-        propertyRepository.save(property);
-        javaMailService.refusedKYPform(property);
-
-        return "redirect:/propertyDashboard?id="+property.getId();
     }
 
 
@@ -939,8 +849,6 @@ public class PropertyController {
     @Autowired
     NumberService numberService;
     @Autowired
-    RoleRepository roleRepository;
-    @Autowired
     PhotoCrudRepository photoCrudRepository;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -986,8 +894,6 @@ public class PropertyController {
         return "false";
     }
 
-//    @Autowired
-//    NumberService numberService;
 
     @GetMapping(value = "testing")
     @ResponseBody

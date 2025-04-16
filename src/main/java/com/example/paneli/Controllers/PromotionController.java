@@ -122,7 +122,8 @@ public class PromotionController {
                 .orElseThrow(() -> new IllegalArgumentException("Property not found with ID: " + propertyId));
 
         if (request.isUserInRole("ROLE_ADMIN")) {
-            PromotionType promotionType = promotionTypeRepository.findById(promotionTypeId).orElse(null);
+            PromotionType promotionType = promotionTypeRepository.findById(promotionTypeId)
+                    .orElseThrow(() -> new IllegalArgumentException("PromotionType not found with ID: " + promotionTypeId));
             Promotion promotion = new Promotion();
             promotion.setPromotionType(promotionType);
             promotion.setStartDate(promotionType.getStartDate());
@@ -136,10 +137,11 @@ public class PromotionController {
             LocalDate todayDate = LocalDate.now();
             LocalDate oneMonthLater = todayDate.plusMonths(1);
 
-            modelAndView.addObject("todayDate", todayDate);
-            modelAndView.addObject("month", oneMonthLater);
+            modelAndView.addObject("todayDate", todayDate.toString());
+            modelAndView.addObject("month", oneMonthLater.toString());
 
             modelAndView.setViewName("ROLE_ADMIN/Property/Promotions/createNewPromotion");
+
         } else if (request.isUserInRole("ROLE_USER") || request.isUserInRole("ROLE_GROUP_ACCOUNT")) {
             // Merr përdoruesin aktual
             User currentLoggedInUser = userRepository.findByUsername(request.getUserPrincipal().getName());
@@ -151,43 +153,39 @@ public class PromotionController {
                     .orElseThrow(() -> new IllegalStateException("No special role found for the user."));
 
             boolean hasAccess = property.getRoles().contains(specialRole);
-
             boolean hasGroupAccountUser = currentLoggedInUser.getRole().stream()
                     .anyMatch(role -> role.getId() == 3L);
-            modelAndView.addObject("hasGroupAccountUser", hasGroupAccountUser);
-            modelAndView.addObject("specialRole", specialRole);
-            modelAndView.addObject("currentLoggedInUser", currentLoggedInUser);
 
             if (!hasAccess) {
                 modelAndView.setViewName("/error");
                 return modelAndView;
             }
 
-            if (request.isUserInRole(specialRole.getAuthority()) || hasAccess) {
-                PromotionType promotionType = promotionTypeRepository.findById(promotionTypeId).orElse(null);
-                if (property == null || promotionType == null) {
-                    modelAndView.setViewName("error");
-                    return modelAndView;
-                }
+            PromotionType promotionType = promotionTypeRepository.findById(promotionTypeId)
+                    .orElseThrow(() -> new IllegalArgumentException("PromotionType not found with ID: " + promotionTypeId));
 
-                Promotion promotion = new Promotion();
-                promotion.setPromotionType(promotionType);
-                promotion.setStartDate(promotionType.getStartDate());
-                promotion.setEndDate(promotionType.getEndDate());
-                promotion.setPromotionName(promotionType.getPromotionName());
-                promotion.setRecommendedPercentage(promotionType.getRecommendedPercentage());
+            Promotion promotion = new Promotion();
+            promotion.setPromotionType(promotionType);
+            promotion.setStartDate(promotionType.getStartDate());
+            promotion.setEndDate(promotionType.getEndDate());
+            promotion.setPromotionName(promotionType.getPromotionName());
+            promotion.setRecommendedPercentage(promotionType.getRecommendedPercentage());
 
-                modelAndView.addObject("property", property);
-                modelAndView.addObject("promotionType", promotionType);
-                modelAndView.addObject("promotion", promotion);
-                LocalDate todayDate = LocalDate.now();
-                LocalDate oneMonthLater = todayDate.plusMonths(1);
+            modelAndView.addObject("property", property);
+            modelAndView.addObject("promotionType", promotionType);
+            modelAndView.addObject("promotion", promotion);
+            LocalDate todayDate = LocalDate.now();
+            LocalDate oneMonthLater = todayDate.plusMonths(1);
 
-                modelAndView.addObject("todayDate", todayDate);
-                modelAndView.addObject("month", oneMonthLater);
+            modelAndView.addObject("todayDate", todayDate.toString());
+            modelAndView.addObject("month", oneMonthLater.toString());
+            modelAndView.addObject("hasGroupAccountUser", hasGroupAccountUser);
+            modelAndView.addObject("specialRole", specialRole);
+            modelAndView.addObject("currentLoggedInUser", currentLoggedInUser);
 
-                modelAndView.setViewName("ROLE_USER/Property/Promotions/createNewPromotion");
-            }
+            modelAndView.setViewName("ROLE_USER/Property/Promotions/createNewPromotion");
+        } else {
+            modelAndView.setViewName("/error");
         }
 
         return modelAndView;
@@ -201,25 +199,20 @@ public class PromotionController {
                                          @RequestParam(value = "promotionTypeId") Long promotionTypeId) {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new IllegalArgumentException("Property not found with ID: " + propertyId));
+        PromotionType promotionType = promotionTypeRepository.findById(promotionTypeId)
+                .orElseThrow(() -> new IllegalArgumentException("PromotionType not found with ID: " + promotionTypeId));
+
+        promotion.setPromotionType(promotionType);
+        promotion.setCreatedDate(new Date());
+        promotion.setProperty(property);
+        promotion.setActive(true);
 
         if (request.isUserInRole("ROLE_ADMIN")) {
-            PromotionType promotionType = promotionTypeRepository.findById(promotionTypeId).orElse(null);
-
-            if (property == null || promotionType == null) {
-                return "redirect:/error";
-            }
-
-            promotion.setPromotionType(promotionType);
-            promotion.setCreatedDate(new Date());
-            promotion.setProperty(property);
-            promotion.setActive(true);
             promotionRepository.save(promotion);
             return "redirect:/yourpromotion?propertyId=" + propertyId;
-        } else if (request.isUserInRole("ROLE_USER") || request.isUserInRole("ROLE_GROUP_ACCOUNT")) {
-            // Merr përdoruesin aktual
-            User currentLoggedInUser = userRepository.findByUsername(request.getUserPrincipal().getName());
 
-            // Gjej rolin special të përdoruesit
+        } else if (request.isUserInRole("ROLE_USER") || request.isUserInRole("ROLE_GROUP_ACCOUNT")) {
+            User currentLoggedInUser = userRepository.findByUsername(request.getUserPrincipal().getName());
             Role specialRole = currentLoggedInUser.getRole().stream()
                     .filter(role -> role.getId() != 1L && role.getId() != 2L && role.getId() != 3L)
                     .findFirst()
@@ -231,20 +224,9 @@ public class PromotionController {
                 return "redirect:/error";
             }
 
-            if (request.isUserInRole(specialRole.getAuthority()) || hasAccess) {
-                PromotionType promotionType = promotionTypeRepository.findById(promotionTypeId).orElse(null);
+            promotionRepository.save(promotion);
+            return "redirect:/yourPromotion?propertyId=" + propertyId;
 
-                if (property == null || promotionType == null) {
-                    return "redirect:/error";
-                }
-
-                promotion.setPromotionType(promotionType);
-                promotion.setCreatedDate(new Date());
-                promotion.setProperty(property);
-                promotion.setActive(true);
-                promotionRepository.save(promotion);
-                return "redirect:/yourPromotion?propertyId=" + propertyId;
-            }
         }
 
         return "redirect:/error";
@@ -259,12 +241,15 @@ public class PromotionController {
                                       ModelAndView modelAndView) {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new IllegalArgumentException("Property not found with ID: " + propertyId));
+        Promotion promotion = promotionRepository.findById(promotionId)
+                .orElseThrow(() -> new IllegalArgumentException("Promotion not found with ID: " + promotionId));
 
         if (request.isUserInRole("ROLE_ADMIN")) {
-            Promotion promotion = promotionRepository.findById(promotionId).get();
             modelAndView.addObject("promotion", promotion);
             modelAndView.addObject("property", property);
+            modelAndView.addObject("todayDate", LocalDate.now().toString());
             modelAndView.setViewName("ROLE_ADMIN/Property/Promotions/editPromotion");
+
         } else if (request.isUserInRole("ROLE_USER") || request.isUserInRole("ROLE_GROUP_ACCOUNT")) {
             // Merr përdoruesin aktual
             User currentLoggedInUser = userRepository.findByUsername(request.getUserPrincipal().getName());
@@ -277,23 +262,24 @@ public class PromotionController {
 
             boolean hasAccess = property.getRoles().contains(specialRole);
 
-            boolean hasGroupAccountUser = currentLoggedInUser.getRole().stream()
-                    .anyMatch(role -> role.getId() == 3L);
-            modelAndView.addObject("hasGroupAccountUser", hasGroupAccountUser);
-            modelAndView.addObject("specialRole", specialRole);
-            modelAndView.addObject("currentLoggedInUser", currentLoggedInUser);
-
             if (!hasAccess) {
                 modelAndView.setViewName("/error");
                 return modelAndView;
             }
 
-            if (request.isUserInRole(specialRole.getAuthority()) || hasAccess) {
-                Promotion promotion = promotionRepository.findById(promotionId).get();
-                modelAndView.addObject("promotion", promotion);
-                modelAndView.addObject("property", property);
-                modelAndView.setViewName("ROLE_USER/Property/Promotions/editPromotion");
-            }
+            boolean hasGroupAccountUser = currentLoggedInUser.getRole().stream()
+                    .anyMatch(role -> role.getId() == 3L);
+
+            modelAndView.addObject("hasGroupAccountUser", hasGroupAccountUser);
+            modelAndView.addObject("specialRole", specialRole);
+            modelAndView.addObject("currentLoggedInUser", currentLoggedInUser);
+            modelAndView.addObject("promotion", promotion);
+            modelAndView.addObject("property", property);
+            modelAndView.addObject("todayDate", LocalDate.now().toString());
+            modelAndView.setViewName("ROLE_USER/Property/Promotions/editPromotion");
+
+        } else {
+            modelAndView.setViewName("/error");
         }
         return modelAndView;
     }
@@ -303,29 +289,24 @@ public class PromotionController {
     public String editPromotionpost(@RequestParam(value = "propertyId") Long propertyId,
                                     @RequestParam(value = "promotionId") Long promotionId,
                                     HttpServletRequest request,
-                                    ModelAndView modelAndView,
-                                    Promotion promotion) {
+                                    @ModelAttribute Promotion promotionFromForm) {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new IllegalArgumentException("Property not found with ID: " + propertyId));
+        Promotion promotionToUpdate = promotionRepository.findById(promotionId)
+                .orElseThrow(() -> new IllegalArgumentException("Promotion not found with ID: " + promotionId));
+
+        promotionToUpdate.setRecommendedPercentage(promotionFromForm.getRecommendedPercentage());
+        promotionToUpdate.setStartDate(promotionFromForm.getStartDate());
+        promotionToUpdate.setEndDate(promotionFromForm.getEndDate());
+        promotionToUpdate.setPromotionName(promotionFromForm.getPromotionName());
+        promotionToUpdate.setCreatedDate(new Date());
 
         if (request.isUserInRole("ROLE_ADMIN")) {
-            Promotion promotiondto = promotionRepository.findById(promotionId).get();
-            promotiondto.setRecommendedPercentage(promotion.getRecommendedPercentage());
-            promotiondto.setStartDate(promotion.getStartDate());
-            promotiondto.setEndDate(promotion.getEndDate());
-            promotiondto.setPromotionName(promotion.getPromotionName());
-            promotiondto.setCreatedDate(new Date());
-
-            promotionRepository.save(promotiondto);
-
-            modelAndView.addObject("promotion", promotiondto);
-            modelAndView.addObject("property", property);
+            promotionRepository.save(promotionToUpdate);
             return "redirect:/yourpromotion?propertyId=" + propertyId;
-        } else if (request.isUserInRole("ROLE_USER") || request.isUserInRole("ROLE_GROUP_ACCOUNT")) {
-            // Merr përdoruesin aktual
-            User currentLoggedInUser = userRepository.findByUsername(request.getUserPrincipal().getName());
 
-            // Gjej rolin special të përdoruesit
+        } else if (request.isUserInRole("ROLE_USER") || request.isUserInRole("ROLE_GROUP_ACCOUNT")) {
+            User currentLoggedInUser = userRepository.findByUsername(request.getUserPrincipal().getName());
             Role specialRole = currentLoggedInUser.getRole().stream()
                     .filter(role -> role.getId() != 1L && role.getId() != 2L && role.getId() != 3L)
                     .findFirst()
@@ -337,27 +318,12 @@ public class PromotionController {
                 return "redirect:/error";
             }
 
-            if (request.isUserInRole(specialRole.getAuthority()) || hasAccess) {
-                Promotion promotiondto = promotionRepository.findById(promotionId).get();
-                promotiondto.setRecommendedPercentage(promotion.getRecommendedPercentage());
-                promotiondto.setStartDate(promotion.getStartDate());
-                promotiondto.setEndDate(promotion.getEndDate());
-                promotiondto.setPromotionName(promotion.getPromotionName());
-                promotiondto.setCreatedDate(new Date());
+            promotionRepository.save(promotionToUpdate);
+            return "redirect:/yourPromotion?propertyId=" + propertyId;
 
-                promotionRepository.save(promotiondto);
-
-                modelAndView.addObject("promotion", promotiondto);
-                modelAndView.addObject("property", property);
-                return "redirect:/yourPromotion?propertyId=" + propertyId;
-            }
         }
-        return "redirect:/error";
-    }
 
-    public Date formatDate(String date) throws ParseException {
-        java.util.Date temp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
-        return temp;
+        return "redirect:/error";
     }
 
 

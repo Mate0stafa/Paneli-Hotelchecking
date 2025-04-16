@@ -2,178 +2,209 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Create New Promotion | Panel Allbookers</title>
     <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
     <link rel="stylesheet" href="../../css/style.css">
-    <!-- plugins:css -->
     <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <style>
-        /* Inline critical CSS */
-        .container .test input {
+        .container .test input { /* Keeping potentially shared styles */
             position: absolute;
             opacity: 0;
             cursor: pointer;
             height: 0;
             width: 0;
         }
-
-        .checkmark {
-            position: absolute;
-            top: 50%;
-            left: -5px;
-            transform: translateY(-50%);
-            height: 18px;
-            width: 18px;
-            background-color: #fff;
-            border: 2px solid #fb8540;
-            transition-duration: 250ms;
-            border-width: 2px;
-            border-radius: 2px;
+        .fix-top-content {
+            padding-top: 100px;
         }
-
-        .container input:checked ~ .checkmark {
-            border-color: #fb8540; /* Change the border color to orange */
-            background-color: #fb8540; /* Change the background color to orange */
-            border-color: #fb8540;
+        .jss {
+            width: 100%;
+            height: 35px;
+        }
+        .d-flex.k-1-1-1 {
+            margin-top: 20px;
+            gap: 5%;
+        }
+        .h-1-1 {
+            font-size: 23px;
+            color: rgba(26, 26, 26, 0.91);
+            font-weight: 700;
+            position: relative;
+            padding-top: 20px;
+            text-transform: capitalize;
+        }
+        .how-1 {
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .select-1-11 {
+            color: black;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-bottom: 16px;
+        }
+        .f-1-1-dd {
+            display: flex;
+            flex-direction: column;
+        }
+        label.in-2-2-3 {
+            margin: 0px;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            letter-spacing: 0.15px;
+            color: rgb(58 53 65);
+            font-weight: 600;
+        }
+        .in-1-1 {
+            width: 100px;
+            border: 1px solid #0b3d7570;
+            border-radius: 5px;
+            padding: 0.375rem 0.75rem; /* Added padding for better input appearance */
+            height: calc(1.5em + 0.75rem + 2px); /* Match Bootstrap input height */
+            box-sizing: border-box;
+        }
+        .date-input-label {
+            font-weight: 700;
+            margin-bottom: 0px;
+            color: #0b3d75;
+        }
+        .date-input {
+            width: 100%; /* Changed fixed width to responsive */
+            max-width: 200px; /* Added max-width */
+        }
+        a:focus, input:focus {
+            border-color: #0b3d75;
             outline: 0;
-            -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
-            box-shadow: 0 0 0 .25rem #fb854024;
+            box-shadow: 0 0 0 .2rem rgba(11,61,117,.25); /* Added focus style */
+        }
+        .btn-primary:disabled{
+            cursor: not-allowed;
         }
 
-        .checkmark:after {
-            content: "";
-            position: absolute;
-            display: none;
-        }
-
-        .container input:checked ~ .checkmark:after {
-            display: block;
-        }
-
-        .container .checkmark:after {
-            left: 5px;
-            top: -4px;
-            width: 7px;
-            height: 18px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-            transition-duration: 250ms;
-        }
-
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .container {
+            .container { /* Assuming .c-1-1-1 is the main container */
                 padding: 15px;
             }
-
             .how-1, .select-1-11 {
                 font-size: 14px;
             }
-
             .f-1-1-dd label.in-2-2-3 {
                 font-size: 14px;
             }
-
             .d-flex.k-1-1-1 {
                 flex-direction: column;
+                gap: 15px; /* Adjust gap for column layout */
             }
-
-            .d-flex.k-1-1-1 .left-1-1-1, .d-flex.k-1-1-1 .right-1-1-1 {
+            .d-flex.k-1-1-1 > div { /* Target direct children divs */
                 width: 100%;
-                margin: 5px 0;
+                margin: 0; /* Remove specific margins */
+            }
+            .date-input {
+                max-width: none; /* Remove max-width on smaller screens */
             }
 
-            .jss {
-                width: 100%;
-                height: 35px;
-            }
-
-            .containerCh {
-                font-size: 14px;
-            }
         }
     </style>
     <script>
         function validateDates() {
-            const startDateInput = document.querySelector('input[name="startDate"]');
-            const endDateInput = document.querySelector('input[name="endDate"]');
-
+            const startDateInput = document.getElementById('dateFrom');
+            const endDateInput = document.getElementById('dateTo');
             const startDate = startDateInput.value;
             const endDate = endDateInput.value;
 
             if (startDate) {
-                const minEndDate = new Date(startDate);
+                // Set min for end date to be start date + 1 day
+                let minEndDate = new Date(startDate);
                 minEndDate.setDate(minEndDate.getDate() + 1);
                 endDateInput.min = minEndDate.toISOString().split('T')[0];
 
-                if (endDate && new Date(endDate) <= minEndDate) {
-                    endDateInput.value = minEndDate.toISOString().split('T')[0];
+                // If end date is already set and invalid, reset it
+                if (endDate && new Date(endDate) <= new Date(startDate)) {
+                    endDateInput.value = endDateInput.min; // Set to the new minimum valid date
                 }
+            } else {
+                // If start date is cleared, remove min constraint from end date
+                endDateInput.min = '';
+            }
+
+            // Optional: Set max for start date based on end date
+            if (endDate) {
+                let maxStartDate = new Date(endDate);
+                maxStartDate.setDate(maxStartDate.getDate() - 1);
+                if (maxStartDate >= new Date()) { // Ensure max isn't in the past if end date is far in future
+                    startDateInput.max = maxStartDate.toISOString().split('T')[0];
+                } else {
+                    startDateInput.max = ''; // Or set to today/min if needed
+                }
+            } else {
+                startDateInput.max = '';
             }
         }
     </script>
 </head>
 <body>
 <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
     <div th:replace="/ROLE_USER/Layouts/navbar"></div>
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
         <div class="main-panel">
             <div class="content-wrapper fix-top-content">
-                <div class="row ">
-                    <form id="createPromotion" th:action="@{'createNewPromotion?propertyId='+${property.getId()}+'&promotionTypeId='+${promotionType.getId()}}" th:object="${promotion}" method="post">
-                        <div class="container c-1-1-1">
-                            <div class="h-1-1" th:text="#{Addnewpromotion}  + ${promotionType.getPromotionName()}"></div>
-                            <div class="card-description" th:text="#{ 'client.' + ${promotionType.getDescription().replace(' ', '')}}"></div>
-                            <div class="card-body c-1-1-1q">
-                                <div class="how-1">
-                                    [[#{client.Howmuchofadiscountdoyouwanttogive}]]
-                                </div>
-                                <div class="select-1-11" th:text="#{Selectadiscount}+${ promotionType.getRecommendedPercentage()+'% and 99%'}"></div>
-                                <div class="f-1-1-dd">
-                                    <label class="in-2-2-3" for="disscount">[[#{client.Discount}]]</label>
-                                    <input class="in-1-1" type="number" id="disscount" name="tentacles" th:min="${promotionType.getRecommendedPercentage()}" max="99" th:value="${promotion.recommendedPercentage}" th:field="*{recommendedPercentage}" required>
-                                </div>
-                                <br><hr>
-                                <div class="how-1">
-                                    [[#{client.Whencanguestsstayusingthispromotion?}]]
-                                </div>
-                                <div class="d-flex k-1-1-1">
-                                    <div class="left-1-1-1 m-2">
-                                        <label for="dateFrom" style="font-weight: 700;margin-bottom: 0px;color: #0b3d75;">[[#{client.DateFrom}]]</label>
-                                        <input style="width: 128%" th:value="${todayDate}" type="date" class="form-control hello" name="startDate" id="dateFrom"   required onchange="validateDates()">
+                <div class="row">
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="createPromotion" th:action="@{/createNewPromotion(propertyId=${property.id}, promotionTypeId=${promotionType.id})}" th:object="${promotion}" method="post">
+                                    <h4 class="card-title h-1-1" th:text="#{Addnewpromotion} + ': ' + ${promotionType.getPromotionName()}">Add New Promotion</h4>
+                                    <p class="card-description" th:text="#{ 'client.' + ${promotionType.description.replace(' ', '')}}">Promotion Description</p>
+
+                                    <div class="form-group">
+                                        <label class="how-1">[[#{client.Howmuchofadiscountdoyouwanttogive}]]</label>
+                                        <p class="select-1-11" th:text="#{Selectadiscount} + ' (' + ${ promotionType.getRecommendedPercentage()} + '% - 99%)'">Select a discount between X% and 99%</p>
+                                        <div class="f-1-1-dd">
+                                            <label class="in-2-2-3" for="discountInput">[[#{client.Discount}]] (%)</label>
+                                            <input class="form-control in-1-1" type="number" id="discountInput" th:min="${promotionType.recommendedPercentage}" max="99" th:field="*{recommendedPercentage}" required>
+                                        </div>
+                                        <div th:if="${#fields.hasErrors('recommendedPercentage')}" th:errors="*{recommendedPercentage}" class="text-danger">Error</div>
                                     </div>
-                                    <div class="right-1-1-1 m-2" style="margin-left:15%!important;">
-                                        <label for="dateTo" style="font-weight: 700;margin-bottom: 0px;color: #0b3d75;">[[#{client.DateTo}]]</label>
-                                        <input  style="width: 128%" th:value="${month}" type="date" class="form-control hello" name="endDate" id="dateTo"    required onchange="validateDates()">
+
+                                    <hr>
+
+                                    <div class="form-group">
+                                        <label class="how-1">[[#{client.Whencanguestsstayusingthispromotion?}]]</label>
+                                        <div class="d-flex flex-wrap k-1-1-1">
+                                            <div class="left-1-1-1 mb-3">
+                                                <label for="dateFrom" class="date-input-label">[[#{client.DateFrom}]]</label>
+                                                <input type="date" class="form-control date-input hello" name="startDate" id="dateFrom" th:value="${todayDate}" required onchange="validateDates()" th:min="${todayDate}">
+                                                <div th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" class="text-danger">Error</div>
+                                            </div>
+                                            <div class="right-1-1-1 mb-3">
+                                                <label for="dateTo" class="date-input-label">[[#{client.DateTo}]]</label>
+                                                <input type="date" class="form-control date-input hello" name="endDate" id="dateTo" th:value="${month}" required onchange="validateDates()" th:min="${todayDate}">
+                                                <div th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}" class="text-danger">Error</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <br><hr>
-                                <label style="font-weight: 700;margin-bottom: 0px;color: #0b3d75;">[[#{client.PromotionName}]]</label>
-                                <input type="text" th:value="${promotion.promotionName}" class="form-control hello  jss" name="promotionName" id="promotionName" th:field="*{promotionName}" required>
-                                <br><hr>
-                                <label style="font-weight: 700;margin-bottom: 0px;color: #0b3d75;"> [[#{client.SelectRooms}]] </label>
-                                <div class="select-1-11">[[#{client.SelecttheRooms}]] </div>
-                                <div>
-                                    <ul>
-                                        <label class="containerCh" th:each="room : ${rooms}">
-                                            <input type="checkbox" th:field="*{rooms}" th:value="${room.id}" th:text="${room.name}"   class="room-checkbox" />
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </ul>
-                                </div>
-                                <br>
-                                <button type="submit" id="butoni-create" class="btn btn-primary">[[#{client.CreatePromotion}]]</button>
-                                <a th:href="@{'/yourPromotion?propertyId=' + ${property.getId()}}" class="btn btn-light">[[#{client.Close}]]</a>
+
+                                    <hr>
+
+                                    <div class="form-group">
+                                        <label for="promotionName" class="date-input-label">[[#{client.PromotionName}]]</label>
+                                        <input type="text" class="form-control hello jss" id="promotionName" th:field="*{promotionName}" required>
+                                        <div th:if="${#fields.hasErrors('promotionName')}" th:errors="*{promotionName}" class="text-danger">Error</div>
+                                    </div>
+
+                                    <hr>
+
+                                    <button type="submit" id="butoni-create" class="btn btn-primary mr-2">[[#{client.CreatePromotion}]]</button>
+                                    <a th:href="@{/yourPromotion(propertyId=${property.id})}" class="btn btn-light">[[#{client.Close}]]</a>
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div th:replace="/ROLE_USER/Layouts/footerL"></div>
@@ -182,230 +213,47 @@
 </div>
 <div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
 
-<style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script> <!-- Updated jQuery UI -->
 
-    /*Style for card */
-    .fix-top-content {
-        padding-top: 100px;
-    }
-    .jss {
-        width: 100%;
-        height: 35px;
-    }
-
-    .d-flex.k-1-1-1 {
-        margin-top: 20px;
-    }
-
-    .h-1-1 {
-        font-size: 23px;
-        color: rgba(26, 26, 26, 0.91);
-        font-weight: 700;
-        position: relative;
-        padding-top: 20px;
-        text-transform: capitalize;
-    }
-
-    .how-1 {
-        font-weight: 700;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .select-1-11 {
-        color: black;
-        font-size: 14px;
-        margin-top: 10px;
-        margin-bottom: 16px;
-    }
-
-    .f-1-1-dd {
-        display: flex;
-        flex-direction: column;
-    }
-    label.in-2-2-3 {
-
-        margin: 0px;
-        font-size: 0.875rem;
-        line-height: 1.5;
-        letter-spacing: 0.15px;
-        color: rgb(58 53 65);
-        font-weight: 600;
-    }
-    .in-1-1 {
-        width: 100px;
-        border: 1px solid;
-        border-color: #0b3d7570;
-        border-radius: 5px;
-    }
-    a:focus, input:focus {
-        border-color: #0b3d75;
-        outline: none;
-    }
-
-    /*Style checkbox*/
-    .containerCh {
-        display: block;
-        position: relative;
-        padding-left: 35px;
-        margin-bottom: 12px;
-        cursor: pointer;
-        font-size: 0.875rem;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-    /* Hide the browser's default checkbox */
-    .containerCh input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
-
-    /* Create a custom checkbox */
-    .checkmark {
-        position: absolute;
-        top: 50%; /* Adjust the vertical alignment */
-        left: 5px; /* Adjust the left position */
-        transform: translateY(-50%);
-        height: 18px; /* Adjust the height */
-        width: 18px; /* Adjust the width */
-        background-color: #fff; /* Set the initial background color to white */
-        border: 2px solid #fb8540; /* Set the border color to orange */
-        transition-duration: 250ms;
-        border-width: 2px;
-        border-radius: 2px;
-
-    }
-
-    /* When the checkbox is checked, change the border color to orange */
-    .containerCh input:checked ~ .checkmark {
-        border-color: #fb8540; /* Change the border color to orange */
-        background-color: #fb8540; /* Change the background color to orange */
-        border-color: #fb8540;
-        outline: 0;
-        -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
-        box-shadow: 0 0 0 .25rem #fb854024;
-    }
-
-    /* Create the checkmark/indicator (hidden when not checked) */
-    .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-    }
-
-    /* Show the checkmark when checked */
-    .containerCh input:checked ~ .checkmark:after {
-        display: block;
-    }
-
-    /* Style the checkmark/indicator */
-    .containerCh .checkmark:after {
-        left: 5px; /* Adjust the left position */
-        top: -4px; /* Adjust the top position */
-        width: 7px;
-        height: 18px;
-        border: solid white;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-        transition-duration: 250ms;
-        font-size: .9375rem;
-        font-family: themify;
-    }
-    .btn-primary:disabled{
-        cursor: not-allowed;
-    }
-</style>
 <script>
-    $( "#exampleFormControlSelect3" ).change(function() {
-        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
-            location.reload();
-        });
+     $( "#exampleFormControlSelect3" ).change(function() { // Make sure this selector exists if used
+         $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+             location.reload();
+         });
+     });
+
+     document.addEventListener('DOMContentLoaded', () => {
+        validateDates();
     });
 </script>
-<script>
-    $(function() {
-        var a = $("#nameInput").val();
-        $("#nameInput").autocomplete({
-            source: function(request, response) {
-                $.ajax({
-                    url: "/autocomplete",
-                    dataType: "json",
-                    data: {
-                        searchvalue: $("#nameInput").val(),
-                    },
-                    success: function(data) {
-                        response(data);
-                    }
-                });
-            },
-            minLength: 3,
-        });
-    });
-</script>
-<script>
-    <!--making the button disabled if no room is checked -->
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const roomCheckboxes = document.querySelectorAll('.room-checkbox');
-        const submitButton = document.getElementById('butoni-create');
-
-        const checkIfAnyChecked = () => {
-            const isAnyChecked = Array.from(roomCheckboxes).some(cb => cb.checked);
-            submitButton.disabled = !isAnyChecked;
-        };
-
-
-        checkIfAnyChecked();
-
-        roomCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', checkIfAnyChecked);
-        });
-    });
-
-
-
-</script>
-<input type="hidden" id="propertyId" th:value="${property.getId()}">
-<input type="hidden" id="promotionTypeId" th:value="${promotionType.getId()}">
-
+<!-- Hidden fields for language change script -->
+<input type="hidden" id="propertyId" th:value="${property.id}">
+<input type="hidden" id="promotionTypeId" th:value="${promotionType.id}">
 
 <script>
     function changeLanguageController(param) {
+        var propertyId = document.getElementById("propertyId").value;
+        var promotionTypeId = document.getElementById("promotionTypeId").value;
+        var lang = param || 'sq';
 
-        var propertyId= document.getElementById("propertyId").value;
-        var promotionTypeId= document.getElementById("promotionTypeId").value;
-
-        var a = 'sq';
-        if (param == null) {
-            param = a;
-        }
-
-        var search = {"lang": a};
         $.ajax({
             type: "POST",
             url: "/changeLanguage",
             data: {
-                lang: param
+                lang: lang
             },
             success: function (result) {
-                window.location = '/createNewPromotion?propertyId=' + propertyId  + '&promotionTypeId=' + promotionTypeId ;
+                window.location.href = '/createNewPromotion?propertyId=' + propertyId + '&promotionTypeId=' + promotionTypeId;
             },
             error: function (e) {
-                window.location = '/error.' + param + '.html';
+                console.error("Language change failed:", e);
+                 window.location = '/error.' + lang + '.html'; // If such pages exist
             }
         });
     }
 </script>
-
-<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
-      rel="stylesheet">
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 </body>
 </html>
