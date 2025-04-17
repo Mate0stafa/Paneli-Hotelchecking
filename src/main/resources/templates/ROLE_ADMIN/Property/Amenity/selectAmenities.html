@@ -1,577 +1,581 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Property Amenities | Admin Panel Allbookers</title>
-    <!--    New Style-->
-    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
-    <link rel="stylesheet" href="../../css/style.css">
-    <!-- plugins:css -->
-    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>
-
-    <style>
-
-        /* Style checkbox */
-        .containerCh {
-            display: block;
-            position: relative;
-            padding-left: 35px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        /* Create a custom checkbox */
-        .checkmark {
-            position: absolute;
-            top: 50%;
-            left: 5px;
-            transform: translateY(-50%);
-            height: 18px;
-            width: 18px;
-            background-color: #fff;
-            border: 2px solid #fb8540;
-            transition-duration: 250ms;
-            border-radius: 2px;
-        }
-
-        /* When the checkbox is checked, change the border color to orange */
-        .containerCh input:checked ~ .checkmark {
-            border-color: #fb8540; /* Change the border color to orange */
-            background-color: #fb8540; /* Change the background color to orange */
-            border-color: #fb8540;
-            outline: 0;
-            -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
-            box-shadow: 0 0 0 .25rem #fb854024;
-        }
-
-        /* Create the checkmark/indicator (hidden when not checked) */
-        .checkmark:after {
-            content: "";
-            position: absolute;
-            display: none;
-        }
-
-        /* Show the checkmark when checked */
-        .containerCh input:checked ~ .checkmark:after {
-            display: block;
-        }
-
-        /* Style the checkmark/indicator */
-        .containerCh .checkmark:after {
-            left: 5px;
-            top: -4px;
-            width: 7px;
-            height: 18px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-            transition-duration: 250ms;
-            font-size: .9375rem;
-            font-family: themify;
-        }
-        .fix-top-content{
-            padding-top: 100px;
-        }
-        .r-12.form-check.form-check-flat.form-check-primary {
-            margin: 2px 0px;
-        }
-        .hl-1-1-1 {
-            text-align: center;
-            margin-top: 23px;
-        }
-        .btn-tr-er {
-            width: 100%;
-            background: #0b3d75;
-            color: white;
-            font-size: 20px;
-            padding: 5px;
-            border-radius: 5px;
-        }
-
-        .btn-tr-er:hover {
-            color: #ffffff;
-            text-decoration: none;
-        }
-        .c-2-31 {
-            width: 15%;
-        }
-
-        .btn1{
-            font-size: 1.275rem;
-            line-height: 2;
-            font-weight: 300;
-            border-radius: 10px;
-            margin-right: 100%;
-            padding: 2px 25px;
-        }
-
-        @media only screen and (max-width: 600px) {
-            h4.font-weight-bold.hgh {
-                display: none;
-            }
-
-            .h-1-1-1-1-1 {
-                border-bottom: 1px solid #0000003d;
-                margin-bottom: 11px;
-                padding-bottom: 7px;
-                display: block!important;
-            }
-            .c-2-31 {
-                width: 100%;
-            }
-            span.amen-name-1 {
-                /* font-size: 18px; */
-                /* font-weight: 600; */
-                /* color: #0b3d75; */
-                font-size: 18px;
-                color: #1a1a1ae6;
-                font-weight: 600;
-                position: relative;
-                padding-top: 20px;
-                text-transform: capitalize;
-            }
-            span.r-selected-1 {
-                font-weight: 500;
-                color: #05172c;
-                font-size: 13px;
-            }
-        }
-        .h-1-1-1-1-1 {
-            border-bottom: 1px solid #0000003d;
-            margin-bottom: 11px;
-            padding-bottom: 7px;
-            display: flex;
-        }
-        span.amen-name-1 {
-            font-size: 18px;
-            color: #1a1a1ae6;
-            font-weight: 600;
-            position: relative;
-            padding-top: 20px;
-            text-transform: capitalize;
-        }
-        .h-1-1-23 {
-            color: #1a1a1ac4;
-            font-size: 22px;
-            font-weight: 700;
-            line-height: 1.4em;
-            border-left: 1px solid orange;
-            padding-inline: 12px;
-        }
-        span.r-2-311 {
-            color: #0b3d75;
-            font-weight: 600;
-        }
-        span.r-selected-1 {
-            font-weight: 500;
-            color: #0b3d75;
-        }
-        .l-2-11s {
-            width: 14%;
-        }
-        .s-1-23 {
-            display: flex;
-            margin-top: 10px;
-            margin-bottom: 11px;
-        }
-        .l-2-11s {
-            width: 40%;
-        }
-        .s-34-5t {
-            display: flex;
-            flex-direction: column;
-        }
-        span.r-12 {
-            width: 140%;
-        }
-
-    </style>
-
-</head>
-<body>
-<div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
-    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
-        <div class="main-panel">
-            <div class="content-wrapper fix-top-content">
-                <div class="row">
-                    <div class="col-md-10 grid-margin">
-                        <div class="card">
-                            <div class="">
-                                <input type="hidden" id="propertyId" th:value="${property.getId()}">
-
-                                <h4 style=" font-size: 25px;color: #000;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.TopAmenities}]]</h4>
-                                <p class="card-description">
-                                    [[#{client.Weknowtheseamenities528}]]
-                                </p>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityList}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">  [[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-
-                            <div class="card-body">
-
-
-
-                            <div class="h-1-1-23">[[#{client.Roomamenities}]]</div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListss}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311"> [[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23">[[#{client.Bathroom}]]</div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityLists}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23">[[#{client.Media&Technology}]]</div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListsss}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23">[[#{client.Food&Drink}]]</div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListssss}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23">[[#{client.Services&Extras}]]</div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityLista}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23">[[#{client.Outdoor&View}]]</div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListaa}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23">Accessibility</div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListaaa}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23">[[#{client.Entertainment&FamilyServices}]]  </div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListu}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23">[[#{client.Safety&security}]]</div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListuu}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <br>
-                            <div class="card-body">
-                                <div class="h-1-1-23"> [[#{client.Cleanliness&disinfection}]] </div>
-                                <br>
-                                <div class="st-1-2">
-                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListuuu}">
-                                        <div class="c-2-31">
-                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>
-                                        </div>
-                                        <div class="c-3-454">
-                                            <div class="k-123-w">
-                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="hl-1-1-1" style="text-align: left;">
-                                <button class="btn btn-primary mt-4" onclick="createObject()" id="submitbutton">[[#{client.Save}]]</button>
-                                <a th:href="@{'/propertyDashboard?id=' + ${property.getId()}}"><button type="button" class="btn btn-light mt-4">[[#{client.Cancel}]]</button></a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
-
-        </div>
-    </div>
-</div>
-<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>
-
-
-<script src="../../js/sweetAlert.js"></script>
-
-
-<script th:inline="javascript">
-
-    /*<![CDATA[*/
-
-    function checkAll(event){
-        var a = event.id;
-        var cheks = document.getElementsByName(a);
-
-        if (event.checked){
-            for (var i=0;i<cheks.length;i++){
-                cheks[i].checked = true;
-            }
-        }else{
-            for (var i=0;i<cheks.length;i++){
-                cheks[i].checked = false;
-            }
-        }
-    }
-
-
-    var amenityRoomDto = [];
-
-    function createObject(){
-
-        var submitButton = document.getElementById('submitbutton');
-        submitButton.disabled = true;
-
-        setTimeout(function() {
-            submitButton.disabled = false;
-        }, 3000);
-
-        var checkBoxes = document.getElementsByClassName("amenityCheck");
-        for (var k=0;k<checkBoxes.length;k++){
-            if (checkBoxes[k].checked==true){
-                amenityRoomDto.push({amenityId: checkBoxes[k].dataset.amenityid, roomId: checkBoxes[k].dataset.roomid, status: 1});
-            } else {
-                amenityRoomDto.push({amenityId: checkBoxes[k].dataset.amenityid, roomId: checkBoxes[k].dataset.roomid, status: 0});
-            }
-        }
-
-
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            headers: {'x-my-custom-header': 'some value'},
-            url: "/addRoomAmenities",
-            data: JSON.stringify(amenityRoomDto),
-            dataType: 'json',
-            cache: false,
-            timeout: 600000,
-            success: function () {
-                swal("Success!", "Amenities saved successfully!", "success").then(function () {
-                    window.scroll(0,0);
-
-                });
-            },
-            error: function (response) {
-                swal("Success!", "Amenities saved successfully!", "success").then(function () {
-                    window.scroll(0,0);
-
-                });
-            }
-        });
-
-        console.log(amenityRoomDto);
-    }
-
-
-    /*]]>*/
-
-</script>
-
-<script>
-    $( "#exampleFormControlSelect3" ).change(function() {
-        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
-            location.reload();
-        });
-    });
-</script>
-
-<script>
-
-    $(function() {
-        var a = $("#nameInput").val();
-        $("#nameInput").autocomplete({
-            source: function(request, response) {
-                $.ajax({
-                    url: "/autocomplete",
-                    dataType: "json",
-                    data: {
-                        searchvalue : $("#nameInput").val(),
-                    },
-                    success: function(data) {
-                        response(data);
-                    }
-                });
-            },
-            minLength : 3,
-        })
-    });
-</script>
-<script>
-    function changeLanguageController(param) {
-
-        var propertyId= document.getElementById("propertyId").value;
-
-
-        var a = 'sq';
-        if (param == null) {
-            param = a;
-        }
-
-        var search = {"lang": a};
-        $.ajax({
-            type: "POST",
-            url: "/changeLanguage",
-            data: {
-                lang: param
-            },
-            success: function (result) {
-                window.location = '/amenityList?propertyId=' + propertyId   ;
-            },
-            error: function (e) {
-                window.location = '/error.' + param + '.html';
-            }
-        });
-    }
-</script>
-
-<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
-      rel = "stylesheet">
-<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
-<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
-
-
-</body>
-
-</html>
+<!--!!!!-->
+<!--Koment deri ne nje moment te dyte , ose do fshihet njher e mir-->
+<!--!!!!-->
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml"-->
+<!--      xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    &lt;!&ndash; Required meta tags &ndash;&gt;-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+<!--    <title>Property Amenities | Admin Panel Allbookers</title>-->
+<!--    &lt;!&ndash;    New Style&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">-->
+<!--    <link rel="stylesheet" href="../../css/style.css">-->
+<!--    &lt;!&ndash; plugins:css &ndash;&gt;-->
+<!--    <div th:replace="/ROLE_ADMIN/Layouts/headerScriptLayout"></div>-->
+
+<!--    <style>-->
+
+<!--        /* Style checkbox */-->
+<!--        .containerCh {-->
+<!--            display: block;-->
+<!--            position: relative;-->
+<!--            padding-left: 35px;-->
+<!--            margin-bottom: 12px;-->
+<!--            cursor: pointer;-->
+<!--            font-size: 0.875rem;-->
+<!--            -webkit-user-select: none;-->
+<!--            -moz-user-select: none;-->
+<!--            -ms-user-select: none;-->
+<!--            user-select: none;-->
+<!--        }-->
+
+<!--        /* Create a custom checkbox */-->
+<!--        .checkmark {-->
+<!--            position: absolute;-->
+<!--            top: 50%;-->
+<!--            left: 5px;-->
+<!--            transform: translateY(-50%);-->
+<!--            height: 18px;-->
+<!--            width: 18px;-->
+<!--            background-color: #fff;-->
+<!--            border: 2px solid #fb8540;-->
+<!--            transition-duration: 250ms;-->
+<!--            border-radius: 2px;-->
+<!--        }-->
+
+<!--        /* When the checkbox is checked, change the border color to orange */-->
+<!--        .containerCh input:checked ~ .checkmark {-->
+<!--            border-color: #fb8540; /* Change the border color to orange */-->
+<!--            background-color: #fb8540; /* Change the background color to orange */-->
+<!--            border-color: #fb8540;-->
+<!--            outline: 0;-->
+<!--            -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);-->
+<!--            box-shadow: 0 0 0 .25rem #fb854024;-->
+<!--        }-->
+
+<!--        /* Create the checkmark/indicator (hidden when not checked) */-->
+<!--        .checkmark:after {-->
+<!--            content: "";-->
+<!--            position: absolute;-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        /* Show the checkmark when checked */-->
+<!--        .containerCh input:checked ~ .checkmark:after {-->
+<!--            display: block;-->
+<!--        }-->
+
+<!--        /* Style the checkmark/indicator */-->
+<!--        .containerCh .checkmark:after {-->
+<!--            left: 5px;-->
+<!--            top: -4px;-->
+<!--            width: 7px;-->
+<!--            height: 18px;-->
+<!--            border: solid white;-->
+<!--            border-width: 0 2px 2px 0;-->
+<!--            transform: rotate(45deg);-->
+<!--            transition-duration: 250ms;-->
+<!--            font-size: .9375rem;-->
+<!--            font-family: themify;-->
+<!--        }-->
+<!--        .fix-top-content{-->
+<!--            padding-top: 100px;-->
+<!--        }-->
+<!--        .r-12.form-check.form-check-flat.form-check-primary {-->
+<!--            margin: 2px 0px;-->
+<!--        }-->
+<!--        .hl-1-1-1 {-->
+<!--            text-align: center;-->
+<!--            margin-top: 23px;-->
+<!--        }-->
+<!--        .btn-tr-er {-->
+<!--            width: 100%;-->
+<!--            background: #0b3d75;-->
+<!--            color: white;-->
+<!--            font-size: 20px;-->
+<!--            padding: 5px;-->
+<!--            border-radius: 5px;-->
+<!--        }-->
+
+<!--        .btn-tr-er:hover {-->
+<!--            color: #ffffff;-->
+<!--            text-decoration: none;-->
+<!--        }-->
+<!--        .c-2-31 {-->
+<!--            width: 15%;-->
+<!--        }-->
+
+<!--        .btn1{-->
+<!--            font-size: 1.275rem;-->
+<!--            line-height: 2;-->
+<!--            font-weight: 300;-->
+<!--            border-radius: 10px;-->
+<!--            margin-right: 100%;-->
+<!--            padding: 2px 25px;-->
+<!--        }-->
+
+<!--        @media only screen and (max-width: 600px) {-->
+<!--            h4.font-weight-bold.hgh {-->
+<!--                display: none;-->
+<!--            }-->
+
+<!--            .h-1-1-1-1-1 {-->
+<!--                border-bottom: 1px solid #0000003d;-->
+<!--                margin-bottom: 11px;-->
+<!--                padding-bottom: 7px;-->
+<!--                display: block!important;-->
+<!--            }-->
+<!--            .c-2-31 {-->
+<!--                width: 100%;-->
+<!--            }-->
+<!--            span.amen-name-1 {-->
+<!--                /* font-size: 18px; */-->
+<!--                /* font-weight: 600; */-->
+<!--                /* color: #0b3d75; */-->
+<!--                font-size: 18px;-->
+<!--                color: #1a1a1ae6;-->
+<!--                font-weight: 600;-->
+<!--                position: relative;-->
+<!--                padding-top: 20px;-->
+<!--                text-transform: capitalize;-->
+<!--            }-->
+<!--            span.r-selected-1 {-->
+<!--                font-weight: 500;-->
+<!--                color: #05172c;-->
+<!--                font-size: 13px;-->
+<!--            }-->
+<!--        }-->
+<!--        .h-1-1-1-1-1 {-->
+<!--            border-bottom: 1px solid #0000003d;-->
+<!--            margin-bottom: 11px;-->
+<!--            padding-bottom: 7px;-->
+<!--            display: flex;-->
+<!--        }-->
+<!--        span.amen-name-1 {-->
+<!--            font-size: 18px;-->
+<!--            color: #1a1a1ae6;-->
+<!--            font-weight: 600;-->
+<!--            position: relative;-->
+<!--            padding-top: 20px;-->
+<!--            text-transform: capitalize;-->
+<!--        }-->
+<!--        .h-1-1-23 {-->
+<!--            color: #1a1a1ac4;-->
+<!--            font-size: 22px;-->
+<!--            font-weight: 700;-->
+<!--            line-height: 1.4em;-->
+<!--            border-left: 1px solid orange;-->
+<!--            padding-inline: 12px;-->
+<!--        }-->
+<!--        span.r-2-311 {-->
+<!--            color: #0b3d75;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+<!--        span.r-selected-1 {-->
+<!--            font-weight: 500;-->
+<!--            color: #0b3d75;-->
+<!--        }-->
+<!--        .l-2-11s {-->
+<!--            width: 14%;-->
+<!--        }-->
+<!--        .s-1-23 {-->
+<!--            display: flex;-->
+<!--            margin-top: 10px;-->
+<!--            margin-bottom: 11px;-->
+<!--        }-->
+<!--        .l-2-11s {-->
+<!--            width: 40%;-->
+<!--        }-->
+<!--        .s-34-5t {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--        }-->
+<!--        span.r-12 {-->
+<!--            width: 140%;-->
+<!--        }-->
+
+<!--    </style>-->
+
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container-scroller">-->
+<!--    &lt;!&ndash; partial:partials/_navbar.html &ndash;&gt;-->
+<!--    <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>-->
+<!--    &lt;!&ndash; partial &ndash;&gt;-->
+<!--    <div class="container-fluid page-body-wrapper">-->
+<!--        <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>-->
+<!--        <div class="main-panel">-->
+<!--            <div class="content-wrapper fix-top-content">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-10 grid-margin">-->
+<!--                        <div class="card">-->
+<!--                            <div class="">-->
+<!--                                <input type="hidden" id="propertyId" th:value="${property.getId()}">-->
+
+<!--                                <h4 style=" font-size: 25px;color: #000;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.TopAmenities}]]</h4>-->
+<!--                                <p class="card-description">-->
+<!--                                    [[#{client.Weknowtheseamenities528}]]-->
+<!--                                </p>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityList}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">  [[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <br>-->
+
+<!--                            <div class="card-body">-->
+
+
+
+<!--                            <div class="h-1-1-23">[[#{client.Roomamenities}]]</div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListss}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311"> [[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23">[[#{client.Bathroom}]]</div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityLists}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23">[[#{client.Media&Technology}]]</div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListsss}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23">[[#{client.Food&Drink}]]</div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListssss}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23">[[#{client.Services&Extras}]]</div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityLista}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23">[[#{client.Outdoor&View}]]</div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListaa}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23">Accessibility</div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListaaa}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23">[[#{client.Entertainment&FamilyServices}]]  </div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListu}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23">[[#{client.Safety&security}]]</div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListuu}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+
+<!--                            <br>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="h-1-1-23"> [[#{client.Cleanliness&disinfection}]] </div>-->
+<!--                                <br>-->
+<!--                                <div class="st-1-2">-->
+<!--                                    <div class="h-1-1-1-1-1" th:each="a : ${amenityListuuu}">-->
+<!--                                        <div class="c-2-31">-->
+<!--                                            <span class="amen-name-1" th:text="#{'client.' + ${a.getAmenityName().replace(' ', '')}}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="c-3-454">-->
+<!--                                            <div class="k-123-w">-->
+<!--                                                <span class="r-2-311">[[#{client.Rooms}]] :</span> <span class="r-selected-1">[[#{client.Selectwherethis}]]</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <div class="hl-1-1-1" style="text-align: left;">-->
+<!--                                <button class="btn btn-primary mt-4" onclick="createObject()" id="submitbutton">[[#{client.Save}]]</button>-->
+<!--                                <a th:href="@{'/propertyDashboard?id=' + ${property.getId()}}"><button type="button" class="btn btn-light mt-4">[[#{client.Cancel}]]</button></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+<!--            <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div th:replace="/ROLE_ADMIN/Layouts/footerScriptLayout"></div>-->
+
+
+<!--<script src="../../js/sweetAlert.js"></script>-->
+
+
+<!--<script th:inline="javascript">-->
+
+<!--    /*<![CDATA[*/-->
+
+<!--    function checkAll(event){-->
+<!--        var a = event.id;-->
+<!--        var cheks = document.getElementsByName(a);-->
+
+<!--        if (event.checked){-->
+<!--            for (var i=0;i<cheks.length;i++){-->
+<!--                cheks[i].checked = true;-->
+<!--            }-->
+<!--        }else{-->
+<!--            for (var i=0;i<cheks.length;i++){-->
+<!--                cheks[i].checked = false;-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+
+
+<!--    var amenityRoomDto = [];-->
+
+<!--    function createObject(){-->
+
+<!--        var submitButton = document.getElementById('submitbutton');-->
+<!--        submitButton.disabled = true;-->
+
+<!--        setTimeout(function() {-->
+<!--            submitButton.disabled = false;-->
+<!--        }, 3000);-->
+
+<!--        var checkBoxes = document.getElementsByClassName("amenityCheck");-->
+<!--        for (var k=0;k<checkBoxes.length;k++){-->
+<!--            if (checkBoxes[k].checked==true){-->
+<!--                amenityRoomDto.push({amenityId: checkBoxes[k].dataset.amenityid, roomId: checkBoxes[k].dataset.roomid, status: 1});-->
+<!--            } else {-->
+<!--                amenityRoomDto.push({amenityId: checkBoxes[k].dataset.amenityid, roomId: checkBoxes[k].dataset.roomid, status: 0});-->
+<!--            }-->
+<!--        }-->
+
+
+<!--        $.ajax({-->
+<!--            type: "POST",-->
+<!--            contentType: "application/json",-->
+<!--            headers: {'x-my-custom-header': 'some value'},-->
+<!--            url: "/addRoomAmenities",-->
+<!--            data: JSON.stringify(amenityRoomDto),-->
+<!--            dataType: 'json',-->
+<!--            cache: false,-->
+<!--            timeout: 600000,-->
+<!--            success: function () {-->
+<!--                swal("Success!", "Amenities saved successfully!", "success").then(function () {-->
+<!--                    window.scroll(0,0);-->
+
+<!--                });-->
+<!--            },-->
+<!--            error: function (response) {-->
+<!--                swal("Success!", "Amenities saved successfully!", "success").then(function () {-->
+<!--                    window.scroll(0,0);-->
+
+<!--                });-->
+<!--            }-->
+<!--        });-->
+
+<!--        console.log(amenityRoomDto);-->
+<!--    }-->
+
+
+<!--    /*]]>*/-->
+
+<!--</script>-->
+
+<!--<script>-->
+<!--    $( "#exampleFormControlSelect3" ).change(function() {-->
+<!--        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){-->
+<!--            location.reload();-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!--<script>-->
+
+<!--    $(function() {-->
+<!--        var a = $("#nameInput").val();-->
+<!--        $("#nameInput").autocomplete({-->
+<!--            source: function(request, response) {-->
+<!--                $.ajax({-->
+<!--                    url: "/autocomplete",-->
+<!--                    dataType: "json",-->
+<!--                    data: {-->
+<!--                        searchvalue : $("#nameInput").val(),-->
+<!--                    },-->
+<!--                    success: function(data) {-->
+<!--                        response(data);-->
+<!--                    }-->
+<!--                });-->
+<!--            },-->
+<!--            minLength : 3,-->
+<!--        })-->
+<!--    });-->
+<!--</script>-->
+<!--<script>-->
+<!--    function changeLanguageController(param) {-->
+
+<!--        var propertyId= document.getElementById("propertyId").value;-->
+
+
+<!--        var a = 'sq';-->
+<!--        if (param == null) {-->
+<!--            param = a;-->
+<!--        }-->
+
+<!--        var search = {"lang": a};-->
+<!--        $.ajax({-->
+<!--            type: "POST",-->
+<!--            url: "/changeLanguage",-->
+<!--            data: {-->
+<!--                lang: param-->
+<!--            },-->
+<!--            success: function (result) {-->
+<!--                window.location = '/amenityList?propertyId=' + propertyId   ;-->
+<!--            },-->
+<!--            error: function (e) {-->
+<!--                window.location = '/error.' + param + '.html';-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
+
+<!--<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"-->
+<!--      rel = "stylesheet">-->
+<!--<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>-->
+<!--<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
+
+
+
+<!--</body>-->
+
+<!--</html>-->
 

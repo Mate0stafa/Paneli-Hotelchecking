@@ -20,25 +20,18 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 
 public class RoleUserPropertyController {
 
     @Autowired
-    AgreementRepository agreementRepository;
-    @Autowired
     PropertyRepository propertyRepository;
-    @Autowired
-    HotelTimeRepository hotelTimeRepository;
-    @Autowired
-    ZanaTimeZoneRepository zanaTimeZoneRepository;
-    @Autowired
-    RoleRepository roleRepository;
     @Autowired
     UserRepository userRepository;
     @Autowired
-    HotelStatusRepository hotelStatusRepository;
+    HotelPhotoRepository hotelPhotoRepository;
     @Autowired
     CountryRepository countryRepository;
     @Autowired
@@ -533,4 +526,46 @@ public class RoleUserPropertyController {
         }
         return "redirect:/propertyContactDetails?id=" + id;
     }
+
+
+    // -- Photos Controllers --
+
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_GROUP_ACCOUNT')")
+    @GetMapping("/uploadPropertyImage")
+    public ModelAndView uploadPropertyImage(@RequestParam(value = "id") Long id, ModelAndView modelAndView, HttpServletRequest request) {
+        // Merr përdoruesin aktual
+        User currentLoggedInUser = userRepository.findByUsername(request.getUserPrincipal().getName());
+
+        // Gjej rolin special të përdoruesit
+        Role specialRole = currentLoggedInUser.getRole().stream()
+                .filter(role -> role.getId() != 1L && role.getId() != 2L && role.getId() != 3L)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No special role found for the user."));
+
+        // Kontrollo nëse prona ka rolin special të përdoruesit
+        Property property = propertyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Property not found with ID: " + id));
+
+        boolean hasAccess = property.getRoles().contains(specialRole);
+
+        boolean hasGroupAccountUser = currentLoggedInUser.getRole().stream()
+                .anyMatch(role -> role.getId() == 3L);
+        modelAndView.addObject("hasGroupAccountUser", hasGroupAccountUser);
+        modelAndView.addObject("specialRole", specialRole);
+        modelAndView.addObject("currentLoggedInUser", currentLoggedInUser);
+        if (!hasAccess) {
+            modelAndView.setViewName("/error");
+            return modelAndView;
+        }
+        if (request.isUserInRole(specialRole.getAuthority()) || hasAccess) {
+            int photoNR = hotelPhotoRepository.countByProperty(property);
+            modelAndView.addObject("photoNR", photoNR);
+            modelAndView.addObject("hophoto", new HotelPhoto());
+            modelAndView.addObject("propertyImages", property.getHotelPhotos().stream().filter(x->x.isSet_primary()==false).collect(Collectors.toList()));
+            modelAndView.addObject("property", property);
+            modelAndView.setViewName("ROLE_USER/Property/photoProperty");
+        }
+        return modelAndView;
+    }
+
 }
