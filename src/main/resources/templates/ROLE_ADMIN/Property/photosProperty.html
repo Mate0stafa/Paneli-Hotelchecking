@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
   <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
-  <link href = "https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+  <link href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -333,24 +333,22 @@
           <div class="card">
             <div class="card-body" th:if="${photoNR<150}">
               <input type="hidden" id="propertyId" th:value="${property.getId()}" >
-              <form action="#" id="site-output-dropzone">
-                <div class="upload-container">
-                  <input type="file" id="fileInputField" style="display: none;" multiple accept="image/*"/>
-                  <div class="circle-button" id="uploadBtn">
-                    <div class="folder-icon"></div>
-                  </div>
-                  <div class="upload-instructions">
-                    <p>[[#{client.Draganddrop}]]</p>
-                    <span>[[#{client.Or}]], <a href="#" onclick="document.getElementById('fileInputField').click(); return false;">[[#{client.browsetoupload}]]</a></span>
-                  </div>
+              <div class="upload-container">
+                <input type="file" id="fileInputField" style="display: none;" multiple accept="image/*"/>
+                <div class="circle-button" id="uploadBtn">
+                  <div class="folder-icon"></div>
                 </div>
-                <div id="loadingIcon" class="text-center" style="display: none;">
-                  <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden"></span>
-                  </div>
-                  <div id="uploadStatusText" class="status-text">Uploading... 0/0</div>
+                <div class="upload-instructions">
+                  <p>[[#{client.Draganddrop}]]</p>
+                  <span>[[#{client.Or}]], <a href="#" onclick="document.getElementById('fileInputField').click(); return false;">[[#{client.browsetoupload}]]</a></span>
                 </div>
-              </form>
+              </div>
+              <div id="loadingIcon" class="text-center" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden"></span>
+                </div>
+                <div id="uploadStatusText" class="status-text">Uploading... 0/0</div>
+              </div>
               <div id="imagePreviewContainer"></div>
             </div>
             <div class="card-body text-center" th:if="${photoNR>=150}">
@@ -375,7 +373,7 @@
                 </ul>
               </div>
               <div class="portfolio-item row">
-                <div th:each="count:${property.getHotelPhotos()}" th:if="${count.isSet_primary()==true}" class="item col-lg-2 col-md-3 col-5 col-sm ">
+                <div th:each="count:${property.getHotelPhotos()}" th:if="${count.isSet_primary()==true}" class="item col-lg-2 col-md-3 col-5 col-sm gallery-item-wrapper">
                   <a data-toggle="modal" th:data-target="'#myModal1'+${count.getId()}">
                     <div class="container11">
                       <div class="top-left">[[#{client.Preferredmainphoto}]]</div>
@@ -405,13 +403,14 @@
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
+                  <h5 class="modal-title" th:text="${count.getFile_name()} ?: 'Image Options'"></h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
                   <div class="row w-100">
                     <div class="col-md-5 col-12 modal-options-container">
                       <h5 class="modal-options-title">[[#{client.OptionsforthisImage}]]</h5>
-                      <div class="r-12 form-check form-check-flat form-check-primary">
+                      <div class="form-check form-check-flat form-check-primary">
                         <label class="containerCh">
                           <input class="form-check-input amenityCheck" type="checkbox" th:onchange="|change_statusprimary(${count.getId()}, this.checked)|" th:checked="${count.isSet_primary() == true}">
                           <span class="checkmark"></span>
@@ -421,15 +420,17 @@
                       <br>
                     </div>
                     <div class="col-md-7 col-12">
-                      <div class="photo-container">
+                      <div class="d-flex align-items-center">
                         <div th:if="${!iterStat.first}" class="modal-nav-arrow"
                              th:onclick="'changeModalPrev('+ ${property.getHotelPhotos()[iterStat.index - 1].getId()}+','+${count.getId()}+');'">
                           <i class="fa fa-regular fa-2x fa-angle-left"></i>
                         </div>
                         <div th:unless="${!iterStat.first}" class="modal-nav-arrow"></div>
-                        <div style="flex-grow: 1; text-align: center;">
+
+                        <div style="flex-grow: 1; text-align: center;" class="modal-image-container">
                           <img th:src="${count.getImagePath()}" th:alt="${count.getFile_name()}" class="imazh-image" th:id="'modalImage'+${count.getId()}">
                         </div>
+
                         <div th:if="${!iterStat.last}" class="modal-nav-arrow"
                              th:onclick="'changeModalNext('+ ${property.getHotelPhotos()[iterStat.index + 1].getId()} +','+${count.getId()}+')'">
                           <i class="fa fa-regular fa-2x fa-angle-right"></i>
@@ -440,6 +441,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-outline-danger"
                           th:attr="onclick='deleteImage(' + ${count.getId()} + ',' + ${property.getId()} + ');'"
                           data-dismiss="modal">
@@ -450,6 +452,7 @@
             </div>
           </div>
         </div>
+
       </div>
       <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
     </div>
@@ -458,11 +461,15 @@
 
 <input type="hidden" id="propId" th:value="${property.getId()}">
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script src="../../vendors/js/vendor.bundle.base.js"></script>
-<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
-<script src="../../vendors/select2/select2.min.js"></script>
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="../../js/sweetAlert.js"></script>
+
+
 <script src="../../js/off-canvas.js"></script>
 <script src="../../js/hoverable-collapse.js"></script>
 <script src="../../js/template.js"></script>
@@ -471,14 +478,14 @@
 <script src="../../js/file-upload.js"></script>
 <script src="../../js/typeahead.js"></script>
 <script src="../../js/select2.js"></script>
-<script src="../../js/sweetAlert.js"></script>
 
 
 <script th:inline="javascript">
-  /*<![CDATA[*/
+
 
   var userLanguage = /*[[${#locale.language}]]*/ 'en';
-  var propertyId = /*[[${property.getId()}]]*/ document.getElementById('propId').value;
+
+  var propertyId = document.getElementById('propId').value;
 
   function showToast(message, type = 'success') {
     let background;
@@ -486,6 +493,8 @@
       background = "linear-gradient(to right, #00b09b, #96c93d)";
     } else if (type === 'error') {
       background = "linear-gradient(to right, #ff5f6d, #ffc371)";
+    } else if (type === 'info') {
+      background = "linear-gradient(to right, #4facfe, #00f2fe)";
     } else {
       background = "#007bff";
     }
@@ -494,13 +503,14 @@
       duration: 3000,
       gravity: "top",
       position: "right",
-      style: { background: background }
+      style: {
+        background: background,
+      }
     }).showToast();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
 
-    // --- Element References ---
     const fileInputField = document.getElementById("fileInputField");
     const imagePreviewContainer = document.getElementById("imagePreviewContainer");
     const uploadBtn = document.getElementById("uploadBtn");
@@ -515,13 +525,13 @@
         }
       });
     }
+
     if (fileInputField) {
       fileInputField.addEventListener("change", handleFileSelect);
     }
 
-    // --- File Selection and Upload Logic ---
     function handleFileSelect(event) {
-      if (!event.target.files.length || isUploading) {
+      if (!event.target.files || event.target.files.length === 0 || isUploading) {
         return;
       }
 
@@ -529,6 +539,7 @@
       const files = event.target.files;
       const totalFiles = files.length;
       let uploadedCount = 0;
+      let processedCount = 0;
 
       if (imagePreviewContainer) {
         imagePreviewContainer.innerHTML = '';
@@ -537,14 +548,18 @@
         loadingIcon.style.display = 'flex';
       }
       if (uploadStatusText) {
-        uploadStatusText.textContent = `Uploading... 0/${totalFiles}`;
+        uploadStatusText.textContent = `Preparing... 0/${totalFiles}`;
       }
 
       const imageUploadPromises = Array.from(files).map(file =>
               new Promise((resolve, reject) => {
                 if (!file.type.startsWith('image/')) {
                   console.warn(`Skipping non-image file: ${file.name}`);
-                  resolve({ skipped: true });
+                  processedCount++;
+                  if (uploadStatusText) {
+                    uploadStatusText.textContent = `Processing... ${processedCount}/${totalFiles}`;
+                  }
+                  resolve({ skipped: true, name: file.name });
                   return;
                 }
 
@@ -559,7 +574,6 @@
                     const maxHeight = 1600;
                     let { width, height } = img;
 
-                    // Resize logic
                     if (width > maxWidth || height > maxHeight) {
                       const ratio = Math.min(maxWidth / width, maxHeight / height);
                       width = Math.round(width * ratio);
@@ -570,9 +584,13 @@
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    // Convert to WebP blob
                     canvas.toBlob(blob => {
                       if (!blob) {
+                        console.error(`Blob conversion failed for ${file.name}`);
+                        processedCount++;
+                        if (uploadStatusText) {
+                          uploadStatusText.textContent = `Processing... ${processedCount}/${totalFiles}`;
+                        }
                         reject(new Error(`Blob conversion failed for ${file.name}`));
                         return;
                       }
@@ -594,20 +612,30 @@
 
                       const xhr = new XMLHttpRequest();
                       xhr.open("POST", "/uploadPropertyImages", true);
+
+
                       xhr.onload = () => {
-                        if (xhr.status === 200) {
+                        processedCount++;
+                        if (xhr.status >= 200 && xhr.status < 300) {
                           uploadedCount++;
                           if (uploadStatusText) {
                             uploadStatusText.textContent = `Uploading... ${uploadedCount}/${totalFiles}`;
                           }
-                          resolve({ skipped: false });
+                          resolve({ skipped: false, name: file.name });
                         } else {
-                          console.error('Upload failed:', file.name, xhr.status, xhr.statusText);
-                          reject(new Error(`Upload failed for ${file.name}`));
+                          console.error('Upload failed:', file.name, xhr.status, xhr.statusText, xhr.responseText);
+                          if (uploadStatusText) {
+                            uploadStatusText.textContent = `Uploading... ${uploadedCount}/${totalFiles} (Error with ${file.name})`;
+                          }
+                          reject(new Error(`Upload failed for ${file.name}: ${xhr.statusText}`));
                         }
                       };
                       xhr.onerror = () => {
+                        processedCount++;
                         console.error('XHR error uploading image:', file.name, xhr.statusText);
+                        if (uploadStatusText) {
+                          uploadStatusText.textContent = `Uploading... ${uploadedCount}/${totalFiles} (Network Error with ${file.name})`;
+                        }
                         reject(new Error(`Network error during upload for ${file.name}`));
                       };
                       xhr.send(formData);
@@ -615,37 +643,60 @@
                     }, 'image/webp', 0.6);
                   };
                   img.onerror = () => {
+                    processedCount++;
                     console.error("Error loading image source for", file.name);
+                    if (uploadStatusText) {
+                      uploadStatusText.textContent = `Processing... ${processedCount}/${totalFiles}`;
+                    }
                     reject(new Error(`Error loading image ${file.name}`));
                   };
                   img.src = e.target.result;
                 };
                 reader.onerror = () => {
+                  processedCount++;
                   console.error("Error reading file", file.name);
+                  if (uploadStatusText) {
+                    uploadStatusText.textContent = `Processing... ${processedCount}/${totalFiles}`;
+                  }
                   reject(new Error(`Error reading file ${file.name}`));
                 };
                 reader.readAsDataURL(file);
               })
       );
 
-      Promise.all(imageUploadPromises)
+      Promise.allSettled(imageUploadPromises)
               .then(results => {
-                const successfulUploads = results.filter(r => !r.skipped).length;
-                const skippedCount = results.length - successfulUploads;
-                console.log(`All files processed. ${successfulUploads} images uploaded. ${skippedCount} skipped.`);
+                const successfulUploads = results.filter(r => r.status === 'fulfilled' && !r.value.skipped).length;
+                const failedUploads = results.filter(r => r.status === 'rejected').length;
+                const skippedCount = results.filter(r => r.status === 'fulfilled' && r.value.skipped).length;
+
+                console.log(`Batch process complete. ${successfulUploads} uploaded, ${failedUploads} failed, ${skippedCount} skipped.`);
+
                 if (uploadStatusText) {
-                  uploadStatusText.textContent = `Upload complete! ${successfulUploads}/${totalFiles}`;
+                  if (failedUploads > 0) {
+                    uploadStatusText.textContent = `Complete: ${successfulUploads}/${totalFiles} uploaded (${failedUploads} failed).`;
+                  } else {
+                    uploadStatusText.textContent = `Upload complete! ${successfulUploads}/${totalFiles}`;
+                  }
                 }
+
                 if (successfulUploads > 0) {
                   showToast(`${successfulUploads} image(s) uploaded successfully.`, 'success');
                 }
+                if (failedUploads > 0) {
+                  showToast(`${failedUploads} image(s) failed to upload. Check console.`, "error");
+                }
+                if (skippedCount > 0) {
+                  showToast(`${skippedCount} file(s) were skipped (not images).`, "info");
+                }
+
               })
               .catch(error => {
-                console.error('Error during batch upload:', error);
+                console.error('Unexpected error during batch processing:', error);
                 if (uploadStatusText) {
-                  uploadStatusText.textContent = 'Upload failed.';
+                  uploadStatusText.textContent = 'Upload process encountered an error.';
                 }
-                showToast("Some images failed to upload.", "error");
+                showToast("An unexpected error occurred during upload.", "error");
               })
               .finally(() => {
                 isUploading = false;
@@ -656,7 +707,9 @@
                   if (loadingIcon) {
                     loadingIcon.style.display = 'none';
                   }
-                  location.reload();
+                  if (uploadedCount > 0) {
+                    location.reload();
+                  }
                 }, 1500);
               });
     }
@@ -664,6 +717,11 @@
 
 
   function change_statusprimary(imageId, isChecked) {
+    if (typeof $ === 'undefined') {
+      console.error("jQuery is not loaded!");
+      showToast("Error: Required library not loaded.", "error");
+      return;
+    }
     $.post("/changestatusPrimary", { id: JSON.stringify(imageId), isChecked: isChecked })
             .done(response => {
               showToast("Changes Saved!", "success");
@@ -672,7 +730,7 @@
             .fail((jqXHR, textStatus, errorThrown) => {
               console.error("Failed to change primary status:", textStatus, errorThrown, jqXHR.responseText);
               showToast("Operation failed: " + (jqXHR.responseText || "Server error"), "error");
-              const cb = document.querySelector(`input[onchange*="change_statusprimary(${imageId}"]`);
+              const cb = document.querySelector(`input[type="checkbox"][onchange*="change_statusprimary(${imageId}"]`);
               if (cb) {
                 cb.checked = !isChecked;
               }
@@ -680,27 +738,53 @@
   }
 
   function deleteImage(photoId, propId) {
-    const imageItem = document.getElementById('item-' + photoId);
-    const primaryItem = document.querySelector(`.item a[data-target='#myModal1${photoId}']`)?.closest('.item');
+    if (typeof $ === 'undefined' || typeof swal === 'undefined') {
+      console.error("jQuery or SweetAlert is not loaded!");
+      showToast("Error: Required library not loaded.", "error");
+      return;
+    }
 
-    $.post("/deletePropertyImage", { photoId: photoId, propertyId: propId })
-            .done(response => {
-              showToast(response || "Image deleted successfully!", "success");
-              if (imageItem) {
-                imageItem.remove();
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to delete this image?",
+      icon: "warning",
+      buttons: ["Cancel", "Yes, delete it!"],
+      dangerMode: true,
+    })
+            .then((willDelete) => {
+              if (willDelete) {
+                const imageItem = document.getElementById('item-' + photoId);
+                const primaryItem = document.querySelector(`.item a[data-target='#myModal1${photoId}']`)?.closest('.item');
+
+                $.post("/deletePropertyImage", { photoId: photoId, propertyId: propId })
+                        .done(response => {
+                          showToast(response || "Image deleted successfully!", "success");
+                          if (imageItem) {
+                            imageItem.remove();
+                          }
+                          if (primaryItem) {
+                            primaryItem.remove();
+                          }
+                          if (primaryItem) {
+                            setTimeout(() => location.reload(), 500);
+                          }
+                        })
+                        .fail((jqXHR, textStatus, errorThrown) => {
+                          console.error("Failed to delete image:", textStatus, errorThrown, jqXHR.responseText);
+                          showToast("Failed to delete image: " + (jqXHR.responseText || "Server error"), "error");
+                        });
               }
-              if (primaryItem) {
-                primaryItem.remove();
-                setTimeout(() => location.reload(), 500);
-              }
-            })
-            .fail((jqXHR, textStatus, errorThrown) => {
-              console.error("Failed to delete image:", textStatus, errorThrown, jqXHR.responseText);
-              showToast("Failed to delete image: " + (jqXHR.responseText || "Server error"), "error");
             });
   }
 
+
   function deleteImages() {
+    if (typeof $ === 'undefined' || typeof swal === 'undefined') {
+      console.error("jQuery or SweetAlert is not loaded!");
+      showToast("Error: Required library not loaded.", "error");
+      return;
+    }
+
     const checkedCheckboxesIds = Array.from(document.querySelectorAll('input[name="chk"]:checked')).map(cb => cb.id);
 
     if (checkedCheckboxesIds.length === 0) {
@@ -710,69 +794,107 @@
 
     swal({
       title: "Are you sure?",
-      text: "Once deleted, you cannot recover these photos!",
+      text: `Once deleted, you cannot recover these ${checkedCheckboxesIds.length} photo(s)!`,
       icon: "warning",
       buttons: {
         cancel: "Cancel",
         confirm: {
           text: "Yes, delete them!",
-          className: "btn-danger"
+          value: true,
+          visible: true,
+          className: "btn-danger",
+          closeModal: true
         }
       },
       dangerMode: true,
     })
-            .then(willDelete => {
+            .then((willDelete) => {
               if (willDelete) {
                 $.ajax({
                   type: "POST",
                   contentType: "application/json",
                   url: "/deleteImages",
-                  data: JSON.stringify(checkedCheckboxesIds)
+                  data: JSON.stringify(checkedCheckboxesIds),
+                  dataType: "text"
                 })
                         .done((response) => {
                           swal("Success!", response || "Selected photos deleted!", "success")
                                   .then(() => {
                                     checkedCheckboxesIds.forEach(id => {
-                                      document.getElementById('item-' + id)?.remove();
+                                      const itemToRemove = document.getElementById('item-' + id);
+                                      if (itemToRemove) {
+                                        itemToRemove.remove();
+                                      }
                                     });
                                   });
                         })
-                        .fail((jqXHR) => {
-                          console.error("Bulk delete failed:", jqXHR.status, jqXHR.responseText);
-                          swal("Error!", jqXHR.responseText || "Deletion failed!", "error");
+                        .fail((jqXHR, textStatus, errorThrown) => {
+                          console.error("Bulk delete failed:", jqXHR.status, jqXHR.responseText, textStatus, errorThrown);
+                          swal("Error!", jqXHR.responseText || "Deletion failed! Check console for details.", "error");
                         });
+              } else {
+                swal("Deletion cancelled.", { icon: "info" });
               }
             });
   }
 
   function changeModalPrev(prevModalId, currentModalId){
-    $('#myModal1' + currentModalId).modal('hide').one('hidden.bs.modal', () => {
-      $('#myModal1' + prevModalId).modal('show');
-    });
-  }
-  function changeModalNext(nextModalId, currentModalId){
-    $('#myModal1' + currentModalId).modal('hide').one('hidden.bs.modal', () => {
-      $('#myModal1' + nextModalId).modal('show');
-    });
+    if (typeof $ === 'undefined') {
+      console.error("jQuery is not loaded!"); return;
+    }
+    const currentModal = $('#myModal1' + currentModalId);
+    const prevModal = $('#myModal1' + prevModalId);
+
+    if (currentModal.length && prevModal.length) {
+      currentModal.modal('hide');
+      currentModal.one('hidden.bs.modal', function () {
+        prevModal.modal('show');
+      });
+    } else {
+      console.error("Could not find modals for navigation:", currentModalId, prevModalId);
+    }
   }
 
+  function changeModalNext(nextModalId, currentModalId){
+    if (typeof $ === 'undefined') {
+      console.error("jQuery is not loaded!"); return;
+    }
+    const currentModal = $('#myModal1' + currentModalId);
+    const nextModal = $('#myModal1' + nextModalId);
+
+    if (currentModal.length && nextModal.length) {
+      currentModal.modal('hide');
+      currentModal.one('hidden.bs.modal', function () {
+        nextModal.modal('show');
+      });
+    } else {
+      console.error("Could not find modals for navigation:", currentModalId, nextModalId);
+    }
+  }
+
+
   function selects(){
-    document.getElementsByName('chk').forEach(cb => {
+    const checkboxes = document.getElementsByName('chk');
+    checkboxes.forEach(cb => {
       if(cb.type === 'checkbox') {
         cb.checked = true;
       }
     });
   }
+
   function deSelect(){
-    document.getElementsByName('chk').forEach(cb => {
+    const checkboxes = document.getElementsByName('chk');
+    checkboxes.forEach(cb => {
       if(cb.type === 'checkbox') {
         cb.checked = false;
       }
     });
   }
 
-  /*]]>*/
+
 </script>
+
+
 <script>
 
   $(function() {
@@ -791,8 +913,35 @@
         });
       },
       minLength : 3,
-    })
+    });
   });
+
 </script>
+<script>
+  function changeLanguageController(param) {
+
+    var propertyId= document.getElementById("propertyId").value;
+    var a = 'en';
+    if (param == null) {
+      param = a;
+    }
+
+    var search = {"lang": a};
+    $.ajax({
+      type: "POST",
+      url: "/changeLanguage",
+      data: {
+        lang: param
+      },
+      success: function (result) {
+        window.location = '/uploadPropertyImages?id=' + propertyId  ;
+      },
+      error: function (e) {
+        window.location = '/error.' + param + '.html';
+      }
+    });
+  }
+</script>
+
 </body>
 </html>
