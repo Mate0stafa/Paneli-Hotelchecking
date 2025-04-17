@@ -14,7 +14,9 @@ public class TokenDeletionService {
     public CompletableFuture<Void> deleteTokenAfterDelay(UserApiTokenRepository userApiTokenRepository, UserApiToken userApiToken){
         try{
             Thread.sleep(10*60*1000); //Sleep for 10 minutes
-            userApiTokenRepository.delete(userApiToken);
+            if(userApiToken.isExpired()){
+                userApiTokenRepository.delete(userApiToken);
+            }
         }catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
