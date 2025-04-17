@@ -1,0 +1,278 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Existing Property | Panel Allbookers</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+<body>
+<div class="container-scroller">
+
+    <div th:replace="/ROLE_USER/Layouts/navbar"></div>
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+        <!-- partial -->
+        <div class="main-panel">
+
+            <div class="content-wrapper">
+                <div class="terai-123" >
+                    <h3  class="font-weight-bold mt-4" style="font-size: 25px;color: #000;line-height: 20px;font-weight: 700;position: relative;padding-top: 50px;">[[#{client.Addexistingproperties}]]</h3>
+                </div>
+                <hr class="tey-q">
+                <div class="ro-1 row" style="align-items: center">
+                    <div class="col-md-12 order-first pb-4">
+                        <div class="djhshj-12">Access All Your Properties From One Account.</div>
+                        <div class="djhshj-12">[[#{client.Tomanageallyour584}]]</div>
+                        <div class="hdsh-12" th:text="${user!=null ? user.getEmail():'Your property does not have a user with the Admin role.'}"></div>
+                        <div class="hdsh-12" th:if="${user==null}" >
+                            <h5 style="color: #015701;">You must have a user in the admin role to continue the process.
+                                <br> Manage your users <a th:href="@{'/addnewuserr?propertyId='+${property.getId()}}">"here"</a>.</h5>
+                        </div>
+                        <div class="kjjssk-w" th:if="${user!=null}">[[#{client.Whenadded8851}]]</div>
+                    </div>
+                    <div class="col-md-6  dr-2" th:if="${user!=null}">
+                        <div class="card hd-12">
+                            <div class="tri012">
+                                [[#{client.StartAddingProperties}]]
+                            </div>
+                            <div class="tes-w">
+                                [[#{client.Tostartlogintotheaccount159}]]
+                            </div>
+                            <div class="tys-192">
+                                <div class="form-group">
+                                    <label for="myUsername" class="eu-12">[[#{client.Username}]]</label>
+                                    <input type="text" class="form-control drt-12" id="myUsername" placeholder="Username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="myPassword" class="eu-12">[[#{client.Password}]]</label>
+                                    <input type="password" class="form-control drt-12" id="myPassword" placeholder="Password">
+                                </div>
+                                <div class="butonish">
+                                    <button type="button" onclick="validateUser()" class="btn btn-primary mr-2 ds-12">[[#{client.login}]]</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="/ROLE_USER/Layouts/footerL"  class="footer"></div>
+        </div>
+    </div>
+</div>
+<div id="richList"></div>
+<div id="loader" class="lds-dual-ring hidden overlay"></div>
+<style>
+    .footer{
+        margin-top: 200px !important;
+    }
+    .djhshj-12 {
+
+        font-weight: 400;
+        font-size: 15px;
+    }
+    .kjjssk-w {
+        margin-bottom: 2px;
+        font-weight: 400;
+        font-size: 15px;
+        margin-top: 20px;
+    }
+    .hdsh-12 {
+        font-weight: 700;
+    }
+    .butonish {
+        text-align: center;
+        padding: 0px 15px;
+        padding-bottom: 10px;
+    }
+    button.btn.btn-primary.mr-2.ds-12 {
+        background: #0b3d75;
+        padding: 10px;
+        width: 100%;
+        border-radius: 9px;
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+        padding: 0px 15px;
+    }
+    label.eu-12 {
+        margin-bottom: 0px;
+        color: #0b3d75;
+        font-weight: 600;
+    }
+    span.sjahgg9 {
+        font-weight: 600;
+        font-size: 28px;
+        font-family: system-ui;
+    }
+    span.man-12 {
+        font-weight: 600;
+        font-size: 35px;
+        font-family: system-ui;
+    }
+
+    span.hgs-12 {
+        font-weight: 600;
+        font-size: 29px;
+        font-family: system-ui;
+    }
+    .tri012 {
+        padding: 15px;
+        /*font-size: 16px;*/
+        padding-bottom: 6px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .tes-w {
+        padding: 15px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .card.hd-12 {
+        background: #ffffff;
+        border-left: 5px solid #fb8540;
+        box-shadow: 0px 12px 16px -4px rgba(39, 45, 61, 0.08), 0px 4px 6px -2px rgba(39, 45, 61, 0.03);
+    }
+
+</style>
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<script src="../../js/sweetAlert.js"></script>
+
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+
+<script th:inline="javascript">
+
+    $('#getDataBtn').click(function() {
+
+        $.ajax({
+            type: "GET",
+            url: "https://forbes400.herokuapp.com/api/forbes400?limit=400",
+            dataType: 'json',
+            beforeSend: function() {
+                $('#loader').removeClass('hidden')
+            },
+            success: function(data){
+                console.log(data);
+                let richList = "<ol>";
+                for (let i = 0; i < data.length; i++) {
+                    console.log(data[i].uri);
+                    richList += "<li>"+data[i].uri+"</li>";
+                }
+                richList += "</ol>"
+                $('#richList').html(richList);
+            },
+            complete: function(){
+                $('#loader').addClass('hidden')
+            },
+        });
+
+    });
+
+
+    function validateUser(){
+        var username = document.getElementById("myUsername").value;
+        var password = document.getElementById("myPassword").value;
+        var property_id = /*[[${property.getId()}]]*/;
+        var model = {};
+
+        model.username = username;
+        model.password = password;
+        model.property_id = property_id;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/getToken",
+            data: JSON.stringify(model),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            beforeSend: function() {
+                $('#loader').removeClass('hidden')
+            },
+            success: function (response) {
+                console.log(response);
+                $('#loader').addClass('hidden');
+                if (response.status==true){
+                    swal("Sucess!", "We have sent you an email with a confirmation PIN. Please check your email and confirm your account!", "success").then(function (){
+                        window.location = "/confirmEmailAccount?requestId="+response.changeRequestId+"&propertyId="+property_id;
+                    });
+                }else {
+                    swal("Error!", "Password or username incorrect!", "error");
+                }
+            },
+            error: function (response) {
+                $('#loader').addClass('hidden')
+                swal("Error!", "User Not found!", "error");
+            },
+
+        });
+
+
+    }
+
+    /*]]>*/
+
+</script>
+
+<script>
+    $( "#exampleFormControlSelect3" ).change(function() {
+        $.post( "changeLanguage", {param: $("#exampleFormControlSelect3").val()}, function (){
+            location.reload();
+        });
+    });
+</script>
+
+
+<!--Responsive for mobile (Oresti)-->
+<style>
+    @media only screen and (max-width: 600px) {
+        .djhshj-12 {
+            margin-bottom: 2px;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        .kjjssk-w {
+            margin-bottom: 2px;
+            font-weight: 400;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    }
+</style>
+
+</body>
+
+</html>
