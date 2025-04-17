@@ -2,7 +2,7 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" id="navbarfordesktop">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo mr-5" href="/"><img src="/images/logo.png" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-allbookers1.png" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-mini.png" alt="logo"/></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <form id="search-form" action="/searchByValue">
@@ -42,51 +42,46 @@
             <button type="submit" class="btn btn-inverse-primary btn-fw">[[#{client.Search}]]</button>
         </form>
         <ul class="navbar-nav navbar-nav-right">
-            <li>
-                <h4 class="font-weight-bold hgh" th:text="${property.getName()+' - '+ property.getLoginId()}">[[#{client.Welcometo}]] </h4>
-            </li>
-            <li>
-                <a class="vvd" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
-                    <img th:src="${property.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + property.getPrimaryImage().getImagePath()}"  data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">
-<!--                    <img th:src="${property.getHotelPhotos() != null ? property.getPrimaryImage().getImagePath() : (property.getPrimaryImage1(hotelPhotos) != null ? property.getPrimaryImage1(hotelPhotos).getImagePath() : '')}"-->
-<!--                         data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">-->
-                </a>
-            </li>
-
             <li class="nav-item nav-profile dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                    <img src="/images/logo-allbookers1.png" alt="profile"/>
+                <a class="nav-link dropdown-toggle vvd"  data-toggle="dropdown" id="profileDropdown" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
+                    <img class="rounded-circle" th:src="${property.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + property.getPrimaryImage().getImagePath()}" alt="Property Image" />
                 </a>
-                <!--Here dropdown-->
+
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                     <div class="card p-0 bg-light">
                         <div class="text-center pt-4 pb-3">
-                            <div class="avatar avatar-xl">
-                                <img class="rounded-circle" src="https://cdn-icons-png.freepik.com/256/4032/4032591.png" alt="">
-                                <!-- Photo icon overlay -->
-
+                            <div class="avatar avatar-xl mb-2">
+                                <a class="vvd">
+                                    <img class="rounded-circle" src="https://cdn-icons-png.freepik.com/256/4032/4032591.png" alt="">
+                                </a>
                             </div>
-                            <h6 class=" emriprones" th:text="${#authentication.getName().toUpperCase()}">[[#{client.Welcometo}]]</h6>
+                            <h6 class="font-weight-bold emriprones" th:text="${property.getName() + ' - ' + property.getLoginId()}">[[#{client.Welcometo}]]</h6>
+                            <div>
+                                <small th:text="${#authentication.getName().toUpperCase()}"></small>
+                            </div>
                         </div>
                     </div>
-                    <a class="dropdown-item " style="display:flex;align-items: stretch;justify-content: center;" th:href="@{'/connectivity?id='+${property.getId()}}">
-                        <i class="ti-upload text-primary"></i>Connectivity
+
+                    <a class="dropdown-item d-flex justify-content-center" target="_blank" th:href="@{'/privacy-policy.pdf'}">
+                        <i class="ti-lock text-primary"></i>&nbsp; Privacy Policy
                     </a>
-                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" th:href="@{'/privacy-policy.pdf'}">
-                        <i class="ti-lock text-primary"></i>
-                        Privacy Policy
+                    <a class="dropdown-item d-flex justify-content-center" target="_blank" th:href="@{'http://localhost:8010/terms.en.html'}">
+                        <i class="ti-help text-primary"></i>&nbsp; Help Center
                     </a>
-                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" href="https://allbookers.com/customerservice.sq.html">
-                        <i class="ti-help text-primary"></i>
-                        Help Center
-                    </a>
-                    <div class="px-3 text-center " > <a class="btn btn-light d-flex flex-center w-100 text-center " style="display:flex;
-    align-items: stretch;
-    justify-content: center;" th:href="@{'/logout'}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                        &nbsp;   [[#{client.Logout}]]</a></div>
+                    <div class="px-3 text-center">
+                        <a class="btn btn-light d-flex justify-content-center w-100" th:href="@{'/logout'}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            &nbsp; [[#{client.Logout}]]
+                        </a>
+                    </div>
                 </div>
             </li>
+
 
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
@@ -98,56 +93,50 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" id="navbarformobile">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo mr-5" href="/"><img src="/images/logo.png" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-allbookers1.png" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="/"><img src="/images/logo-mini.png" alt="logo"/></a>
 
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <ul class="navbar-nav navbar-nav-right">
-            <li>
-                <h4 class="font-weight-bold hgh" th:text="${property.getName()+' - '+ property.getLoginId()}">[[#{client.Welcometo}]] </h4>
-            </li>
-            <li>
-
-                <a class="vvd" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
-                    <img th:src="${property.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + property.getPrimaryImage().getImagePath()}"  data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">
-<!--                    <img th:src="${property.getHotelPhotos() != null ? property.getPrimaryImage().getImagePath() : (property.getPrimaryImage1(hotelPhotos) != null ? property.getPrimaryImage1(hotelPhotos).getImagePath() : '')}"-->
-<!--                         data-toggle="tooltip" data-placement="bottom" title="View your property listing on Allbookers.com" class="jjn">-->
-                </a>
-
             <li class="nav-item nav-profile dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown2">
-                    <img class="logo-iccon" src="/images/logo-allbookers1.png" alt="profile"/>
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="profileDropdown" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
+                    <img class="rounded-circle" th:src="${property.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + property.getPrimaryImage().getImagePath()}" alt="Property Image" />
                 </a>
 
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                <div class="card p-0 bg-light">
-                    <div class="text-center pt-4 pb-3">
-                        <div class="avatar avatar-xl">
-                            <img class="rounded-circle" src="https://cdn-icons-png.freepik.com/256/4032/4032591.png" alt="">
-                            <!-- Photo icon overlay -->
-
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                    <div class="card p-0 bg-light">
+                        <div class="text-center pt-4 pb-3">
+                            <div class="avatar avatar-xl mb-2">
+                                <img class="rounded-circle" src="https://cdn-icons-png.freepik.com/256/4032/4032591.png" alt="">
+                            </div>
+                            <h6 class="font-weight-bold emriprones" th:text="${property.getName() + ' - ' + property.getLoginId()}">[[#{client.Welcometo}]]</h6>
+                            <div>
+                                <small th:text="${#authentication.getName().toUpperCase()}"></small>
+                            </div>
                         </div>
-                        <h6 class=" emriprones" th:text="${#authentication.getName().toUpperCase()}">[[#{client.Welcometo}]]</h6>
+                    </div>
+
+                    <a class="dropdown-item d-flex justify-content-center" target="_blank" th:href="@{'/privacy-policy.pdf'}">
+                        <i class="ti-lock text-primary"></i>&nbsp; Privacy Policy
+                    </a>
+                    <a class="dropdown-item d-flex justify-content-center" target="_blank" th:href="@{'http://localhost:8010/terms.en.html'}">
+                        <i class="ti-help text-primary"></i>&nbsp; Help Center
+                    </a>
+                    <div class="px-3 text-center">
+                        <a class="btn btn-light d-flex justify-content-center w-100" th:href="@{'/logout'}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            &nbsp; [[#{client.Logout}]]
+                        </a>
                     </div>
                 </div>
-                <a class="dropdown-item " style="display:flex;align-items: stretch;justify-content: center;" th:href="@{'/connectivity?id='+${property.getId()}}">
-                    <i class="ti-upload text-primary"></i>Connectivity
-                </a>
-                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" th:href="@{'/privacy-policy.pdf'}">
-                    <i class="ti-lock text-primary"></i>
-                    Privacy Policy
-                </a>
-                <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" href="https://allbookers.com/customerservice.sq.html">
-                    <i class="ti-help text-primary"></i>
-                    Help Center
-                </a>
-                <div class="px-3 text-center " > <a class="btn btn-light d-flex flex-center w-100 text-center " style="display:flex;
-    align-items: stretch;
-    justify-content: center;" th:href="@{'/logout'}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                    &nbsp;   [[#{client.Logout}]]</a></div>
-            </div>
             </li>
+
+
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
             <span class="icon-menu"></span>
