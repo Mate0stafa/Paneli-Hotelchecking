@@ -14,6 +14,8 @@ import com.example.paneli.Services.Mail.JavaMailService;
 import com.example.paneli.Services.Number.NumberService;
 import com.example.paneli.Services.Property.PropertyEncodeName;
 import com.example.paneli.Services.ReviewService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +48,8 @@ import java.util.stream.Collectors;
 
 @Controller
 public class PropertyController {
+
+    Logger log = LoggerFactory.getLogger(PropertyController.class);
 
     @Autowired
     Hotel_TypeRepository hotel_typeRepository;
@@ -1098,39 +1102,110 @@ public class PropertyController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_GROUP_ACCOUNT') || hasRole('ROLE_ADMIN')")
-    @PostMapping(value = "deleteImages")
-    @ResponseBody
-    public void deleteImages(HttpServletRequest request,@RequestBody List<Long> photoId) throws IOException {
-
-        if (request.isUserInRole("ROLE_USER") || request.isUserInRole("ROLE_GROUP_ACCOUNT") || request.isUserInRole("ROLE_ADMIN")) {
-
-            System.out.println(photoId.get(0));
-            Long photoIdd = 0L;
-
-            for (int i = 0; i < photoId.size(); i++) {
-                photoIdd = photoId.get(i);
-                Property property = hotelPhotoRepository.findById(photoIdd).get().getProperty();
-                String hotelPhoto = hotelPhotoRepository.findById(photoIdd).get().getFile_name();
-                System.out.println(photoIdd);
-                photoCrudRepository.deleteById(photoIdd);
-                File file = new File("/home/allbookersusr/home/BookersDesk/data/klienti/" + propertyEncodeName.encodeNameForServerPath(property) + "/" + hotelPhoto);
-                if (file.exists()) {
-                    Files.delete(Paths.get("/home/allbookersusr/home/BookersDesk/data/klienti/" + propertyEncodeName.encodeNameForServerPath(property) + "/" + hotelPhoto));
-                }
-            }
-
-        }
-    }
-
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_GROUP_ACCOUNT')")
     @PostMapping("/deletePropertyImage")
     @ResponseBody
-    public void deletePropertyImage(@RequestParam(value = "photoId") Long photoId, @RequestParam(value = "propertyId") Long propertyId ,HttpServletRequest request) throws IOException {
-        if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER") || request.isUserInRole("ROLE_GROUP_ACCOUNT")){
-            photoCrudRepository.deleteById(photoId);
-            Files.deleteIfExists(Paths.get("/home/allbookersusr/home/BookersDesk/data/klienti/"+propertyEncodeName.encodeNameForServerPath(propertyRepository.findById(propertyId).get())+"/"+hotelPhotoRepository.findById(photoId).get().getFile_name()));
+    public ResponseEntity<String> deletePropertyImage(@RequestParam(value = "photoId") Long photoId,
+                                                      @RequestParam(value = "propertyId") Long propertyId,
+                                                      HttpServletRequest request) {
+        try {
+            Optional<HotelPhoto> photoOptional = hotelPhotoRepository.findById(photoId);
+
+            if (photoOptional.isPresent()) {
+                HotelPhoto photo = photoOptional.get();
+                Property property = photo.getProperty();
+
+                if (!property.getId().equals(propertyId)) {
+                    log.warn("Attempt to delete photo {} with mismatched property ID {}. Actual property ID: {}", photoId, propertyId, property.getId());
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Photo does not belong to the specified property.");
+                }
+
+                String fileName = photo.getFile_name();
+                String encodedPropertyName = propertyEncodeName.encodeNameForServerPath(property);
+                Path filePath = Paths.get("/home/allbookersusr/home/BookersDesk/data/klienti/" + encodedPropertyName + "/" + fileName);
+
+                try {
+                    boolean deleted = Files.deleteIfExists(filePath);
+                    if (deleted) {
+                        log.info("Successfully deleted file: {}", filePath);
+                    } else {
+                        log.warn("File not found or already deleted: {}", filePath);
+                    }
+                } catch (IOException e) {
+                    log.error("Failed to delete file {}: {}", filePath, e.getMessage());
+                }
+
+                photoCrudRepository.deleteById(photoId);
+                log.info("Successfully deleted photo record with ID: {}", photoId);
+
+                return ResponseEntity.ok("Image deleted successfully.");
+
+            } else {
+                log.warn("Photo with ID {} not found for deletion. Might have been already deleted.", photoId);
+                return ResponseEntity.ok("Photo not found or already deleted.");
+            }
+
+        } catch (Exception e) {
+            log.error("Error processing delete request for photo ID {}: {}", photoId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An internal error occurred while deleting the image.");
         }
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_GROUP_ACCOUNT') || hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "deleteImages")
+    @ResponseBody
+    public ResponseEntity<String> deleteImages(HttpServletRequest request,@RequestBody List<Long> photoIds) {
+
+        log.info("Received request to delete {} photos: {}", photoIds.size(), photoIds);
+        int successCount = 0;
+        int failCount = 0;
+        List<String> errors = new ArrayList<>();
+
+        for (Long currentPhotoId : photoIds) {
+            try {
+                Optional<HotelPhoto> photoOptional = hotelPhotoRepository.findById(currentPhotoId);
+
+                if (photoOptional.isPresent()) {
+                    HotelPhoto photo = photoOptional.get();
+                    Property property = photo.getProperty();
+                    String fileName = photo.getFile_name();
+                    String encodedPropertyName = propertyEncodeName.encodeNameForServerPath(property);
+                    Path filePath = Paths.get("/home/allbookersusr/home/BookersDesk/data/klienti/" + encodedPropertyName + "/" + fileName);
+
+                    try {
+                        Files.deleteIfExists(filePath);
+                        log.debug("Deleted file for photo ID {}: {}", currentPhotoId, filePath);
+                    } catch (IOException e) {
+                        log.error("Failed to delete file for photo ID {}: {}", currentPhotoId, filePath, e);
+                        errors.add("File delete failed for photo ID " + currentPhotoId);
+                        failCount++;
+                        continue;
+                    }
+
+                    photoCrudRepository.deleteById(currentPhotoId);
+                    log.debug("Deleted DB record for photo ID {}", currentPhotoId);
+                    successCount++;
+
+                } else {
+                    log.warn("Photo ID {} not found for batch deletion.", currentPhotoId);
+                    successCount++;
+                }
+            } catch (Exception e) {
+                log.error("Error deleting photo ID {} during batch operation", currentPhotoId, e);
+                failCount++;
+                errors.add("Server error for photo ID " + currentPhotoId);
+            }
+        }
+
+        log.info("Batch delete result: {} successful, {} failed.", successCount, failCount);
+
+        if (failCount == 0) {
+            return ResponseEntity.ok("All selected images deleted successfully.");
+        } else {
+            String errorMessage = String.format("%d images deleted, %d failed. Errors: %s", successCount, failCount, String.join("; ", errors));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
+
     }
 
 }

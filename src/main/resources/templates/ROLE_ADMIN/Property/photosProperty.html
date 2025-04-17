@@ -1,38 +1,25 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Photos | Admin Panel Allbookers</title>
-  <!-- plugins:css -->
   <link rel="stylesheet" href="../../vendors/feather/feather.css">
   <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
   <link rel="stylesheet" href="../../vendors/select2/select2.min.css">
   <link rel="stylesheet" href="../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
+  <link href = "https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="../../css/style.css">
-  <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
-  <!-- Google Font -->
-  <!-- Custom style -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
-  <!-- Plugin -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  <!-- Plugin -->
-  <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css" />
-  <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
 
   <style>
-    .dropzone{
-      border: 2px solid rgb(255 255 255 / 30%) !important;
-    }
     .upload-container {
       text-align: center;
       padding: 20px;
@@ -85,504 +72,8 @@
       text-decoration: none;
     }
     @keyframes rotate {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    /*Style checkbox*/
-    .containerCh {
-      display: block;
-      position: relative;
-      padding-left: 35px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      font-size: 0.875rem;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-
-    .containerCh input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-      height: 0;
-      width: 0;
-    }
-
-
-    .checkmark {
-      position: absolute;
-      top: 50%;
-      left: 5px;
-      transform: translateY(-50%);
-      height: 18px;
-      width: 18px;
-      background-color: #fff;
-      border: 2px solid #fb8540;
-      transition-duration: 250ms;
-      border-radius: 2px;
-
-    }
-
-
-    .containerCh input:checked ~ .checkmark {
-      border-color: #fb8540;
-      background-color: #fb8540;
-      outline: 0;
-      -webkit-box-shadow: 0 0 0 .25rem rgba(56, 116, 255, .25);
-      box-shadow: 0 0 0 .25rem #fb854024;
-    }
-
-
-    .checkmark:after {
-      content: "";
-      position: absolute;
-      display: none;
-    }
-
-
-    .containerCh input:checked ~ .checkmark:after {
-      display: block;
-    }
-
-
-    .containerCh .checkmark:after {
-      left: 5px;
-      top: -4px;
-      width: 7px;
-      height: 18px;
-      border: solid white;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
-      transition-duration: 250ms;
-      font-size: .9375rem;
-      font-family: themify;
-    }
-    .fix-top-content{
-      padding-top: 100px;
-    }
-
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      margin-right: -15px;
-      margin-left: -15px;
-    }
-    .text-center {
-      text-align: center !important;
-    }
-    .dz-default.dz-message.custom-cs {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      margin-top: 25px;
-    }
-
-    .portfolio-menu.mt-2.mb-4 {
-      text-align: center;
-    }
-    .content-wrapper .modal {
-      background-color: #000000b3;
-    }
-    button.btn.btn-outline-danger.btn-icon-text.custom-btn {
-      margin: auto;
-    }
-    button.dz-button {
-      margin: auto;
-      margin-top: 20px;
-      border: 1px solid darkgray;
-      border-radius: 5px;
-      font-size: 19px;
-      padding: 2px 10px;
-    }
-
-    .container11 {
-      position: relative;
-      text-align: center;
-      color: black;
-    }
-
-    .top-left {
-      position: absolute;
-      top: 8px;
-      left: 15px;
-      background: #f07c00;
-      padding: 2px;
-      color: white;
-      font-size: 13px;
-      margin-top: -15px;
-      border-radius: 4px;
-      box-shadow: 2px 2px 8px 0 rgb(0 0 0 / 50%);
-      text-transform: capitalize;
-    }
-
-    .kmk .form-check-input {
-      margin-top: 21px;
-      margin-left: -13px;
-    }
-
-    img.img-fluid {
-      width: 162px!important;
-      height: 162px!important;
-      object-fit: cover!important;
-    }
-
-    img.img-fluid {
-      object-fit: cover;
-    }
-
-    img.img-fluid {
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-    }
-
-    img.img-fluid {
-      border-radius: 3px;
-    }
-
-    img.img-fluid {
-      margin-top: 10px;
-    }
-
-    .portfolio-menu{
-      text-align:center;
-    }
-    .portfolio-menu ul li{
-      display:inline-block;
-      margin:0;
-      list-style:none;
-      padding:10px 15px;
-      cursor:pointer;
-      -webkit-transition:all 05s ease;
-      -moz-transition:all 05s ease;
-      -ms-transition:all 05s ease;
-      -o-transition:all 05s ease;
-      transition:all .5s ease;
-    }
-
-
-    .portfolio-item .item{
-
-      float:left;
-      margin-bottom:10px;
-    }
-
-    .full .content img {
-      left: 50%;
-      transform: translate3d(0, 0, 0);
-      max-width: 100%;
-      max-height: 100%;
-      margin: auto;
-    }
-    .gallery img {
-      max-width: 100%;
-      border-radius: 8px;
-      transition: all 1.5s ease;
-    }
-    .gallery .content {
-      padding: 4px;
-    }
-    .gallery .gallery-item {
-      transition: grid-row-start 300ms linear;
-      transition: transform 300ms ease;
-      transition: all 0.5s ease;
-      cursor: pointer;
-    }
-    .gallery .gallery-item:hover {
-      transform: scale(1.025);
-    }
-
-    @-moz-keyframes zoomin {
-      0% {
-        max-width: 50%;
-        transform: rotate(-30deg);
-        filter: blur(4px);
-      }
-      30% {
-        filter: blur(4px);
-        transform: rotate(-80deg);
-      }
-      70% {
-        max-width: 50%;
-        transform: rotate(45deg);
-      }
-      100% {
-        max-width: 100%;
-        transform: rotate(0deg);
-      }
-    }
-    @-webkit-keyframes zoomin {
-      0% {
-        max-width: 50%;
-        transform: rotate(-30deg);
-        filter: blur(4px);
-      }
-      30% {
-        filter: blur(4px);
-        transform: rotate(-80deg);
-      }
-      70% {
-        max-width: 50%;
-        transform: rotate(45deg);
-      }
-      100% {
-        max-width: 100%;
-        transform: rotate(0deg);
-      }
-    }
-    @-o-keyframes zoomin {
-      0% {
-        max-width: 50%;
-        transform: rotate(-30deg);
-        filter: blur(4px);
-      }
-      30% {
-        filter: blur(4px);
-        transform: rotate(-80deg);
-      }
-      70% {
-        max-width: 50%;
-        transform: rotate(45deg);
-      }
-      100% {
-        max-width: 100%;
-        transform: rotate(0deg);
-      }
-    }
-    @keyframes zoomin {
-      0% {
-        max-width: 50%;
-        transform: rotate(-30deg);
-        filter: blur(4px);
-      }
-      30% {
-        filter: blur(4px);
-        transform: rotate(-80deg);
-      }
-      70% {
-        max-width: 50%;
-        transform: rotate(45deg);
-      }
-      100% {
-        max-width: 100%;
-        transform: rotate(0deg);
-      }
-    }
-
-    .modal-content {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      width: 80%;
-      pointer-events: auto;
-      background-color: #ffffff;
-      background-clip: padding-box;
-      border: 1px solid #CED4DA;
-      border-radius: 0.3rem;
-      outline: 0;
-      margin: 2% 10%;
-    }
-
-    .add-images img {
-      width: 50px;
-      height: 50px;
-      margin: 0 auto;
-      margin-top: 50%;
-    }
-    .col-6 {
-      flex: 0 0 50%;
-      max-width: 50%;
-      text-align: left;
-    }
-    .col-6 gj {
-      flex: 0 0 50%;
-      max-width: 50%;
-      text-align: left;
-    }
-
-
-    .photo-container {
-      display: flex;
-    }
-
-    button.notag {
-      background-color: #07c;
-      color: white!important;
-      padding: 5px;
-      margin-top: 6px!important;
-      border: none;
-    }
-
-    button.notag {
-      margin-left: 12px;
-      margin-top: 8px;
-      padding-left: 12px!important;
-      padding-right: 12px!important;
-      border-radius: 3px;
-    }
-
-    button.notag {
-      background-color: #07c;
-      color: white!important;
-      padding: 5px;
-      margin-top: 2px;
-    }
-
-    .uhoi {
-      margin-top: 17px;
-    }
-
-    p.notag {
-      font-size: 17px;
-      color: black!important;
-      font-family: revert;
-    }
-
-    .images-of-each-room {
-      background: #e7e7e747;
-      margin-top: 15px;
-      border-radius: 5px;
-      padding-bottom: 27px;
-    }
-
-    .noimage {
-      margin-top: 19px;
-      color: rgb(26, 26, 26);
-      font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 15px;
-      font-weight: 500;
-      height: auto;
-      line-height: 28px;
-    }
-    hr {
-      margin-top: 1rem;
-      margin-bottom: -10px;
-      border: 0;
-      border-top: 1px solid rgb(0 0 0 / 48%);
-    }
-    h3.room-name {
-      color: rgb(26, 26, 26);
-      display: block;
-      font-family: "Blue Sans", BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      height: 28px;
-      line-height: 28px;
-    }
-
-    img.imazhi-image-by {
-      width: 175px;
-      margin: 0 auto;
-      text-align: center;
-      height: 175px;
-      border-radius: 5px;
-      object-fit: cover;
-      margin-top: 30px;
-    }
-    label.form-check-label.hello-label {
-      margin-top: 6px;
-      font-size: 16px;
-      font-weight: 500;
-    }
-    img.imazh-image {
-      border-radius: 7px;
-      object-fit: cover;
-      height: 350px;
-      width: 100%;
-      margin: 0;
-    }
-    .image-row-room{
-      text-align: center;
-    }
-
-    .deletemodal {
-      width: 125px!important;
-    }
-
-    @media only screen and (max-width: 600px) {
-      h4.font-weight-bold.hgh {
-        display: none;
-      }
-    }
-
-    .deletemodal .modal-footer {
-      display: flex;
-      justify-content: center;
-    }
-    .deletemodal .modal-body {
-      text-align: center;
-      font-size: 19px;
-      font-weight: 500;
-    }
-    .col-sm-6.col-md-3.col-lg-2 {
-      margin-top: 26px;
-    }
-    .image-by {
-      width: 173px;
-      border-radius: 0px 0px 10px 10px;
-      background: #0b3d75;
-      border-color: #0b3d75;
-    }
-    label.form-check-label {
-      margin-left: 18px;
-      margin-right: 13px;
-    }
-
-
-    label.form-check-label {
-      margin-left: 18px;
-      margin-right: 13px;
-    }
-
-    li.select2-selection__choice {
-      background-color: #4b49ac!important;
-    }
-
-    span.select2-selection.select2-selection--multiple {
-      width: 90%!important;
-    }
-
-    span.select2-dropdown.select2-dropdown--above {
-      width: 300px!important;
-    }
-
-    ul#select2-xuw0-results {
-      width: 300px;
-    }
-
-    li.select2-selection__choice {
-      font-size: 14px!important;
-    }
-    @media (max-width: 767px) {
-
-      .col-6 {
-        max-width: 100%;
-      }
-    }
-    .mrt{
-      margin-top: 5px !important;
-    }
-    #imagePreviewContainer {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    #imagePreviewContainer img {
-      max-width: 100%;
-      height: auto;
-      width: 150px;
-      margin: 5px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     #loadingIcon {
       display: flex;
@@ -598,19 +89,11 @@
       height: 150px;
       margin: 20px auto;
     }
-
-    .loading-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
     .spinner-border {
       width: 50px;
       height: 50px;
       margin-bottom: 10px;
     }
-
     .status-text {
       font-size: 16px;
       color: #007bff;
@@ -618,192 +101,260 @@
       margin-top: 10px;
       text-align: center;
     }
-
     #uploadStatusText {
       font-size: 18px;
     }
-
+    #imagePreviewContainer {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      justify-content: center;
+    }
+    #imagePreviewContainer img {
+      max-width: 100%;
+      height: 120px;
+      width: auto;
+      margin: 5px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .containerCh {
+      display: block;
+      position: relative;
+      padding-left: 35px;
+      margin-bottom: 0;
+      cursor: pointer;
+      font-size: 0.875rem;
+      user-select: none;
+      height: 20px;
+      line-height: 20px;
+    }
+    .containerCh input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    .checkmark {
+      position: absolute;
+      top: 1px;
+      left: 5px;
+      height: 18px;
+      width: 18px;
+      background-color: #fff;
+      border: 2px solid #fb8540;
+      transition-duration: 250ms;
+      border-radius: 2px;
+    }
+    .containerCh input:checked ~ .checkmark {
+      border-color: #fb8540;
+      background-color: #fb8540;
+      outline: 0;
+      box-shadow: 0 0 0 .25rem #fb854024;
+    }
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    .containerCh input:checked ~ .checkmark:after {
+      display: block;
+    }
+    .containerCh .checkmark:after {
+      left: 5px;
+      top: -4px;
+      width: 7px;
+      height: 18px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      transition-duration: 250ms;
+      font-size: .9375rem;
+      font-family: themify;
+    }
+    .fix-top-content{
+      padding-top: 100px;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+    .text-center {
+      text-align: center !important;
+    }
+    .content-wrapper .modal {
+      background-color: #000000b3;
+    }
+    .col-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+      text-align: left;
+    }
+    .mrt{
+      margin-top: 5px !important;
+    }
+    .portfolio-menu{
+      text-align:center;
+    }
+    .portfolio-menu ul {
+      padding-left: 0;
+    }
+    .portfolio-menu ul li{
+      display:inline-block;
+      margin:0 5px;
+      list-style:none;
+      padding:10px 15px;
+      cursor:pointer;
+      transition:all .5s ease;
+    }
+    .portfolio-item .item{
+      margin-bottom: 15px;
+      padding-right: 5px;
+      padding-left: 5px;
+      position: relative;
+    }
+    .gallery-item-wrapper {
+      position: relative;
+      display: block;
+    }
+    .gallery-item-wrapper .containerCh {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 3px;
+      padding-right: 5px;
+    }
+    .gallery-item-wrapper .zoom-img a {
+      display: block;
+    }
+    .img-fluid {
+      width: 100% !important;
+      height: 150px !important;
+      object-fit: cover !important;
+      border-radius: 3px;
+      transition: transform 300ms ease;
+      display: block;
+    }
+    .img-fluid:hover {
+      transform: scale(1.025);
+    }
+    .container11 {
+      position: relative;
+      text-align: center;
+      color: black;
+      display: block;
+    }
+    .container11 .img-fluid {
+      margin-top: 0;
+    }
+    .top-left {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #f07c00;
+      padding: 2px 5px;
+      color: white;
+      font-size: 12px;
+      border-radius: 4px;
+      box-shadow: 2px 2px 8px 0 rgb(0 0 0 / 50%);
+      text-transform: capitalize;
+      z-index: 5;
+    }
+    .modal-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      pointer-events: auto;
+      background-color: #ffffff;
+      background-clip: padding-box;
+      border: 1px solid #CED4DA;
+      border-radius: 0.3rem;
+      outline: 0;
+      margin: 2% 10%;
+    }
+    .modal-header .close {
+      padding: 1rem;
+      margin: -1rem -1rem -1rem auto;
+    }
+    .modal-options-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    .modal-options-container .form-check {
+      margin-bottom: 10px;
+    }
+    .modal-image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    img.imazh-image {
+      border-radius: 7px;
+      object-fit: contain;
+      max-height: 400px;
+      max-width: 100%;
+      height: auto;
+      width: auto;
+      margin: 0;
+      display: block;
+    }
+    .modal-nav-arrow {
+      min-height: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex: 0 0 50px;
+    }
+    .modal-nav-arrow i {
+      color: black;
+    }
+    @media (max-width: 767px) {
+      .col-6 { max-width: 100%; }
+    }
   </style>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
-
 
 </head>
 <body>
 <div class="container-scroller">
   <div th:replace="/ROLE_ADMIN/Layouts/navbar1"></div>
-  <!-- partial -->
   <div class="container-fluid page-body-wrapper">
     <div th:replace="/ROLE_ADMIN/Layouts/hotelSidebar"></div>
-    <!-- partial -->
     <div class="main-panel">
       <div class="content-wrapper fix-top-content">
         <div class="col-md-12 grid-margin">
           <div class="card">
             <div class="card-body" th:if="${photoNR<150}">
-              <input type="hidden" id="propertyId" onkeypress="return event.key !== 'Enter';" th:value="${property.getId()}" >
-
+              <input type="hidden" id="propertyId" th:value="${property.getId()}" >
               <form action="#" id="site-output-dropzone">
                 <div class="upload-container">
-                  <input type="file" id="fileInputField" style="display: none;" multiple />
+                  <input type="file" id="fileInputField" style="display: none;" multiple accept="image/*"/>
                   <div class="circle-button" id="uploadBtn">
-                    <div class="folder-icon">
-                      <i class="fas fa-folder-open"></i>
-                    </div>
+                    <div class="folder-icon"></div>
                   </div>
                   <div class="upload-instructions">
                     <p>[[#{client.Draganddrop}]]</p>
-                    <span>[[#{client.Or}]] <a href="#">[[#{client.browsetoupload}]]</a></span>
+                    <span>[[#{client.Or}]], <a href="#" onclick="document.getElementById('fileInputField').click(); return false;">[[#{client.browsetoupload}]]</a></span>
                   </div>
                 </div>
-                <div id="loadingIcon" class="text-center" style="display: none; margin-top: 20px;">
+                <div id="loadingIcon" class="text-center" style="display: none;">
                   <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden" style="width: auto; height: auto"></span>
+                    <span class="visually-hidden"></span>
                   </div>
-                  <div id="uploadStatusText" style="margin-top: 10px;">Uploading... 0/0</div>
+                  <div id="uploadStatusText" class="status-text">Uploading... 0/0</div>
                 </div>
               </form>
-
-
-              <div id="imagePreviewContainer" style="margin-top: 20px;"></div>
-
-              <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                  const fileInputField = document.getElementById("fileInputField");
-                  const imagePreviewContainer = document.getElementById("imagePreviewContainer");
-                  const uploadBtn = document.getElementById("uploadBtn");
-                  const loadingIcon = document.getElementById("loadingIcon");
-                  const uploadStatusText = document.getElementById("uploadStatusText");
-                  let isUploading = false;
-
-                  uploadBtn.addEventListener("click", function () {
-                    if (isUploading) return;
-                    isUploading = true;
-                    fileInputField.click();
-                    setTimeout(() => isUploading = false, 300);
-                  });
-
-                  fileInputField.addEventListener("change", handleFileSelect);
-
-                  function handleFileSelect(event) {
-                    if (!event.target.files.length) {
-                      console.log("No files selected.");
-                      return;
-                    }
-
-                    const files = event.target.files;
-                    const totalFiles = files.length;
-                    let uploadedCount = 0;
-
-                    console.log("Files selected: ", files);
-                    imagePreviewContainer.innerHTML = '';
-                    loadingIcon.style.display = 'block';
-                    uploadStatusText.textContent = `Uploading... 0/${totalFiles}`;
-
-                    const imageUploadPromises = Array.from(files).map(file => {
-                      return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                          const img = new Image();
-                          img.onload = function () {
-                            const canvas = document.createElement("canvas");
-                            const ctx = canvas.getContext("2d");
-
-                            const maxWidth = 1800;
-                            const maxHeight = 1600;
-                            let width = img.width;
-                            let height = img.height;
-
-                            if (width > maxWidth || height > maxHeight) {
-                              if (width / maxWidth > height / maxHeight) {
-                                height = Math.round(maxHeight * (img.height / img.width));
-                                width = maxWidth;
-                              } else {
-                                width = Math.round(maxWidth * (img.width / img.height));
-                                height = maxHeight;
-                              }
-                            }
-
-                            canvas.width = width;
-                            canvas.height = height;
-                            ctx.drawImage(img, 0, 0, width, height);
-
-                            canvas.toBlob(function (blob) {
-                              if (blob) {
-                                const formData = new FormData();
-                                formData.append('file', blob, file.name.replace(/\.[^/.]+$/, "") + '.webp');
-                                formData.append('id', [[${property.getId()}]]);
-                                formData.append('format', 'webp');  // File format
-
-                                const xhr = new XMLHttpRequest();
-                                xhr.open("POST", "/uploadPropertyImages", true);
-
-                                xhr.onload = function () {
-                                  if (xhr.status === 200) {
-                                    console.log('Upload successful:', xhr.responseText);
-                                    uploadedCount++;
-                                    uploadStatusText.textContent = `Uploading... ${uploadedCount}/${totalFiles}`;
-                                    resolve();
-                                  } else {
-                                    console.error('Upload failed:', xhr.status, xhr.statusText);
-                                    reject(new Error('Upload failed'));
-                                  }
-                                };
-                                xhr.onerror = function () {
-                                  console.error('Error uploading image:', xhr.statusText);
-                                  reject(new Error('Upload error'));
-                                };
-
-                                xhr.send(formData);
-                              }
-                            }, 'image/webp', 0.6);
-                            const imgPreview = document.createElement("img");
-                            imgPreview.src = canvas.toDataURL('image/webp', 0.6);
-                            imagePreviewContainer.appendChild(imgPreview);
-                          };
-                          img.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                      });
-                    });
-
-                    Promise.all(imageUploadPromises)
-                            .then(() => {
-                              console.log('All images uploaded successfully');
-                              fileInputField.value = '';
-                              uploadStatusText.textContent = `Upload complete! ${totalFiles}/${totalFiles}`;
-                            })
-                            .catch(error => {
-                              console.error('Error uploading images:', error);
-                              uploadStatusText.textContent = 'Upload failed. Please try again.';
-                            })
-                            .finally(() => {
-                              setTimeout(() => {
-                                loadingIcon.style.display = 'none';
-                                location.reload();
-                              }, 1000);
-                            });
-                  }
-                });
-
-
-              </script>
-
-
-
+              <div id="imagePreviewContainer"></div>
             </div>
-            <div class="card-body" style="text-align: center;" th:if="${photoNR>=150}">
-              <b style="color: #af2e2ede;font-size: 25px; text-align: center;">[[#{client.propertyreached}]]</b>
+            <div class="card-body text-center" th:if="${photoNR>=150}">
+              <b style="color: #af2e2ede;font-size: 25px;">[[#{client.propertyreached}]]</b>
             </div>
 
             <div class="container">
@@ -811,60 +362,37 @@
                 <div class="col-lg-12 text-center my-2">
                   <h3 class="py-3 text-dark" style="color: #141824;font-weight: bold;"><a style="color: #141824;font-weight: bold;" href="/">[[${property.getName()}]]</a></h3>
                   <h4 th:if="${photoNR==1}">[[#{client.MainGallery}]] ([[${photoNR}]] [[#{client.photo}]])</h4>
-                  <h4 th:if="${photoNR<150 && photoNR!=1}">[[#{client.MainGallery}]] ([[${photoNR}]]  [[#{client.photos}]])</h4>
+                  <h4 th:if="${photoNR>1 && photoNR<150}">[[#{client.MainGallery}]] ([[${photoNR}]]  [[#{client.photos}]])</h4>
                   <h4 th:if="${photoNR==150}">[[#{client.MainGallery}]] <span style="color: #ff0000b8;">([[#{client.photo2}]]  [[${photoNR}]]  [[#{client.photos}]])</span></h4>
                   <h4 th:if="${photoNR>150}">[[#{client.MainGallery}]] <b style="color: #af2e2ede;">( [[#{client.photo1}]] [[${photoNR}]] [[#{client.photos}]])</b></h4>
                 </div>
               </div>
               <div class="portfolio-menu mt-2 mb-4">
                 <ul>
-                  <li class="btn btn-outline-dark"  onclick='selects()' data-filter="*">[[#{client.Selectall}]]</li>
-                  <li class="btn btn-outline-dark" onclick='deSelect()' data-filter=".gts">[[#{client.Deselectall}]]</li>
-                  <li class="btn btn-outline-dark text mrt" onclick="deleteImages()"  data-filter=".selfie">[[#{client.Delete}]]</li>
+                  <li class="btn btn-outline-dark"  onclick='selects()'>[[#{client.Selectall}]]</li>
+                  <li class="btn btn-outline-dark" onclick='deSelect()'>[[#{client.Deselectall}]]</li>
+                  <li class="btn btn-outline-danger text mrt" onclick="deleteImages()">[[#{client.Delete}]]</li>
                 </ul>
               </div>
               <div class="portfolio-item row">
-
-                <div style="cursor: pointer"  th:each="count:${property.getHotelPhotos()}" th:id="${count.getId()}" th:if="${count.isSet_primary()==true}" class="item selfie col-lg-2 col-md-3 col-5 col-sm">
-                  <a  data-toggle="modal" th:data-target="'#myModal1'+${count.getId()}">
+                <div th:each="count:${property.getHotelPhotos()}" th:if="${count.isSet_primary()==true}" class="item col-lg-2 col-md-3 col-5 col-sm ">
+                  <a data-toggle="modal" th:data-target="'#myModal1'+${count.getId()}">
                     <div class="container11">
                       <div class="top-left">[[#{client.Preferredmainphoto}]]</div>
-                      <img class="img-fluid" th:src="${ count.getImagePath()}" th:alt="${count.getFile_name()}"  loading="eager">
+                      <img class="img-fluid" th:src="${count.getImagePath()}" th:alt="${count.getFile_name()}" loading="lazy">
                     </div>
                   </a>
                 </div>
-                <div style="cursor: pointer"  th:each="count:${propertyImages}" th:id="${count.getId()}" class="item selfie col-lg-2 col-md-3 col-5 col-sm">
+                <div th:each="count:${propertyImages}" th:id="'item-'+${count.getId()}" class="item col-lg-2 col-md-3 col-5 col-sm gallery-item-wrapper">
+                  <label class="containerCh">
+                    <input type="checkbox" class="form-check-input creditcard-checkbox" th:id="${count.getId()}" name="chk"/>
+                    <span class="checkmark"></span>
+                  </label>
                   <div class="zoom-img">
-                    <label class="containerCh">
-                      <input type="checkbox" class="form-check-input creditcard-checkbox" onkeypress="return event.key !== 'Enter';" th:id="${count.getId()}" name="chk"/>
-                      <span class="checkmark"></span>
-                    </label>
-                  </div>
-                  <div class="zoom-img">
-                    <a  data-toggle="modal" th:data-target="'#myModal1'+${count.getId()}">
-                      <img class="img-fluid" th:src="${count.getImagePath()}" th:alt="${count.getFile_name()}"  loading="eager">
+                    <a data-toggle="modal" th:data-target="'#myModal1'+${count.getId()}">
+                      <img class="img-fluid" th:src="${count.getImagePath()}" th:alt="${count.getFile_name()}" loading="lazy">
                     </a>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="container images-of-each-room" th:each="room: ${property.getRooms()}">
-              <div>
-                <h3 class="room-name" th:text="${room.getName()}"></h3>
-                <hr class="line-line-one">
-                <div class="row" th:if="${room.getRoomPhotos().size()>0} or ${room.getHotelPhotos().size()>0}">
-                  <div style="cursor: pointer; margin-left: 20px" class="image-row-room col-sm-6 col-md-3 col-lg-2" th:each="image : ${room.getHotelPhotos()}" th:id="${image.getId()}" >
-                    <a  data-toggle="modal" th:data-target="'#myModal1'+${image.getId()}">
-                      <img th:src="${image.getImagePath()}" th:alt="${image.getFile_name()}" class="imazhi-image-by">
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div th:unless="${room.getRoomPhotos().size()>0} or ${room.getHotelPhotos().size()>0}">
-                <div class="noimage">
-                  [[#{client.Thisroomhasnoimages}]]
                 </div>
               </div>
             </div>
@@ -872,298 +400,379 @@
           </div>
         </div>
 
-        <div th:each="count: ${property.getRooms()}">
-          <div th:each="roomimages: ${count.getRoomPhotos()}" class="modal fade deletemodal" th:id="'fshimodal'+${roomimages.getId()}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div id="modalParentdiv">
+          <div class="modal" th:each="count, iterStat : ${property.getHotelPhotos()}" th:id="'myModal1'+${count.getId()}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel" style="text-align: center">[[#{client.ImageDelete}]]</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                  [[#{client.Areyousureyouwanttodeletethisimage}]]
+                  <div class="row w-100">
+                    <div class="col-md-5 col-12 modal-options-container">
+                      <h5 class="modal-options-title">[[#{client.OptionsforthisImage}]]</h5>
+                      <div class="r-12 form-check form-check-flat form-check-primary">
+                        <label class="containerCh">
+                          <input class="form-check-input amenityCheck" type="checkbox" th:onchange="|change_statusprimary(${count.getId()}, this.checked)|" th:checked="${count.isSet_primary() == true}">
+                          <span class="checkmark"></span>
+                          [[#{client.Setaspreferredmainphoto}]]
+                        </label>
+                      </div>
+                      <br>
+                    </div>
+                    <div class="col-md-7 col-12">
+                      <div class="photo-container">
+                        <div th:if="${!iterStat.first}" class="modal-nav-arrow"
+                             th:onclick="'changeModalPrev('+ ${property.getHotelPhotos()[iterStat.index - 1].getId()}+','+${count.getId()}+');'">
+                          <i class="fa fa-regular fa-2x fa-angle-left"></i>
+                        </div>
+                        <div th:unless="${!iterStat.first}" class="modal-nav-arrow"></div>
+                        <div style="flex-grow: 1; text-align: center;">
+                          <img th:src="${count.getImagePath()}" th:alt="${count.getFile_name()}" class="imazh-image" th:id="'modalImage'+${count.getId()}">
+                        </div>
+                        <div th:if="${!iterStat.last}" class="modal-nav-arrow"
+                             th:onclick="'changeModalNext('+ ${property.getHotelPhotos()[iterStat.index + 1].getId()} +','+${count.getId()}+')'">
+                          <i class="fa fa-regular fa-2x fa-angle-right"></i>
+                        </div>
+                        <div th:unless="${!iterStat.last}" class="modal-nav-arrow"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-danger" th:attr="onclick='deleteRoomImage(' + ${roomimages.getId()}+','+${count.getId()}+');'" data-dismiss="modal">[[#{client.Yes}]]</button>
-                  <button type="button" class="btn btn-success" data-dismiss="modal">[[#{client.No}]]</button>
+                  <button type="button" class="btn btn-outline-danger"
+                          th:attr="onclick='deleteImage(' + ${count.getId()} + ',' + ${property.getId()} + ');'"
+                          data-dismiss="modal">
+                    [[#{client.Deleteimage}]]
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div th:each="count: ${property.getHotelPhotos()}" class="modal fade deletemodal" th:id="'modaldelete'+${count.getId()}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1" style="text-align: center">[[#{client.ImageDelete}]]</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                [[#{client.Areyousureyouwanttodeletethisimage}]]
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onchange="window.location.reload()" th:attr="onclick='deleteImage(' + ${count.getId()}+','+${count.getProperty().getId()}+');'" data-dismiss="modal">[[#{client.Yes}]]</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">[[#{client.No}]]</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Modal -->
-        <div id="modalParentdiv">
-        <div class="modal" th:each="count, iterStat : ${property.getHotelPhotos()}" th:id="'myModal1'+${count.getId()}"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              </div>
-
-              <div class="modal-body">
-                <div class="row w-100">
-                  <div class="col-6">
-                    <h6 class="tag" style="font-weight: 600; font-size:16px;">[[#{client.Tagsappliedtothisphoto}]] </h6>
-                    <div class="uhoi row">
-                      <button onclick="deletePhotoTag(this)" th:id="${count.getId()}" class="notag" th:each="cc: ${count.getPhoto_tag_attribute()}" th:data-phototagid="${cc.getId()}" th:text="'X  ' +${cc.getName()}">
-                      </button>
-                    </div>
-                    <br><br>
-                    <div class="form-group">
-                      <label style="margin:0 !important; vertical-align: initial">[[#{client.Searchfortags}]] </label>
-                      <select th:id="${count.getId()}+'tags'" class="js-example-basic-multiple" multiple="multiple" style="width: 300px!important;"  onchange="savePhotoTag(this)" >
-                        <option th:each="c: ${photoTag}" th:if="${#messages.msgOrNull('client.' + c.getName().replaceAll(' ', '')) != null}"
-                                th:text="${#messages.msgOrNull('client.' + c.getName().replaceAll(' ', ''))}"    th:value="${c.getId()}"></option>
-                        <!--  if translation does not exist -->
-                        <option th:each="c: ${photoTag}" th:if="${#messages.msgOrNull('client.' + c.getName().replaceAll(' ', '')) == null}"
-                                th:text="${c.getName()}"  th:value="${c.getId()}"></option>
-
-                      </select>
-                    </div>
-                    <h5 class="optionn">[[#{client.OptionsforthisImage}]]</h5>
-                    <ul class="listType" style="list-style: none; padding:0; margin:0px;" th:each="c : ${property.getRooms()}">
-                      <li class="element1" style="width: 100%; font-size:15px; margin:0px; padding:0px;">
-                        <label class="containerCh">
-                          <input type="checkbox" class="form-check-input" onkeypress="return event.key !== 'Enter';" th:checked="${c.getHotelPhotos().contains(count)}" th:attr="onchange='addImageTag(this,' + ${c.id}+','+${count.getId()}+');'" th:value="${c.id}">
-                          <span class="checkmark"></span>
-                          [[${c.getName()}]]
-                        </label>
-                      </li>
-                    </ul>
-                    <br>
-                    <hr>
-                    <br>
-                    <div class="r-12 form-check form-check-flat form-check-primary">
-                      <label class="containerCh">
-                        <input class="form-check-input amenityCheck" type="checkbox" onkeypress="return event.key !== 'Enter';" th:onchange="|change_statusprimary(${count.getId()}, this.checked)|" th:checked="${count.isSet_primary() == true}">
-                        <span class="checkmark"></span>
-                        [[#{client.Setaspreferredmainphoto}]]</label>
-                    </div>
-                    <br>
-                  </div>
-                  <div class="col-6 gj">
-                    <div class="photo-container" style="justify-content: center">
-                      <div th:if="${!iterStat.first}" class="col-1 d-flex " style="height: 350px!important; align-items: center; justify-content: center; cursor: pointer;"
-                           th:onclick="'changeModalPrev('+ ${property.getHotelPhotos()[iterStat.index - 1].getId()}+','+${count.getId()}+');'">
-                        <i class="fa fa-regular fa-2x fa-angle-left " style="color: black"></i>
-                      </div>
-                      <div class="col-10">
-                        <img th:src="${ 'https://allbookers.com' + count.getImagePath()}"  th:alt="${count.getFile_name()}" class="imazh-image" th:id="img">
-                      </div>
-                      <div th:if="${!iterStat.last}" class="col-1 d-flex " style="height: 350px!important; align-items: center; justify-content: center; cursor: pointer;"
-                           th:onclick="'changeModalNext('+ ${property.getHotelPhotos()[iterStat.index + 1].getId()} +','+${count.getId()}+')'">
-                        <i class="fa fa-regular fa-2x fa-angle-right " style="color: black"></i>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" th:attr="onclick='deleteImage(' + ${count.getId()}+','+${count.getProperty().getId()}+');'" data-dismiss="modal">[[#{client.Deleteimage}]]</button>
-
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-      </div>
-
       <div th:replace="/ROLE_ADMIN/Layouts/footerL"></div>
-
     </div>
   </div>
 </div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-<script>
+<input type="hidden" id="propId" th:value="${property.getId()}">
 
-  function deletePhotoTag(event){
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<script src="../../vendors/js/vendor.bundle.base.js"></script>
+<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../vendors/select2/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="../../js/off-canvas.js"></script>
+<script src="../../js/hoverable-collapse.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/settings.js"></script>
+<script src="../../js/todolist.js"></script>
+<script src="../../js/file-upload.js"></script>
+<script src="../../js/typeahead.js"></script>
+<script src="../../js/select2.js"></script>
+<script src="../../js/sweetAlert.js"></script>
 
-    $.post("deletePhotoTag",
-            {
-              photoId: event.id,
-              pointTagId: parseInt(event.dataset.phototagid)
-            },
 
-            function(data, status, request){
-              event.remove();
+<script th:inline="javascript">
+  /*<![CDATA[*/
 
-            }).fail(function() {
+  var userLanguage = /*[[${#locale.language}]]*/ 'en';
+  var propertyId = /*[[${property.getId()}]]*/ document.getElementById('propId').value;
 
-      swal("Error", "An error occured!!!", "error");
-    });
+  function showToast(message, type = 'success') {
+    let background;
+    if (type === 'success') {
+      background = "linear-gradient(to right, #00b09b, #96c93d)";
+    } else if (type === 'error') {
+      background = "linear-gradient(to right, #ff5f6d, #ffc371)";
+    } else {
+      background = "#007bff";
+    }
+    Toastify({
+      text: message,
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      style: { background: background }
+    }).showToast();
   }
 
-</script>
+  document.addEventListener('DOMContentLoaded', function () {
 
+    // --- Element References ---
+    const fileInputField = document.getElementById("fileInputField");
+    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const loadingIcon = document.getElementById("loadingIcon");
+    const uploadStatusText = document.getElementById("uploadStatusText");
+    let isUploading = false;
 
-<script>
+    if (uploadBtn) {
+      uploadBtn.addEventListener("click", () => {
+        if (!isUploading) {
+          fileInputField.click();
+        }
+      });
+    }
+    if (fileInputField) {
+      fileInputField.addEventListener("change", handleFileSelect);
+    }
 
-  if($('.report-repeater').length)
-  {
-    var  reportRepeater = $('.report-repeater').repeater({
-      defaultValues: {
-        'textarea-input': 'foo',
-        'text-input': 'bar',
-      },
-      show: function () {
-        $(this).slideDown();
-        $('.select2-container').remove();
-      },
-      hide: function (deleteElement) {
-        $(this).slideUp(deleteElement);
+    // --- File Selection and Upload Logic ---
+    function handleFileSelect(event) {
+      if (!event.target.files.length || isUploading) {
+        return;
       }
-    });
-  }
-</script>
 
+      isUploading = true;
+      const files = event.target.files;
+      const totalFiles = files.length;
+      let uploadedCount = 0;
 
-<script>
-  $(document).ready(function () {
-    $(".image-by").hover(function () {
-      $(this).toggleClass("box-hover");
-    });
+      if (imagePreviewContainer) {
+        imagePreviewContainer.innerHTML = '';
+      }
+      if (loadingIcon) {
+        loadingIcon.style.display = 'flex';
+      }
+      if (uploadStatusText) {
+        uploadStatusText.textContent = `Uploading... 0/${totalFiles}`;
+      }
+
+      const imageUploadPromises = Array.from(files).map(file =>
+              new Promise((resolve, reject) => {
+                if (!file.type.startsWith('image/')) {
+                  console.warn(`Skipping non-image file: ${file.name}`);
+                  resolve({ skipped: true });
+                  return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = e => {
+                  const img = new Image();
+                  img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    const maxWidth = 1800;
+                    const maxHeight = 1600;
+                    let { width, height } = img;
+
+                    // Resize logic
+                    if (width > maxWidth || height > maxHeight) {
+                      const ratio = Math.min(maxWidth / width, maxHeight / height);
+                      width = Math.round(width * ratio);
+                      height = Math.round(height * ratio);
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Convert to WebP blob
+                    canvas.toBlob(blob => {
+                      if (!blob) {
+                        reject(new Error(`Blob conversion failed for ${file.name}`));
+                        return;
+                      }
+
+                      const formData = new FormData();
+                      const safeFileName = file.name
+                              .replace(/\.[^/.]+$/, "")
+                              .replace(/[^a-z0-9._-]/gi, '_')
+                              .toLowerCase();
+                      formData.append('file', blob, safeFileName + '.webp');
+                      formData.append('id', propertyId);
+                      formData.append('format', 'webp');
+
+                      const imgPreview = document.createElement("img");
+                      imgPreview.src = canvas.toDataURL('image/webp', 0.6);
+                      if (imagePreviewContainer) {
+                        imagePreviewContainer.appendChild(imgPreview);
+                      }
+
+                      const xhr = new XMLHttpRequest();
+                      xhr.open("POST", "/uploadPropertyImages", true);
+                      xhr.onload = () => {
+                        if (xhr.status === 200) {
+                          uploadedCount++;
+                          if (uploadStatusText) {
+                            uploadStatusText.textContent = `Uploading... ${uploadedCount}/${totalFiles}`;
+                          }
+                          resolve({ skipped: false });
+                        } else {
+                          console.error('Upload failed:', file.name, xhr.status, xhr.statusText);
+                          reject(new Error(`Upload failed for ${file.name}`));
+                        }
+                      };
+                      xhr.onerror = () => {
+                        console.error('XHR error uploading image:', file.name, xhr.statusText);
+                        reject(new Error(`Network error during upload for ${file.name}`));
+                      };
+                      xhr.send(formData);
+
+                    }, 'image/webp', 0.6);
+                  };
+                  img.onerror = () => {
+                    console.error("Error loading image source for", file.name);
+                    reject(new Error(`Error loading image ${file.name}`));
+                  };
+                  img.src = e.target.result;
+                };
+                reader.onerror = () => {
+                  console.error("Error reading file", file.name);
+                  reject(new Error(`Error reading file ${file.name}`));
+                };
+                reader.readAsDataURL(file);
+              })
+      );
+
+      Promise.all(imageUploadPromises)
+              .then(results => {
+                const successfulUploads = results.filter(r => !r.skipped).length;
+                const skippedCount = results.length - successfulUploads;
+                console.log(`All files processed. ${successfulUploads} images uploaded. ${skippedCount} skipped.`);
+                if (uploadStatusText) {
+                  uploadStatusText.textContent = `Upload complete! ${successfulUploads}/${totalFiles}`;
+                }
+                if (successfulUploads > 0) {
+                  showToast(`${successfulUploads} image(s) uploaded successfully.`, 'success');
+                }
+              })
+              .catch(error => {
+                console.error('Error during batch upload:', error);
+                if (uploadStatusText) {
+                  uploadStatusText.textContent = 'Upload failed.';
+                }
+                showToast("Some images failed to upload.", "error");
+              })
+              .finally(() => {
+                isUploading = false;
+                if (fileInputField) {
+                  fileInputField.value = '';
+                }
+                setTimeout(() => {
+                  if (loadingIcon) {
+                    loadingIcon.style.display = 'none';
+                  }
+                  location.reload();
+                }, 1500);
+              });
+    }
   });
 
-  function change_statusprimary(id, isChecked){
-    console.log(isChecked)
-    $.post("/changestatusPrimary", {id: JSON.stringify(id), isChecked: isChecked})
-        .done(function (response){
-          Toastify({
-            text: "Changes Saved!",
-            style: {
-              background: "linear-gradient(to right, #00b09b, #96c93d)"
-            },
-            duration: 3000
-          }).showToast();
-        })
-        .fail(function(response){
-          Toastify({
-            text: "Something went wrong!",
-            style: {
-              background: "linear-gradient(to right, #ff5f6d, #ffc371)"
-            },
-            duration: 3000
-          }).showToast();
-        });
+
+  function change_statusprimary(imageId, isChecked) {
+    $.post("/changestatusPrimary", { id: JSON.stringify(imageId), isChecked: isChecked })
+            .done(response => {
+              showToast("Changes Saved!", "success");
+              setTimeout(() => location.reload(), 500);
+            })
+            .fail((jqXHR, textStatus, errorThrown) => {
+              console.error("Failed to change primary status:", textStatus, errorThrown, jqXHR.responseText);
+              showToast("Operation failed: " + (jqXHR.responseText || "Server error"), "error");
+              const cb = document.querySelector(`input[onchange*="change_statusprimary(${imageId}"]`);
+              if (cb) {
+                cb.checked = !isChecked;
+              }
+            });
   }
 
+  function deleteImage(photoId, propId) {
+    const imageItem = document.getElementById('item-' + photoId);
+    const primaryItem = document.querySelector(`.item a[data-target='#myModal1${photoId}']`)?.closest('.item');
 
-</script>
+    $.post("/deletePropertyImage", { photoId: photoId, propertyId: propId })
+            .done(response => {
+              showToast(response || "Image deleted successfully!", "success");
+              if (imageItem) {
+                imageItem.remove();
+              }
+              if (primaryItem) {
+                primaryItem.remove();
+                setTimeout(() => location.reload(), 500);
+              }
+            })
+            .fail((jqXHR, textStatus, errorThrown) => {
+              console.error("Failed to delete image:", textStatus, errorThrown, jqXHR.responseText);
+              showToast("Failed to delete image: " + (jqXHR.responseText || "Server error"), "error");
+            });
+  }
 
-<script>
   function deleteImages() {
+    const checkedCheckboxesIds = Array.from(document.querySelectorAll('input[name="chk"]:checked')).map(cb => cb.id);
 
-    var checkedCheckboxes = [];
-
-    var checkboxes =
-            document.getElementsByName('chk');
-
-    var result = "";
-
-    for (var i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i].checked) {
-        result += checkboxes[i].id;
-        checkedCheckboxes.push(checkboxes[i].id);
-      }
+    if (checkedCheckboxesIds.length === 0) {
+      showToast("Please select images to delete.", "info");
+      return;
     }
 
     swal({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this photo!",
+      text: "Once deleted, you cannot recover these photos!",
       icon: "warning",
-      buttons: true,
+      buttons: {
+        cancel: "Cancel",
+        confirm: {
+          text: "Yes, delete them!",
+          className: "btn-danger"
+        }
+      },
       dangerMode: true,
     })
-            .then((willDelete) => {
+            .then(willDelete => {
               if (willDelete) {
-
                 $.ajax({
                   type: "POST",
                   contentType: "application/json",
-                  headers: {'x-my-custom-header': 'some value'},
                   url: "/deleteImages",
-                  data: JSON.stringify(checkedCheckboxes),
-                  dataType: 'json',
-                  cache: false,
-                  timeout: 600000,
-                  success: function () {
-                    swal("Sucess!", "Photo deleted succesfuly!", "success")
-                            .then(function(){
-                              window.location.reload();
-                            });
-
-                    for (var i = 0; i < checkboxes.length; i++) {
-                      if (checkboxes[i].checked) {
-                        document.getElementById(checkboxes[i].id).remove()
-                      }
-                    }
-                  },
-
-                  error: function (response) {
-                    swal("Sucess!", "Photo deleted succesfuly!", "success")
-                            .then(function(){
-                              window.location.reload();
-                            });
-                    for (var i = 0; i < checkboxes.length; i++) {
-                      if (checkboxes[i].checked) {
-                        document.getElementById(checkboxes[i].id).remove()
-                      }
-                    }
-
-                  }
-
-                });
-              } else {
-                // swal("Error!");
+                  data: JSON.stringify(checkedCheckboxesIds)
+                })
+                        .done((response) => {
+                          swal("Success!", response || "Selected photos deleted!", "success")
+                                  .then(() => {
+                                    checkedCheckboxesIds.forEach(id => {
+                                      document.getElementById('item-' + id)?.remove();
+                                    });
+                                  });
+                        })
+                        .fail((jqXHR) => {
+                          console.error("Bulk delete failed:", jqXHR.status, jqXHR.responseText);
+                          swal("Error!", jqXHR.responseText || "Deletion failed!", "error");
+                        });
               }
             });
-    console.log(checkedCheckboxes);
-
-    // Apply custom styles after the modal is rendered
-    setTimeout(function() {
-      var cancelButton = document.querySelector('.swal-button--cancel');
-      if (cancelButton) {
-        cancelButton.style.backgroundColor = '#e2e6ea'; // Change to desired color
-        cancelButton.style.color = 'black'; // Change text color if needed
-        cancelButton.style.border = '1px solid transparent';
-        cancelButton.style.borderColor = '#dae0e5';
-        cancelButton.fontWeight = '400';
-      }
-    }, 100);
   }
 
+  function changeModalPrev(prevModalId, currentModalId){
+    $('#myModal1' + currentModalId).modal('hide').one('hidden.bs.modal', () => {
+      $('#myModal1' + prevModalId).modal('show');
+    });
+  }
+  function changeModalNext(nextModalId, currentModalId){
+    $('#myModal1' + currentModalId).modal('hide').one('hidden.bs.modal', () => {
+      $('#myModal1' + nextModalId).modal('show');
+    });
+  }
 
+  function selects(){
+    document.getElementsByName('chk').forEach(cb => {
+      if(cb.type === 'checkbox') {
+        cb.checked = true;
+      }
+    });
+  }
+  function deSelect(){
+    document.getElementsByName('chk').forEach(cb => {
+      if(cb.type === 'checkbox') {
+        cb.checked = false;
+      }
+    });
+  }
 
+  /*]]>*/
 </script>
-
-
-
 <script>
 
   $(function() {
@@ -1185,293 +794,5 @@
     })
   });
 </script>
-
-<script type="text/javascript">
-
-  function selects(){
-    var ele=document.getElementsByName('chk');
-    for(var i=0; i<ele.length; i++){
-      if(ele[i].type=='checkbox')
-        ele[i].checked=true;
-    }
-  }
-
-  function deSelect(){
-    var ele=document.getElementsByName('chk');
-    for(var i=0; i<ele.length; i++){
-      if(ele[i].type=='checkbox')
-        ele[i].checked=false;
-    }
-  }
-
-</script>
-<script>
-  function addImageTag(event, roomId, imageId){
-    if(event.checked) {
-      $.post( "/addOrRemoveTag", {photoId: imageId, roomId: roomId, param: 0},)
-        .done(function (response){
-          Toastify({
-            text: "Changes Saved!",
-            style: {
-              background: "linear-gradient(to right, #00b09b, #96c93d)"
-            },
-            duration: 3000
-          }).showToast();
-      })
-        .fail(function(response){
-          Toastify({
-            text: "Something went wrong!",
-            style: {
-              background: "linear-gradient(to right, #ff5f6d, #ffc371)"
-            },
-            duration: 3000
-          }).showToast();
-        });
-      console.log("add as tag");
-      console.log(roomId);
-      console.log(imageId);
-    }else {
-      $.post( "/addOrRemoveTag", {photoId: imageId, roomId: roomId, param: 1})
-        .done(function (response) {
-          Toastify({
-            text: "Changes Saved!",
-            style: {
-              background: "linear-gradient(to right, #00b09b, #96c93d)"
-            },
-            duration: 3000
-          }).showToast();
-        })
-          .fail(function(response){
-            Toastify({
-              text: "Something went wrong!",
-              style: {
-                background: "linear-gradient(to right, #ff5f6d, #ffc371)"
-              },
-              gravity:"up",
-              duration: 3000
-            }).showToast();
-          });
-      console.log("remove as tag");
-      console.log(roomId);
-      console.log(imageId);
-    }
-  }
-
-  function deleteImage(photoId, roomId) {
-    document.getElementById(photoId).remove();
-
-    $.post("/deletePropertyImage", { photoId: photoId, propertyId: roomId })
-            .done(function() {
-              // Success callback
-              window.location.reload();
-            })
-            .fail(function() {
-              // Error callback, reload the page to reflect the current state
-              window.location.reload();
-            });
-  }
-</script>
-
-<script type="text/javascript">
-
-  //adding the delete function for selected images//
-
-  $('.delete_all').on('click', function(e) {
-
-    var allVals = [];
-    $(".sub_chk:checked").each(function() {
-
-      allVals.push($(this).attr('data-id'));
-    });
-
-    if(allVals.length <=0)
-    {
-      alert("Please select image.");
-    }  else {
-
-
-      var check = confirm("Are you sure you want to delete this image?");
-
-      if(check == true){
-
-        var join_selected_values = allVals.join(",");
-
-        $.ajax({
-          url: $(this).data('url'),
-          type: 'POST',
-          data: 'ids='+join_selected_values,
-          success: function (data) {
-            console.log(data);
-            $(".sub_chk:checked").each(function() {
-
-              $(this).parents("sortable").remove();
-            });
-
-            alert("Image Deleted successfully.");
-          },
-          error: function (data) {
-            alert(data.responseText);
-          }
-        });
-
-
-        $.each(allVals, function( index, value ) {
-          $('data-id').filter("[data-id='" + value + "']").remove();
-        });
-      }
-    }
-    window.location.reload();
-  });
-
-
-</script>
-<script>
-  $( function() {
-    $( "#sortable" ).sortable({
-      revert: true
-    });
-    $( "#draggable" ).draggable({
-      connectToSortable: "#sortable",
-      helper: "clone",
-      revert: "invalid"
-    });
-    $( "ul, li" ).disableSelection();
-  });
-
-</script>
-<script>
-  // Get the modal
-  var modal = document.getElementById('id01');
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-
-
-  function changeModalPrev(prevModalId, currentModalId){
-    const curr = document.getElementById('myModal1'+currentModalId);
-    const prev = document.getElementById('myModal1'+prevModalId);
-
-    $(curr).modal('hide');
-    $(prev).modal('show');
-    console.log("navigating to the previous Modal . . . ");
-  }
-  function changeModalNext(nextModalId, currentModalId){
-    const curr = document.getElementById('myModal1'+currentModalId);
-    const next = document.getElementById('myModal1'+nextModalId);
-    $(curr).modal('hide');
-    $(next).modal('show');
-
-    console.log("navigating to the next Modal . . . ");
-  }
-</script>
-<script th:inline="javascript">
-
-  /*<![CDATA[*/
-
-  var PhotoTagDto = [];
-
-  function savePhotoTag(event){
-
-
-    var photoTag = $("#"+event.id.match(/(\d+)(tag)/)[1]+"tags").val();
-
-    var model = {};
-
-    model.id = event.id.match(/(\d+)(tag)/)[1];
-    model.tagIds = photoTag;
-
-    $.ajax({
-      type: "POST",
-      contentType: "application/json",
-      url: "/tagsAplied",
-      data: JSON.stringify(model),
-      dataType: 'json',
-      cache: false,
-      timeout: 600000,
-      success: function () {
-        Toastify({
-          text: "Changes Saved!",
-          style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)"
-          },
-          duration: 3000
-        }).showToast();
-
-
-      },
-      error: function () {
-        Toastify({
-          text: "Something went wrong!",
-          style: {
-            background: "linear-gradient(to right, #ff5f6d, #ffc371)"
-          },
-          duration: 3000
-        }).showToast();
-
-      }
-    });
-    console.log(PhotoTagDto);
-  }
-
-  /*]]>*/
-
-</script>
-
-<script>
-  function deleteRoomImage(photoId, roomId){
-    document.getElementById(photoId).remove();
-    $.post( "/deleteImage", {photoId: photoId , roomId: roomId});
-    window.location.reload();
-  }
-</script>
-
-<input type="hidden" id="propId" th:value="${property.getId()}">
-<script>
-  function changeLanguageController(param) {
-
-    var propertyId= document.getElementById("propId").value;
-    var a = 'sq';
-    if (param == null) {
-      param = a;
-    }
-
-    var search = {"lang": a};
-    $.ajax({
-      type: "POST",
-      url: "/changeLanguage",
-      data: {
-        lang: param
-      },
-      success: function (result) {
-        window.location = '/uploadPropertyImages?id=' + propertyId  ;
-      },
-      error: function (e) {
-        window.location = '/error.' + param + '.html';
-      }
-    });
-  }
-</script>
-<!-- plugins:js -->
-<script src="../../vendors/js/vendor.bundle.base.js"></script>
-<!-- endinject -->
-<!-- Plugin js for this page -->
-<script src="../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
-<script src="../../vendors/select2/select2.min.js"></script>
-<!-- End plugin js for this page -->
-<!-- inject:js -->
-<script src="../../js/off-canvas.js"></script>
-<script src="../../js/hoverable-collapse.js"></script>
-<script src="../../js/template.js"></script>
-<script src="../../js/settings.js"></script>
-<script src="../../js/todolist.js"></script>
-<!-- Custom js for this page-->
-<script src="../../js/file-upload.js"></script>
-<script src="../../js/typeahead.js"></script>
-<script src="../../js/select2.js"></script>
-<script src="../../js/sweetAlert.js"></script>
 </body>
 </html>
