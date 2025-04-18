@@ -367,16 +367,39 @@ public class PanelMainController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    /*@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countyList")
     public ModelAndView shihQark(HttpServletRequest request, ModelAndView modelAndView,
-                                 /*@RequestParam(defaultValue = "1") int page,
+                                 @RequestParam(defaultValue = "1") int page,
                                  @RequestParam(defaultValue = "10") int size,
-                                 @RequestParam(required = false) String search,*/
+                                 @RequestParam(required = false) String search,
                                  @RequestParam(required = false) Long id){
         if (request.isUserInRole("ROLE_ADMIN")){
             modelAndView.addObject("county", countyRepository.findAll());
             modelAndView.addObject("id",id);
+            modelAndView.setViewName("ROLE_ADMIN/county/countyList");
+        }
+        return modelAndView;
+    } */
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/countyList")
+    public ModelAndView shihQark(HttpServletRequest request, ModelAndView modelAndView,
+                                 @RequestParam(required = false) String search,
+                                 @RequestParam(required = false) Long id) {
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            List<County> counties;
+
+            if (search != null && !search.isEmpty()) {
+                counties = countyRepository.findByNameContainingIgnoreCase(search);
+            } else {
+                counties = countyRepository.findAll();
+            }
+
+            modelAndView.addObject("county", counties);
+            modelAndView.addObject("search", search);
+            modelAndView.addObject("id", id);
             modelAndView.setViewName("ROLE_ADMIN/county/countyList");
         }
         return modelAndView;

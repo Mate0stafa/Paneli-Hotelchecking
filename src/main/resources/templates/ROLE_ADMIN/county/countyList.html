@@ -110,9 +110,7 @@
             fill: #aaa;
         }
 
-        .dataTables_length{
-            position: absolute;
-        }
+
         .dataTables_filter input {
             padding-left: 40px;
         }
@@ -148,16 +146,45 @@
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <a class="panel-booker-buton" th:href="@{/addCounty}">
-                                    <button type="submit" class="btn btn-outline-primary mb-5 rounded"><i class="ti-plus btn-icon-pretend "></i> [[#{client.AddNewCounty}]]</button>
+                                <a class="panel-booker-buton" th:href="@{/addCounty}" >
+                                    <button type="submit" class="btn btn-outline-primary rounded btn-sm">
+                                        <i class="ti-plus btn-icon-prepend"></i> [[#{client.AddNewCounty}]]</button>
                                 </a>
-                                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding: 0px 0px 20px;">[[#{client.AllCounties}]]</h4>
-                                <p class="card-description" >[[#{client.viewAndManage}]]</p>
+                                <h4 style="font-size: 23px;color: #1A1A1A;line-height: 20px;font-weight: 700;position: relative;padding-top: 20px;" class="card-title">[[#{client.AllCounties}]]</h4><br>
+                                <p class="card-description">
+                                    [[#{client.viewAndManageAllCounties}]]
+                                </p>
+                                <!-- Message Paragraph -->
+                                <div th:if="${msg != null}" class="alert alert-info">
+                                      <span class="icon">
+                                        <svg style="width: 20px; vertical-align: middle;" data-test-id="default-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                                          <path d="M49.4 85l4.2-17.2c.7-2.7.8-3.8 0-3.8a29 29 0 0 0-8.8 3.8l-1.8-3A48 48 0 0 1 66.7 53c3.7 0 4.3 4.3 2.5 11l-5 18c-.7 3.3-.3 4.3.5 4.3a19 19 0 0 0 8.2-4L75 85c-8.6 8.7-18.2 12-21.8 12s-6.4-2.3-3.8-12zM75 36a9.2 9.2 0 0 1-9.2 9c-4.4 0-7-2.7-6.8-7a9 9 0 0 1 9.1-9c4.6 0 6.9 3.2 6.9 7z"></path>
+                                          <path d="M62 16a48 48 0 1 1-48 48 48 48 0 0 1 48-48m0-8a56 56 0 1 0 56 56A56 56 0 0 0 62 8z"></path>
+                                        </svg>
+                                      </span>
+                                    <span th:text="${msg == null ? '' : msg}"></span>
+                                    <button type="button" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
 
+
+                                <form th:action="@{/countyList}" method="GET">
+                                    <div class="form-row align-items-center d-flex justify-content-between">
+                                        <div class="col-8 col-lg-3">
+                                            <label for="search" class="sr-only">[[#{client.SearchByCountyName}]] </label>
+                                            <input type="text" id="search" name="search" class="form-control form-control-navS" th:value="${search}" th:placeholder="#{client.EnterCountyName}" required  onkeypress=" return event.key !== 'Enter';">
+                                        </div>
+                                        <div class="col-4 col-lg-9">
+                                            <button type="submit" class="btn btn-primary">[[#{client.search}]]</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br><br>
                                 <div class="table-responsive table-striped mt-3">
                                     <table id="table_idd" class="table table-hover">
                                         <thead>
-                                        <tr style="background: #0089CC;padding: 10px;color: #ffffff;font-size: 14px;">
+                                        <tr class="table-head">
                                             <th>[[#{client.Id}]]</th>
                                             <th>[[#{client.CountyName}]]</th>
                                             <th>[[#{client.Country}]]</th>
@@ -198,6 +225,7 @@
 <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
 <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
 <script src="../../js/off-canvas.js"></script>
 <script src="../../js/hoverable-collapse.js"></script>
@@ -248,7 +276,7 @@
             "ordering": true,
             "info": false,
             "order": [0, 'asc'],
-            "searching": true,
+            "searching": false,
 
         });
     });
@@ -275,6 +303,7 @@
         })
     });
 </script>
+
 
 
 

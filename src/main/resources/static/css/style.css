@@ -167,3 +167,9 @@ a.bookers-colorr:hover{
     border-radius: 0px;
 }
 
+.table-head{
+    background-color: #0089CC !important;
+    padding: 10px;
+    color: #ffffff;
+    font-size: 14px;
+}
