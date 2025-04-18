@@ -38,6 +38,16 @@ public class UserApiToken {
     public UserApiToken() {
     }
 
+    //zgjidhje paraprake
+    public UserApiToken(String tokenValue, String username) {
+        this.tokenId = tokenValue;     // first parameter as tokenId now
+        this.tokenValue = username;    // second parameter as tokenValue now
+        this.userId = null;
+        this.expired = false;
+        this.expirationDate = new Date(System.currentTimeMillis() + 86400000); // 24H
+    }
+
+
     public Long getId() {
         return id;
     }
