@@ -34,7 +34,7 @@
                 <div class="row">
                     <div class="col-xs-8 col-xs-offset-2">
                         <div class="input-group">
-                            <input type="text" name="searchValue" id="nameInput" size="50"  class="form-control form-control-navS"  placeholder="Search Property\PropertyID\Category\City\Country" >
+                            <input type="text" name="searchValue" id="nameInput" size="50"  class="form-control form-control-navS" th:placeholder="#{placeholder.SearchProperty}" >
                         </div>
                     </div>
                 </div>
@@ -69,14 +69,9 @@
                         <i class="ti-help text-primary"></i>&nbsp; Help Center
                     </a>
                     <div class="px-3 text-center">
-                        <a class="btn btn-light d-flex justify-content-center w-100" th:href="@{'/logout'}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                <polyline points="16 17 21 12 16 7"></polyline>
-                                <line x1="21" y1="12" x2="9" y2="12"></line>
-                            </svg>
-                            &nbsp; [[#{client.Logout}]]
+                        <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" th:href="@{'/logout'}">
+                            <i class="ti-power-off text-primary"></i>
+                            [[#{client.Logout}]]
                         </a>
                     </div>
                 </div>
@@ -98,6 +93,20 @@
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <ul class="navbar-nav navbar-nav-right">
+            <li class="mt-2">
+                <form id="search-form" action="/searchByValue">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-8 col-xs-offset-2">
+                                <div class="input-group">
+                                    <input type="text" name="searchValue" id="nameInput" size="50"  class="form-control form-control-navS"   th:placeholder="#{placeholder.SearchProperty}" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-inverse-primary btn-fw">[[#{client.Search}]]</button>
+                </form>
+            </li>
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="profileDropdown" th:href="'https://allbookers.com/hotel/AL/'+${property.getNameFormated().replace(' ', '-' ).replace('/', '-' ).replace('#', '-' )}+'.sq.html?id='+${property.getId()}" title="View property listing on Allbookers.com" target="_blank">
                     <img class="rounded-circle" th:src="${property.getPrimaryImage()==null} ? '' :${'https://panel.allbookers.com' + property.getPrimaryImage().getImagePath()}" alt="Property Image" />
@@ -123,14 +132,9 @@
                         <i class="ti-help text-primary"></i>&nbsp; Help Center
                     </a>
                     <div class="px-3 text-center">
-                        <a class="btn btn-light d-flex justify-content-center w-100" th:href="@{'/logout'}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                <polyline points="16 17 21 12 16 7"></polyline>
-                                <line x1="21" y1="12" x2="9" y2="12"></line>
-                            </svg>
-                            &nbsp; [[#{client.Logout}]]
+                        <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" th:href="@{'/logout'}">
+                            <i class="ti-power-off text-primary"></i>
+                            [[#{client.Logout}]]
                         </a>
                     </div>
                 </div>
@@ -142,18 +146,7 @@
             <span class="icon-menu"></span>
         </button>
     </div>
-    <form id="search-form" action="/searchByValue">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-8 col-xs-offset-2">
-                    <div class="input-group">
-                        <input type="text" name="searchValue" id="nameInput" size="50"  class="form-control form-control-navS"  placeholder="Search Property\PropertyID\Category\City\Country">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-inverse-primary btn-fw">[[#{client.Search}]]</button>
-    </form>
+
 </nav>
 <style>
     .form-control-navS {
@@ -263,7 +256,7 @@
             margin-bottom: 10px;
         }
         nav#sidebar {
-            top: 100px;
+            top: 70px;
         }
         input#nameInput {
             border-radius: 15px 15px 15px 15px;

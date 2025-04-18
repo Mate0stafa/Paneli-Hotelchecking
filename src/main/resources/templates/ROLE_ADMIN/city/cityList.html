@@ -67,7 +67,7 @@
                                 <div class="table-responsive table-striped">
                                     <table id="table_idd" class="table table-hover" style="width: 100%!important;">
                                         <thead>
-                                        <tr style="background: #0089CC;padding: 10px;color: #ffffff;font-size: 14px;">
+                                        <tr class="table-head">
                                             <th>[[#{client.Id}]]</th>
                                             <th>[[#{client.CityName}]]</th>
                                             <th>[[#{client.CityDesc}]]</th>
@@ -488,7 +488,37 @@
         }
     });
 </script>
+<script th:inline="javascript">
+    // Your JavaScript code here
+    function closeAll() {
+        $('#sidebar').removeClass('open');
+        $('#nav-profile').removeClass('show');
+        $('#settings-trigger').removeClass('active');
+    }
 
+    // Event bindings
+    $('#sidebar-toggle').click(function() {
+        closeAll();
+        $('#sidebar').toggleClass('open');
+    });
+
+    $('.dropdown-toggle').click(function() {
+        closeAll();
+        $('#nav-profile').toggleClass('show');
+    });
+
+    $('#settings-trigger').click(function() {
+        closeAll();
+        $('#settings-trigger').toggleClass('active');
+    });
+
+    // Close all elements when clicking outside
+    $(document).click(function(e) {
+        if (!$(e.target).closest('#sidebar, #nav-profile, #settings-trigger').length) {
+            closeAll();
+        }
+    });
+</script>
 <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
       rel = "stylesheet">
 <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>

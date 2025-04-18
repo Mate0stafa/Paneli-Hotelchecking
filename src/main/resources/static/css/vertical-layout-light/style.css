@@ -22716,11 +22716,6 @@ span.menu-title {
     left: 30px;
 }
 
-@media (max-width: 991px) {
-    #settings-trigger {
-        display: none;
-    }
-}
 
 
 

@@ -77,19 +77,19 @@
                     </div>
 
 
-                    <a class="dropdown-item mx-4" style="display:flex;align-items: stretch;justify-content: left;" target="_blank" th:href="@{'/privacy-policy.pdf'}">
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" th:href="@{'/privacy-policy.pdf'}">
                         <i class="ti-lock text-primary"></i>Privacy Statement
                     </a>
-                    <a class="dropdown-item mx-4" style="display:flex;align-items: stretch;justify-content: left;" target="_blank" th:href="@{'/allbookers-terms-condition.pdf'}">
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank" th:href="@{'/allbookers-terms-condition.pdf'}">
                         <i class="ti-file text-primary"></i>Terms & Conditions
                     </a>
-                    <a class="dropdown-item mx-4" style="display:flex;align-items: stretch;justify-content: left;" target="_blank"  th:href="@{'http://localhost:8010/terms.en.html'}">
+                    <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" target="_blank"  th:href="@{'http://localhost:8010/terms.en.html'}">
                         <i class="ti-help text-primary"></i>Help Center
                     </a>
                     <div class="px-3 text-center">
-                        <a class="btn btn-light d-flex flex-center w-100 text-center" style="display:flex; align-items: stretch; justify-content: center;" th:href="@{'/logout'}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                            &nbsp;[[#{client.Logout}]]
+                        <a class="dropdown-item" style="display:flex;align-items: stretch;justify-content: center;" th:href="@{'/logout'}">
+                            <i class="ti-power-off text-primary"></i>
+                            [[#{client.Logout}]]
                         </a>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
         margin-bottom: 0;
         padding: 5px 10px!important;
         cursor: pointer;
-        width: 83%;
+        width: 100%;
     }
     .groupacc {
         border-top: 1px solid darkgray;
