@@ -67,4 +67,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "JOIN propertyRole.users propertyUser " +
             "WHERE userRole.id = 3 AND propertyRole IN :roles")
     boolean existsGroupAccountUser(@Param("roleId") Long roleId, @Param("roles") List<Role> roles);
+
+
+    boolean existsByUsername(String username);
+
+
+    boolean existsByEmail(String email);
 }

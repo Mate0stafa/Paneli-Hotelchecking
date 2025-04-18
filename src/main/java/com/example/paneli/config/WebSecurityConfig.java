@@ -105,7 +105,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             customSecurityAuth(user, response);
 
             if (user.getNew() != null && user.getNew()) {
-                response.sendRedirect("/setNewPassAfterRegister");
+                response.sendRedirect("/");
             } else {
                 if (user.getTwoFA() == null || user.getTwoFA()) {
                     response.sendRedirect("/start-2fa");

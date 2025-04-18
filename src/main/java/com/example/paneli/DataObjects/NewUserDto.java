@@ -1,8 +1,7 @@
 package com.example.paneli.DataObjects;
 
 public class NewUserDto {
-
-    private Long version;
+    private String fullname;
     private String username;
     private String email;
     private String password;
@@ -10,19 +9,19 @@ public class NewUserDto {
     public NewUserDto() {
     }
 
-    public NewUserDto(Long version, String username, String email, String password) {
-        this.version = version;
+    public NewUserDto(String fullName, String username, String email, String password) {
+        this.fullname = fullName;
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public Long getVersion() {
-        return version;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getUsername() {

@@ -20,18 +20,36 @@ public class User {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int version;
+
+    @Column(name = "full_name")
     private String full_name;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "username")
     private String username;
-    private int password_expired;
-    private int account_locked;
+
+    @Column(name = "password_expired")
+    @ColumnDefault("false")
+    private boolean password_expired;
+
+    @Column(name = "account_locked")
+    @ColumnDefault("false")
+    private boolean account_locked;
+
+    @Column(name = "password")
     private String password;
-    private int account_expired;
-    private int enabled;
+
+    @Column(name = "enabled")
+    @ColumnDefault("true")
+    private boolean enabled;
+
+    @Column(name = "is_admin")
+    @ColumnDefault("false")
     private boolean is_admin;
 
-    @Column(name = "isNew")
+    @Column(name = "is_new")
     @ColumnDefault("false")
     private boolean isNew;
 
@@ -39,37 +57,29 @@ public class User {
     @ColumnDefault("true")
     private boolean twoFA;
 
-    public User(int version, String full_name, String email, String username, int password_expired, int account_locked, String password, int account_expired, int enabled, List<Role> role,boolean is_admin, Boolean isNew, Boolean twoFA) {
-        this.version = version;
+    public User( String full_name, String email, String username, boolean password_expired, boolean account_locked, String password, boolean enabled, List<Role> role, boolean is_admin, boolean isNew, boolean twoFA) {
         this.full_name = full_name;
         this.email = email;
         this.username = username;
         this.password_expired = password_expired;
         this.account_locked = account_locked;
         this.password = password;
-        this.account_expired = account_expired;
         this.enabled = enabled;
         this.role = role;
         this.is_admin = is_admin;
         this.isNew = isNew;
-        this.twoFA = twoFA != null ? twoFA : false;
+        this.twoFA = twoFA;
     }
 
-    public User(String full_name,
-                String email,
-                String username,
-                String password,
-                boolean is_admin
-                 ) {
+    public User(String full_name, String email, String username, String password, boolean is_admin) {
         this.full_name = full_name;
         this.email = email;
         this.username = username;
         this.password = password;
         this.is_admin = is_admin;
-
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "user_role",
             joinColumns = { @JoinColumn(name = "user_id")},
             inverseJoinColumns = { @JoinColumn (name = "role_id")})
@@ -112,7 +122,7 @@ public class User {
     public User() {}
 
     public Long getUserLoginId(){
-        return this.id + 2654434l;
+        return this.id + 2654434L;
     }
 
     @OneToMany(mappedBy = "user")
@@ -134,19 +144,11 @@ public class User {
         this.role = role;
     }
 
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    public int getPassword_expired() {
+    public Boolean getPassword_expired() {
         return password_expired;
     }
 
-    public void setPassword_expired(int password_expired) {
+    public void setPassword_expired(boolean password_expired) {
         this.password_expired = password_expired;
     }
 
@@ -158,11 +160,11 @@ public class User {
         this.username = username;
     }
 
-    public int getAccount_locked() {
+    public Boolean getAccount_locked() {
         return account_locked;
     }
 
-    public void setAccount_locked(int account_locked) {
+    public void setAccount_locked(boolean account_locked) {
         this.account_locked = account_locked;
     }
 
@@ -174,19 +176,11 @@ public class User {
         this.password = password;
     }
 
-    public int getAccount_expired() {
-        return account_expired;
-    }
-
-    public void setAccount_expired(int account_expired) {
-        this.account_expired = account_expired;
-    }
-
-    public int getEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(int enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -206,7 +200,7 @@ public class User {
         this.email = email;
     }
 
-    public boolean isIs_admin() {
+    public Boolean isIs_admin() {
         return is_admin;
     }
 

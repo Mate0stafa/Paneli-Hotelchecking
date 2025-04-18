@@ -103,7 +103,7 @@ public class NewUserController {
     }
 
 
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("admin/addnewuser")
@@ -220,12 +220,17 @@ public class NewUserController {
                 roleList.add(role);
                 roleList.add(role_user);
 
-                User newUser2 = new User(0,
-                        property.getFirstName() + " " + property.getLastName(),
+                User newUser2 = new User(property.getFirstName() + " " + property.getLastName(),
                         newUser.getEmail(),
                         newUser.getUsername(),
-                        0, 0, newUser.getPassword(), 0, 0,
-                        roleList, false, true, true);
+                        false,
+                        false,
+                        newUser.getPassword(),
+                        true,
+                        roleList,
+                        false,
+                        true,
+                        true);
 
                 userRepository.save(newUser2);
                 javaMailService.sendNewUserCreatedData(newUser2, (String) request.getSession().getAttribute("firstPassword"));
@@ -281,12 +286,17 @@ public class NewUserController {
 
             String encodedPassword = bCryptPasswordEncoder.encode(newUserDto.getPassword());
 
-            User newUser = new User(0,
-                    property.getFirstName() + " " + property.getLastName(),
+            User newUser = new User(property.getFirstName() + " " + property.getLastName(),
                     newUserDto.getEmail(),
                     newUserDto.getUsername(),
-                    0, 0, encodedPassword, 0, 0,
-                    roleList, false, true, true);
+                    false,
+                    false,
+                    encodedPassword,
+                    true,
+                    roleList,
+                    false,
+                    false,
+                    true);
 
             Random rnd = new Random();
             int number = rnd.nextInt(900000) + 100000;
@@ -368,18 +378,17 @@ public class NewUserController {
 
             String encodedPassword = bCryptPasswordEncoder.encode(newUserDto.getPassword());
 
-            User newUser = new User(0,
+            User newUser = new User(
                     property.getFirstName() + " " + property.getLastName(),
                     newUserDto.getEmail(),
                     newUserDto.getUsername(),
-                    0,
-                    0,
+                    false,
+                    false,
                     encodedPassword,
-                    0,
-                    0,
+                    true,
                     roleList,
                     false,
-                    true,
+                    false,
                     true);
 
             Random rnd = new Random();
@@ -519,15 +528,14 @@ public class NewUserController {
             roleList.add(role);
             roleList.add(role_user);
 
-            User newUser2 = new User(0,
+            User newUser2 = new User(
                     property.getFirstName() + " " + property.getLastName(),
                     newUser.getEmail(),
                     newUser.getUsername(),
-                    0,
-                    0,
+                    false,
+                    false,
                     newUser.getPassword(),
-                    0,
-                    0,
+                    true,
                     roleList,
                     false,
                     true,

@@ -2,7 +2,7 @@ package com.example.paneli.DataObjects;
 
 public class NewUser {
 
-    private Long version;
+
     private boolean password_expired;
     private String username;
     private boolean account_locked;
@@ -15,8 +15,8 @@ public class NewUser {
     public NewUser() {
     }
 
-    public NewUser(Long version, boolean password_expired, String username, boolean account_locked, String password, boolean account_expired, boolean enabled, String fullname, String email) {
-        this.version = version;
+    public NewUser(boolean password_expired, String username, boolean account_locked, String password, boolean account_expired, boolean enabled, String fullname, String email) {
+
         this.password_expired = password_expired;
         this.username = username;
         this.account_locked = account_locked;
@@ -27,13 +27,6 @@ public class NewUser {
         this.email = email;
     }
 
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
 
     public boolean isPassword_expired() {
         return password_expired;

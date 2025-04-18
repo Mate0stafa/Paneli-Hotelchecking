@@ -30,7 +30,7 @@ public class UserClient {
     private String email;
     private String zip_code;
     private String phone_number;
-    private int account_expired;
+
     private int account_locked;
     private int enabled;
 
@@ -113,9 +113,6 @@ public class UserClient {
         return phone_number;
     }
 
-    public int getAccount_expired() {
-        return account_expired;
-    }
 
     public int getAccount_locked() {
         return account_locked;
@@ -169,9 +166,7 @@ public class UserClient {
         this.phone_number = phone_number;
     }
 
-    public void setAccount_expired(int account_expired) {
-        this.account_expired = account_expired;
-    }
+
 
     public void setAccount_locked(int account_locked) {
         this.account_locked = account_locked;

@@ -2,14 +2,18 @@ package com.example.paneli.Controllers;
 
 import com.example.paneli.DataObjects.Admin.UserProjection;
 import com.example.paneli.DataObjects.NewUser;
+import com.example.paneli.DataObjects.NewUserDto;
 import com.example.paneli.DataObjects.PasswordDto;
 import com.example.paneli.Models.*;
 import com.example.paneli.Models.PanelUsers.Role;
 import com.example.paneli.Models.PanelUsers.User;
 import com.example.paneli.Repositories.*;
+import com.example.paneli.Repositories.UserPanel.RoleRepository;
 import com.example.paneli.Repositories.UserPanel.UserRepository;
 import com.example.paneli.Services.Mail.JavaMailService;
+import com.example.paneli.Services.Number.NumberService;
 import com.example.paneli.Services.PasswordService;
+import com.example.paneli.Services.RoleUniqueService;
 import com.example.paneli.Services.UserServices.UserPanelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -41,10 +45,12 @@ public class UsersController {
     OldPasswordRepository oldPasswordRepository;
     @Autowired
     private UserPanelService userPanelService;
-
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     private JavaMailService javaMailService;
-
+    @Autowired
+    private NumberService numberService;
 
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @GetMapping("/users")
@@ -393,17 +399,14 @@ public ModelAndView users(HttpServletRequest request,
     @ResponseBody
     public ResponseEntity<?>  passwordExpired( @Param(value = "id") Long id) throws MessagingException {
        User user = userRepository.findById(id).get();
-        if (user.getPassword_expired()==0){
-            user.setPassword_expired(1);
+        if (!user.getPassword_expired()){
+            user.setPassword_expired(true);
             userRepository.saveAndFlush(user);
-
             javaMailService.forgotPassEmail(user.getId());
-
-        }else if (user.getPassword_expired()==1){
-            user.setPassword_expired(0);
+        }else{
+            user.setPassword_expired(false);
             userRepository.saveAndFlush(user);
         }
-
 
         return ResponseEntity.accepted().build();
 
@@ -425,7 +428,7 @@ public ModelAndView users(HttpServletRequest request,
             Optional<User> optionalUser = userRepository.findById(id);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
-                user.setAccount_locked(user.getAccount_locked() == 1 ? 0 : 1);
+                user.setAccount_locked(!user.getAccount_locked());
                 userRepository.saveAndFlush(user);
                 return ResponseEntity.ok().build();
             } else {
@@ -435,6 +438,87 @@ public ModelAndView users(HttpServletRequest request,
             e.printStackTrace(); // Log the exception
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
+    }
+
+
+    @GetMapping("/register")
+    public ModelAndView registerUserPage(ModelAndView modelAndView) {
+        modelAndView.setViewName("/loginandregister/register");
+        return modelAndView;
+    }
+
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseEntity<String> registerUser(@RequestBody()NewUserDto newUserDto) {
+        try {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+            List<Role> roleList = new ArrayList<>();
+            Role role = roleRepository.findById(1L).get();
+
+            String roleName = "ROLE_ADMIN_HOTEL_" + newUserDto.getUsername();
+            int roles = roleRepository.findAllByAuthority(roleName).size();
+            roles = roles + 1;
+            roleName = (roles > 0 ? roleName + "_" + roles + numberService.generateThreedigitNumber() : roleName + numberService.generateThreedigitNumber());
+            Role special = new Role(roleName);
+            roleList.add(special);
+            roleRepository.saveAndFlush(role);
+
+            User user = new User(
+                    newUserDto.getFullname(),
+                    newUserDto.getEmail(),
+                    newUserDto.getUsername(),
+                    false,
+                    false,
+                    encoder.encode(newUserDto.getPassword()),
+                    false,
+                    roleList,
+                    false,
+                    true,
+                    false
+            );
+            userRepository.save(user);
+
+            return ResponseEntity.ok().body("Success!");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error!");
+        }
+
+    }
+
+    @PostMapping("checkAvailability")
+    public ResponseEntity<Boolean> checkAvailability(@RequestParam(name = "username", required = false) String username, @RequestParam(name = "email", required = false) String email) {
+        try{
+            if(username != null){
+                System.out.println("Username checked: " + username);
+                return ResponseEntity.ok().body(!userRepository.existsByUsername(username));
+            }else {
+                System.out.println("Email checked: " + email);
+                return ResponseEntity.ok().body(!userRepository.existsByEmail(email));
+            }
+
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(true);
+        }
+
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/confirm-your-email")
+    public String emailConfirmationRequest() {
+        return "loginandregister/emailConfirmationRequest";
+    }
+
+    @GetMapping("/emailConfirmation")
+    public ResponseEntity<?> emailConfirmation(@RequestParam(name = "userId")Long userId) {
+        try {
+            javaMailService.emailConfirmation(userId);
+            return ResponseEntity.ok().body("Confirmation email sent successfully.");
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body("Something went wrong please contact support.");
+        }
+
     }
 
 

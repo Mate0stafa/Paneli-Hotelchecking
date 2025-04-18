@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Confirmation | Hotels Checking Panel</title>
+    <link rel="stylesheet" href="/vendors/feather/feather.css">
+    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="/images/favicon.png">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webjars/toastify-js/1.12.0/src/toastify.css"  >
+    <style>
+    
+    </style>
+</head>
+<body>
+<div th:replace="/ROLE_USER/Layouts/navbar"></div>
+<div class="container-fluid my-5 py-5">
+    <div th:replace="/ROLE_USER/Layouts/hotelSidebar"></div>
+    <div class="d-flex mx-auto justify-content-center flex-column flex-wrap">
+        <div class="my-3 w-100 d-flex justify-content-center">
+            <img src="/images/favicon-hotelChecking.png" alt="loading..." height="auto" width="200px">
+        </div>
+        <h3 class="text-center">Welcome to Hotel Checking Panel </h3>
+        <p class="my-3 text-center">
+            To access the full features of your account we need you to confirm the email address which you used to register with.
+            <br>
+            An email has been sent to your inbox with a link to confirm your email address,
+            <br>
+            if you cannot find the email in your inbox please check your spam folder or contact our support team
+            <a href="https://allbookers.com/customerservice.en.html">here</a>.
+        </p>
+    </div>
+</div>
+
+<div th:replace="/ROLE_USER/Layouts/footerL"></div>
+<script src="/webjars/jquery/3.5.1/jquery.js"></script>
+<script src="/javascripts/bootstrap.bundle.js"></script>
+<script  src="/webjars/toastify-js/1.12.0/src/toastify.js" ></script>
+<script>
+
+</script>
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.example.paneli.Controllers;
 import com.example.paneli.DataObjects.Property.PropertyNameAndEmailProjection;
 import com.example.paneli.Models.PanelUsers.Role;
 import com.example.paneli.Services.DateService;
+import com.example.paneli.Services.TokenService;
 import com.lowagie.text.DocumentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,7 +49,7 @@ import java.util.*;
 
 @Controller
 public class AgreementController {
-    @Autowired
+   /* @Autowired
     JavaMailService javaMailService;
     @Autowired
     AgreementRepository agreementRepository;
@@ -74,7 +75,8 @@ public class AgreementController {
     private DateService dateService;
     @Autowired
     HotelierRepository hotelierRepository;
-
+    @Autowired
+    TokenService tokenService;
 
 
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_GROUP_ACCOUNT') or hasRole('ROLE_ADMIN')")
@@ -3012,30 +3014,7 @@ public ModelAndView refusedchangeofownership(HttpServletRequest request, ModelAn
                 agreementRepository.save(agreement);
             }
 
-            MimeMessage message = sender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(setNewAgreement.getEmailAddress());
-            System.out.println(setNewAgreement.getEmailAddress());
-            helper.setSubject("Your New Agreement Accepted Successfully");
-
-            String emailNewAgreement = "<div style=\"background: #d9d9d9; display: flex;\">"
-                    + "<div style=\"margin-left: 27%; margin-top: 10px;\">"
-                    + "<img src=\"https://join.allbookers.com/images/Allbookers.png\" style=\"width: 280px; margin-bottom: 5px;\">"
-                    + "</div>"
-                    + "<div style=\"margin-left: 30%; margin-top: 10px; float: right;\">"
-                    + "<img src=\"https://join.allbookers.com/images/logoemail.png\" style=\"width: 30px\">"
-                    + "</div>"
-                    + "</div>"
-                    + "<h3 style=\"color: black;\">Dear " + property.getName() + ",\n</h3>" +
-                    "<p style=\"color: black;\">Your new agreement has already been accepted successfully\n.</p>" +
-                    "<p style=\"color: black;\">Kind regards,</p>"+
-                    "<p style=\"color: black;\">The <a href=\"https://allbookers.com/\" style=\"text-decoration: none; color: black;\">Allbookers.com</a> Team\n</p>"
-                    + "<br><hr style=\"width: 35%; margin-left: auto; margin-right: auto;\"><br>"
-                    + "<p style=\"text-align: center; color: black;\">© Copyright 2024 Allbookers.com | All rights reserved."
-                    + "<br>This e-mail was sent by allbookers.com.</p>";
-
-            helper.setText(emailNewAgreement, true);
-            sender.send(message);
+            javaMailService.changeAgreement(setNewAgreement.getProperty().);
 
             //Set pass expired email
             User user;
@@ -3287,6 +3266,6 @@ public ModelAndView refusedchangeofownership(HttpServletRequest request, ModelAn
     public void acceptSetNewAgreement(@RequestParam(value = "id") Long id) throws IOException {
         setNewAgreementRepository.deleteById(id);
     }
-
+*/
 }
 

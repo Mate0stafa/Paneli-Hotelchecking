@@ -3645,12 +3645,78 @@ public class JavaMailService {
                 "</div>" +
                 "</div>" +
                 "<br><hr style=\"width: 35%; margin-left: auto; margin-right: auto;\"><br>" +
-                "<p style=\"text-align: center;\">© Copyright 2024 Allbookers.com | All rights reserved.<br>This e-mail was sent by allbookers.com.</p>" +
+                "<p style=\"text-align: center;\">© Copyright 2025 Allbookers.com | All rights reserved.<br>This e-mail was sent by allbookers.com.</p>" +
                 "</div>";
 
         helper.setText(htmlContent, true);
         sender.send(message);
 
     }
+
+    public void emailConfirmation(Long userId) throws MessagingException {
+
+        User user = userRepository.findById(userId).get();
+
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(user.getEmail());
+        helper.setSubject("Email confirmation request");
+        String htmlContent = "<!doctype html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\"\n" +
+                "          content=\"width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0\">\n" +
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n" +
+                "    <title>Email confirmation request | Hotels Checking</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<table style=\"max-width: 600px; margin: auto; width: 100%;\">\n" +
+                "    <tbody style=\"width: 100%;\">\n" +
+                "    <tr>\n" +
+                "        <td colspan=\"1\">\n" +
+                "            <p>Dear" + user.getFull_name() + ",</p>\n" +
+                "            <p>\n" +
+                "                <span>\n" +
+                "                    We, the Allbookers.com team welcome you as a new user of Hotel Checking Panel.\n" +
+                "                </span>\n" +
+                "                <br>\n" +
+                "                <span>\n" +
+                "                    This email is a request to confirm the email address which you registered with on our platform.\n" +
+                "                    <br>\n" +
+                "                    To confirm your email you simply need to click the button below.\n" +
+                "                </span>\n" +
+                "                <br>\n" +
+                "                <span>\n" +
+                "                    <button >\n" +
+                "                        <a href=\"http://localhost:2025/\" role=\"button\">Confirm Email</a>\n" +
+                "                    </button>\n" +
+                "                    <span>\n" +
+                "                        If the button doesn’t work, you can copy and paste this link into your browser:\n" +
+                "                        <br>\n" +
+                "                        <a href=\"#\">Copy Link</a> &nbsp;\n" +
+                "                        <small>* This link expires after 24 hours</small>\n" +
+                "                        <br>\n" +
+                "                        By verifying your email you will be able to access the full features of Hotel Checking Panel.\n" +
+                "                        <br>\n" +
+                "                        If you didn’t sign up for an account, you can safely ignore this email or contact our support team <a href=\"https://allbookers.com/customerservice.en.html\" >here</a>.\n" +
+                "                    </span>\n" +
+                "                </span>\n" +
+                "            </p>\n" +
+                "            <p style=\"text-align: center;\">\n" +
+                "                © Copyright 2025 Allbookers.com | All rights reserved.\n" +
+                "                <br>\n" +
+                "                This e-mail was sent by allbookers.com.\n" +
+                "            </p>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "    </tbody>\n" +
+                "</table>\n" +
+                "</body>\n" +
+                "</html>";
+        helper.setText(htmlContent, true);
+        sender.send(message);
+    }
+
 
 }

@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register | Hotels Checking Panel</title>
+    <link rel="stylesheet" href="/vendors/feather/feather.css">
+    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="/images/favicon-hotelChecking.png">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webjars/toastify-js/1.12.0/src/toastify.css"  >
+    <style>
+    
+        .green{
+            color: #228B22FF !important;
+        }
+        .red{
+            color: #FF4500FF !important;
+        }
+        
+        img.logo {
+            margin:1%;
+            object-fit: contain;
+        }
+        
+        .logo-group{
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+        
+        
+        @media screen and (max-width: 768px) {
+            img.logo {
+                width: 23% !important;
+                margin: 1%;
+                object-fit: contain;
+            }
+        }
+       
+        .fa-classic, .fa-regular, .fa-solid, .far, .fas {
+            font-family: "Font Awesome 6 Free",serif;
+            color: #fb8540;
+        }
+        .messageAttempts {
+            color: #ff4e4e;
+            font-size: 15px;
+        }
+        .notvisible {
+            visibility: hidden;
+        }
+        .register-form{
+            border-radius: 8px;
+            box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            width: 415px !important;
+        }
+        .submit-button{
+            padding: 10px 0;
+            color:white;
+            background-color: #F26436;
+            border: solid 1px transparent;
+            border-radius: 6px;
+            transition: all 0.15s ease-in-out;
+        }
+        .submit-button:hover{
+            color: #F26436;
+            background-color: transparent;
+            border-color: #F26436;
+        }
+        .small-span{
+            font-size: 13px;
+        }
+        .loginLink{
+            color: #F26436;
+            margin: 0 5px;
+        }
+        .first-name{
+            padding-left: 0 !important;
+        }
+        .last-name{
+            padding-right: 0 !important;
+        }
+    </style>
+    
+</head>
+<body>
+<section>
+    <div class="container mt-5 pt-5">
+        <div class="d-flex justify-content-center w-100">
+            <div class="register-form">
+                <div class="form-group text-center">
+                    <img src="/images/favicon-hotelChecking.png" height="auto" width="100px"  alt="loading...">
+                    <h3 class="mb-2 h3">Create new account</h3>
+                    <p class="mb-0">
+                        Already a member?
+                        <a class="loginLink" href="/login"> Log in</a>
+                    </p>
+                </div>
+                
+                <span class="small-span text-secondary">Fields marked with <span class="red">*</span> are required</span>
+                <div class="form-section d-flex  flex-wrap">
+                    <div class="form-group col-6 first-name mt-3">
+                        <label for="firstName" class="form-check-label" >First Name </label>
+                        <input id="firstName" type="text" class="form-control" placeholder="First Name">
+                        
+                    </div>
+                    
+                    <div class="form-group col-6 last-name mt-3">
+                        <label for="lastName" class="form-check-label">Last Name</label>
+                        <input id="lastName" type="text" class="form-control" placeholder="Last Name">
+                        
+                    </div>
+                </div>
+               
+                <div class="form-group ">
+                    <label for="email" class="form-check-label">Email <span class="red">*</span></label>
+                    <input id="email" type="email" required class="form-control" placeholder="Email@example.com" onkeyup="checkEmail(this)">
+                    <span id="mailAvailability"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="username" class="form-check-label">Username <span class="red">*</span></label>
+                    <input id="username" type="text" required class="form-control" placeholder="Enter your username" onkeyup="checkUserName(this)">
+                    <span id="availability"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="password" class="form-check-label">Password <span class="red">*</span></label>
+                    <input id="password" type="password" required class="form-control" minlength="12" placeholder="Enter password" onkeyup="checkLength(this)">
+                    <span id="minlength"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="confirmPassword" class="form-check-label">Confirm Password <span class="red">*</span></label>
+                    <input id="confirmPassword" type="password" required class="form-control" placeholder="Confirm password" onkeyup="matchPass(this)" minlength="12" disabled>
+                    <span id="matchPass"></span>
+                </div>
+                <button id="submit-button"  type="submit" class="submit-button w-100 ms-2" onclick="registerUser()" disabled>Register</button>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="logo-group">
+    <img class="logo" style="padding-top: 5px;" src="/images/logoallbookers.png" alt="Allbookers Logo" width="120px">
+    <img class="logo" style="padding-top: 5px;" src="/images/InterMedia-Logo.png" alt="Intermedia Logo" width="110px">
+    <img class="logo" style="padding-top: 5px;" src="/images/BookersDesk.png" alt="BookersDesk Logo" width="130px" height="50px">
+    <img class="logo" style="padding-top: 0;" src="/images/hotels-checking.png" alt="Hotels Checking Logo" width="140px" height="40px">
+</div>
+
+
+<script src="/webjars/jquery/3.5.1/jquery.js"></script>
+<script src="/javascripts/bootstrap.bundle.js"></script>
+<script  src="/webjars/toastify-js/1.12.0/src/toastify.js" ></script>
+<script>
+    function changeLanguageController(param) {
+        //ky index.html kthehet nga dy GET te ndryshem , per te bere rederirectin pas ndryshimit te gjuhes , marrim url ku jemi
+        var currentFullUrl = window.location.href;
+
+        $.ajax({
+            type: "POST",
+            url: "/changeLanguage",
+            data: {
+                lang: param
+            },
+            success: function (result) {
+                // Redirect to the exact same full URL
+                window.location.href = currentFullUrl;
+            },
+            error: function (e) {
+                window.location = '/error.' + param + '.html';
+            }
+        });
+    }
+    //dy funkionet e meposhte kontrollojne email-in dhe username-in, nje user ka email dhe username unik
+    async function checkEmail(event){
+        
+        const mailAvailText = document.getElementById("mailAvailability");
+        if (event.value.length >= 16) {
+            
+            const response = await fetch('/checkAvailability?email=' + event.value, {
+                method: 'POST'
+            });
+            const emailAvailable = await response.json();
+            
+            if (!emailAvailable) {
+                
+                mailAvailText.classList.add("red");
+                mailAvailText.innerText = "Email is not available, pick a different email.";
+            }
+            
+        }else{
+            mailAvailText.classList.remove("red");
+            mailAvailText.innerText = '';
+        }
+    }
+    
+    async function checkUserName(event){
+        const availabilityText = document.getElementById("availability");
+        if(event.value.length >=3){
+            
+            const response = await fetch('/checkAvailability?username='+event.value,{
+                method:'POST'
+            });
+            const available = await response.json();
+            if(available){
+                availabilityText.classList.remove("red");
+                availabilityText.classList.add("green");
+                availabilityText.innerText = "Username is available."
+            } else{
+                availabilityText.classList.remove("green");
+                availabilityText.classList.add("red");
+                availabilityText.innerText = "Username is not available, pick a different username.";
+            }
+        }else{
+            availabilityText.innerText = '';
+        }
+    }
+    
+    function checkLength(event){
+        const minlength = document.getElementById("minlength");
+        
+        //passwordi duhet te jete min 12 karaktere i gjate dhe te permbaje te pakten nje shifer dhe nje numer
+        
+        if (event.value.match(/^(?=.*[A-Z])(?=.*\d).{12,}$/)) {
+            minlength.classList.remove('red');
+            minlength.innerText = '';
+            document.getElementById("confirmPassword").disabled = false;
+        } else if(event.value.length === 0 ){
+            minlength.innerText = '';
+        }else{
+            minlength.classList.add('red');
+            minlength.innerText = 'Your password needs to be at least 12 characters long and have at least a digit and an uppercase letter.';
+        }
+    }
+    
+    function matchPass(event){
+        const pass = document.getElementById("password").value;
+        const matchText = document.getElementById("matchPass");
+        const button =  document.getElementById("submit-button");
+        if(event.value === pass){
+            matchText.innerText = "Passwords match."
+            matchText.classList.add("green");
+            matchText.classList.remove("red");
+            button.disabled = false;
+        }else if(event.value.length === 0){
+            matchText.innerText = ''
+            matchText.classList.remove("green");
+            matchText.classList.remove("red");
+        }else{
+            matchText.innerText = "Passwords don't match."
+            matchText.classList.remove("green");
+            matchText.classList.add("red");
+        }
+    }
+    
+    async function registerUser(){
+        const newUserDto = {};
+        const lang = /*[[#{locale.language}]]*/'';
+        newUserDto.fullname = document.getElementById("firstName").value + ' ' + document.getElementById("lastName").value;
+        newUserDto.email = document.getElementById("email").value;
+        newUserDto.username = document.getElementById("username").value;
+        newUserDto.password = document.getElementById("password").value;
+        const response = await fetch('/register', {
+            method:'POST',
+            headers: {
+                    'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(newUserDto)
+        });
+        const status = response.status;
+        
+        if(status === 200){
+             Toastify({
+                text: 'Success: ',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                close: false,
+                offset: {
+                    x: 50,
+                    y: 10
+                },
+                style: {
+                    background: "linear-gradient(to right, rgb(0, 176, 155), rgb(150, 201, 61))",
+                },
+                callback: function() {
+                    window.location.href = '/login';
+                }
+                }).showToast();
+        }else{
+            Toastify({
+                    text: 'Something went wrong, please try again or contact support',
+                    duration: 3000,
+                    style: {
+                        background: "linear-gradient(134deg, rgba(252, 96, 69, 1) 4%, rgb(255 18 27) 58%, rgb(255 0 0) 62%, rgba(252, 96, 69, 1) 92%)",
+                    },
+                    close: false,
+                    offset: {
+                        x: 50,
+                        y: 10
+                    },
+                    callback:function(){
+                        location.reload();
+                    }
+                }).showToast();
+        }
+        
+        
+    }
+    
+</script>
+</body>
+</html>
